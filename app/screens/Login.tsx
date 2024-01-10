@@ -1,10 +1,16 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable } from "react-native";
 import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import ChroniBlueButton from "../components/chroniBlueButton";
 
-const Login = () => {
+
+interface RouterProps{
+    navigation: NavigationProp<any, any>;
+}
+
+const Login = ({navigation}: RouterProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false)
@@ -23,8 +29,6 @@ const Login = () => {
         }
     }
 
-
-
     return (
         <View style={styles.constainer}>
             <Text>Login</Text>
@@ -32,8 +36,8 @@ const Login = () => {
             <TextInput secureTextEntry={true} value={password} placeholder="Password" autoCapitalize="none" style={styles.input} onChangeText={(text) => { setPassword(text) }}></TextInput>
             {loading ? (<ActivityIndicator size="large" color="@0000ff" />) : (
                 <View>
-                    <ChroniBlueButton name="Sign In"></ChroniBlueButton>
-                    <Pressable onPress={()=>{}} style={{ backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, }}>
+                    <ChroniBlueButton name="Sign In" action={signIn}></ChroniBlueButton>
+                    <Pressable onPress={()=>navigation.navigate('Signup')} style={{ backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, }}>
                         <Text style={{ color: "#1EAFB3", justifyContent: 'center', textAlign: 'center' }}>Sign Up</Text>
                     </Pressable>
                 </View>
