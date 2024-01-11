@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
 import { View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator } from "react-native";
+import ChroniBlueButton from "../components/chroniBlueButton";
 
 
 const Signup = () => {
@@ -28,11 +29,7 @@ const Signup = () => {
             <TextInput value={email} placeholder="Email" autoCapitalize="none" style={styles.input} onChangeText={(text) => { setEmail(text) }}></TextInput>
             <TextInput secureTextEntry={true} value={password} placeholder="Password" autoCapitalize="none" style={styles.input} onChangeText={(text) => { setPassword(text) }}></TextInput>
             {loading ? (<ActivityIndicator size="large" color="@0000ff" />) : (
-                <View>
-                    <Pressable onPress={() => signUp()} style={{ backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, }}>
-                        <Text style={{ color: "#1EAFB3", justifyContent: 'center', textAlign: 'center' }}>Sign Up</Text>
-                    </Pressable>
-                </View>
+               <ChroniBlueButton name='Sign Up' action={signUp}></ChroniBlueButton>
 
 
             )}
