@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable } from "react-native";
 import React, { useState } from "react";
-import { FIREBASE_AUTH } from "../../FirebaseConfig";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { SignIn } from "../../FirebaseConfig";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import ChroniBlueButton from "../components/chroniBlueButton";
 
@@ -14,20 +13,18 @@ const Login = ({navigation}: RouterProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false)
-    const auth = FIREBASE_AUTH;
 
     const signIn = async () => {
         setLoading(true);
         try {
-            const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-            console.log(response);
+            SignIn(email, password);
         } catch (error: any) {
-            console.log(error);
             alert('Sign in failed: ' + error.message);
         } finally {
             setLoading(false);
         }
     }
+
 
     return (
         <View style={styles.constainer}>

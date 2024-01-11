@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { SignUp } from "../../FirebaseConfig";
 import { View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator } from "react-native";
 import ChroniBlueButton from "../components/chroniBlueButton";
 
@@ -13,10 +13,8 @@ const Signup = () => {
     const signUp = async () => {
         setLoading(true);
         try {
-            const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-            console.log(response);
+            SignUp(email, password);
         } catch (error: any) {
-            console.log(error);
             alert('Sign up failed: ' + error.message);
         } finally {
             setLoading(false);

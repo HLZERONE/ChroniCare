@@ -1,12 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import {getAuth} from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from 'firebase/firestore'
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User, onAuthStateChanged} from "firebase/auth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBXzhqrppOvBEa9k1rs_5VxOG2vEIjAjgk",
   authDomain: "chronicare-82eed.firebaseapp.com",
@@ -20,4 +16,36 @@ const firebaseConfig = {
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
-const analytics = getAnalytics(FIREBASE_APP);
+export const FIREBASE_DB = getFirestore(FIREBASE_APP);
+
+export const SignIn = async (email:any, password:any) => {
+  try {
+      const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      //console.log(response);
+  } catch (error: any) {
+      console.log(error);
+  }
+}
+
+/*
+export const checkCurUser = (): any => {
+  onAuthStateChanged(FIREBASE_AUTH, (user) => {
+    //console.log('user', user);
+    return user;
+  })
+  return null;
+}
+*/
+
+export const SignUp = async (email:any, password:any) => {
+  try {
+      const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      //console.log(response);
+  } catch (error: any) {
+      console.log(error);
+  }
+}
+
+
+
+
