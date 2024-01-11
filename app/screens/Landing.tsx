@@ -1,29 +1,15 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useState, } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import DashboardNav from "../navigations/dashboardNav";
 
 
 const Signup = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false)
-    const signUp = async () => {
-        setLoading(true);
-        try {
-            const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-            console.log(response);
-        } catch (error: any) {
-            console.log(error);
-            alert('Sign in failed: ' + error.message);
-        } finally {
-            setLoading(false);
-        }
-    }
+
 
     return(
         <View>
-            <Text>Sign Up</Text>
+            <Text style={styles.constainer}>Landing, {FIREBASE_AUTH.currentUser?.email}</Text>
         </View>
     )
 
@@ -31,3 +17,18 @@ const Signup = () => {
 
 export default Signup;
 
+const styles = StyleSheet.create({
+    constainer: {
+
+        justifyContent: 'center',
+        alignContent: 'center',
+    },
+    input: {
+        marginVertical: 4,
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 4,
+        padding: 10,
+        backgroundColor: '#fff'
+    }
+})
