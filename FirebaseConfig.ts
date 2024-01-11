@@ -35,7 +35,7 @@ export const SignUp = async (email:any, password:any) => {
   }
 }
 
-export const signOut = () =>{
+export const SignOut = () =>{
   FIREBASE_AUTH.signOut();
 }
 
