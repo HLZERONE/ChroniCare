@@ -1,30 +1,25 @@
-import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable } from "react-native";
-import React, { useState } from "react";
-import { SignIn } from "../../FirebaseConfig";
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { SignUp } from "../../FirebaseConfig";
+import { View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator } from "react-native";
 import ChroniBlueButton from "../components/chroniBlueButton";
 
 
-interface RouterProps{
-    navigation: NavigationProp<any, any>;
-}
-
-const Login = ({navigation}: RouterProps) => {
+const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false)
 
-    const signIn = async () => {
+    const signUp = async () => {
         setLoading(true);
         try {
-            SignIn(email, password);
+            SignUp(email, password);
         } catch (error: any) {
-            alert('Sign in failed: ' + error.message);
+            alert('Sign up failed: ' + error.message);
         } finally {
             setLoading(false);
         }
     }
-
 
     return (
         <View style={styles.constainer}>
@@ -32,22 +27,17 @@ const Login = ({navigation}: RouterProps) => {
             <TextInput value={email} placeholder="Email" autoCapitalize="none" style={styles.input} onChangeText={(text) => { setEmail(text) }}></TextInput>
             <TextInput secureTextEntry={true} value={password} placeholder="Password" autoCapitalize="none" style={styles.input} onChangeText={(text) => { setPassword(text) }}></TextInput>
             {loading ? (<ActivityIndicator size="large" color="@0000ff" />) : (
-                <View>
-                    <ChroniBlueButton name="Sign In" action={signIn}></ChroniBlueButton>
-                    <Pressable onPress={()=>navigation.navigate('Signup')} style={{ backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, }}>
-                        <Text style={{ color: "#1EAFB3", justifyContent: 'center', textAlign: 'center' }}>Sign Up</Text>
-                    </Pressable>
-                </View>
+               <ChroniBlueButton name='Sign Up' action={signUp}></ChroniBlueButton>
 
 
             )}
 
         </View>
+    )
 
-    );
-};
+}
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
     constainer: {
