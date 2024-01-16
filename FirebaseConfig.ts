@@ -18,21 +18,30 @@ export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
 export const FIREBASE_DB = getFirestore(FIREBASE_APP);
 
+const validateEmail = (email: any) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+const validatePassword = (password: any) =>{
+  return String(password).length >= 6;
+}
+
 export const SignIn = async (email:any, password:any) => {
-  try {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-  } catch (error: any) {
-      console.log(error);
-  }
+  await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
 }
 
 
 export const SignUp = async (email:any, password:any) => {
-  try {
-      await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-  } catch (error: any) {
-      console.log(error);
+  if(email == null || !validateEmail(email)){
+    throw("Invalid Email Address");
+  }else if(password == null || !validatePassword(password)){
+    throw("Length of password have to be more than 6");
   }
+  await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
 }
 
 export const SignOut = () =>{
