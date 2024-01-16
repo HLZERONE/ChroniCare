@@ -3,6 +3,15 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore'
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
+/*
+Method:
+1) SignIn(email, password) - Sign in user with the correct email and password
+2) SignUp(email, password) - Sign up user
+  - Check email format: need to be ...@..., if not, throw an error
+  - Check password len: need to be longer than 6, if not, throw an 
+3) SignOut() - Sign out user
+*/
+
 const firebaseConfig = {
   apiKey: "AIzaSyBXzhqrppOvBEa9k1rs_5VxOG2vEIjAjgk",
   authDomain: "chronicare-82eed.firebaseapp.com",
@@ -47,6 +56,7 @@ export const SignUp = async (email:any, password:any) => {
 export const SignOut = () =>{
   FIREBASE_AUTH.signOut();
 }
+
 
 
 
