@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image } from "react-native";
 import React, { useState } from "react";
 import { SignIn } from "../../FirebaseConfig";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
@@ -37,27 +37,35 @@ const Login = ({ navigation }: RouterProps) => {
 
     return (
         <View style={styles.container}>
-        <KeyboardAvoidingView behavior="padding"></KeyboardAvoidingView>
             <Image source={logo} style={styles.logo} resizeMode="contain"></Image>
-            <TextInput value={email} 
-                        placeholder="Email" 
-                        autoCapitalize="none" 
-                        style={styles.input} 
-                        onChangeText={(text) => { setEmail(text) }}></TextInput>
-            <TextInput secureTextEntry={!showPassword} 
-                        value={password} placeholder="Password" 
-                        autoCapitalize="none" style={styles.input} 
-                        onChangeText={(text) => { setPassword(text) }}></TextInput>
-            <MaterialCommunityIcons
-                name={showPassword ? 'eye-off' : 'eye'}
-                size={24}
-                color="#aaa"
-                onPress={toggleShowPassword}
-            />
+            <View style={styles.inputBox}>
+                <TextInput value={email}
+                    placeholder="Email"
+                    autoCapitalize="none"
+                    style={{ borderColor: "#fff" }}
+                    onChangeText={(text) => { setEmail(text) }}></TextInput>
+            </View>
+            <View style={styles.inputBox}>
+                <TextInput secureTextEntry={!showPassword}
+                    value={password} placeholder="Password"
+                    autoCapitalize="none" style={{ borderColor: "#fff" }}
+                    onChangeText={(text) => { setPassword(text) }}></TextInput>
+                <MaterialCommunityIcons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="#aaa"
+                    onPress={toggleShowPassword}
+                />
+            </View>
             {loading ? (<ActivityIndicator size="large" color="@0000ff" />) : (
-                <View>
+                <View style={styles.buttonContainer}>
                     <ChroniBlueButton name="Sign In" action={signIn}></ChroniBlueButton>
-                    <Pressable onPress={() => navigation.navigate('Signup')} style={{ backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, }}>
+                    <Pressable onPress={() => navigation.navigate('Signup')} style={{ 
+                        backgroundColor: "#FFFFFF", marginHorizontal: 4, marginVertical: 4, 
+                        borderWidth:1,
+                        borderColor: "#1EAFB3",
+                        borderRadius: 10,
+                        padding: 5}}>
                         <Text style={{ color: "#1EAFB3", justifyContent: 'center', textAlign: 'center' }}>Sign Up</Text>
                     </Pressable>
                 </View>
@@ -73,23 +81,32 @@ const Login = ({ navigation }: RouterProps) => {
 export default Login;
 
 const styles = StyleSheet.create({
+    inputBox: {
+        borderColor: "#D2D2D2",
+        borderWidth: 1,
+        backgroundColor: "#fff",
+        flexDirection: "row",
+        width: "80%",
+        justifyContent: "space-between",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 15,
+        marginBottom:3
+    },
     logo: {
-        width: '50%',
-        height:'30%',
+        width: '80%',
+        height: '50%'
     },
     container: {
-        marginHorizontal: 20,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    input: {
-        marginVertical: 4,
-        width: "80%",
-        height: 50,
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
         backgroundColor: '#fff'
+    },
+    buttonContainer:{
+        flex:1,
+        width:"80%",
+        marginTop: 20
     }
+
 })
