@@ -35,7 +35,7 @@ const styles = {
 const bottomTab = createBottomTabNavigator();
 function DashboardNav() {
     return (
-      <bottomTab.Navigator>
+      <bottomTab.Navigator initialRouteName='dashboard'>
         
         <bottomTab.Screen name='community' component={CommunityNav} options={{headerShown: false}} ></bottomTab.Screen>
         <bottomTab.Screen name='symptom' component={SymptomNav} options={{headerShown: false}} ></bottomTab.Screen>
