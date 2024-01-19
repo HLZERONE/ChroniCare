@@ -1,5 +1,7 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { View, Text } from 'react-native';
+import { SignOut } from '../../../FirebaseConfig';
+import ChroniBlueButton from '../../components/chroniBlueButton';
 
 const Setting = () => {
   return (
@@ -10,6 +12,7 @@ const Setting = () => {
         alignItems: 'center',
       }}>
       <Text>This is the Setting Screen</Text>
+      <ChroniBlueButton onPress={SignOut}> Sign out</ChroniBlueButton>
     </View>
   );
 };

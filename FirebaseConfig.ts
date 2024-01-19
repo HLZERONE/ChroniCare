@@ -44,11 +44,15 @@ export const SignIn = async (email:any, password:any) => {
 }
 
 
-export const SignUp = async (email:any, password:any) => {
+export const SignUp = async (firstname: any, lastname: any, email:any, password:any, confirmPW: any) => {
   if(email == null || !validateEmail(email)){
-    throw("Invalid Email Address");
+    throw("Invalisd Email Address");
   }else if(password == null || !validatePassword(password)){
     throw("Length of password have to be more than 6");
+  }else if(firstname == null || lastname == null){
+    throw("First name or last name cannot be empty");
+  }else if(password != confirmPW){
+    throw("confirm password needs to match password");
   }
   await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
 }
