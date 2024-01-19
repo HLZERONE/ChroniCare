@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image } from "react-native";
 import React, { useState } from "react";
-import { SignIn } from "../../FirebaseConfig";
+import { SignIn } from "../../../FirebaseConfig";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
-import ChroniBlueButton from "../components/chroniBlueButton";
+import ChroniBlueButton from "../../components/chroniBlueButton";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
@@ -16,7 +16,7 @@ const Login = ({ navigation }: RouterProps) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const logo = require('../../assets/chroniLogo.png');
+    const logo = require('../../../assets/chroniLogo.png');
 
     // Function to toggle the password visibility state 
     const toggleShowPassword = () => {
@@ -25,13 +25,11 @@ const Login = ({ navigation }: RouterProps) => {
 
     const signIn = async () => {
         setLoading(true);
-        try {
-            SignIn(email, password);
-        } catch (error: any) {
+        SignIn(email, password).catch((error) => {
             alert('Sign in failed: ' + error.message);
-        } finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        });
     }
 
 

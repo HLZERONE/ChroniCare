@@ -1,8 +1,8 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { SignUp } from "../../FirebaseConfig";
+import { SignUp } from "../../../FirebaseConfig";
 import { View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator } from "react-native";
-import ChroniBlueButton from "../components/chroniBlueButton";
+import ChroniBlueButton from "../../components/chroniBlueButton";
 
 
 const Signup = () => {
@@ -12,13 +12,11 @@ const Signup = () => {
 
     const signUp = async () => {
         setLoading(true);
-        try {
-            SignUp(email, password);
-        } catch (error: any) {
+        SignUp(email, password).catch((error) => {
             alert('Sign up failed: ' + error.message);
-        } finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        });
     }
 
     return (

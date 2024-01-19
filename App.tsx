@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
-import Login from './app/screens/Login';
-import Signup from './app/screens/Signup';
+import Login from './app/screens/AuthScreen/LoginScreen';
+import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 
 const Stack = createNativeStackNavigator()
@@ -14,7 +14,7 @@ export default function App() {
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log('user', user);
+      console.log("User state changed. Current user: ", user?.email);
       setUser(user);
     })
   }, [])
