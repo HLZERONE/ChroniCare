@@ -26,15 +26,15 @@ export const getUserInfo = async(id: any) =>{
     const ref = doc(FIREBASE_DB, USER_KEY, id);
     const snap = await getDoc(ref);
     if(snap.exists()){
-        const data = snap.data;
-        console.log(data);
+        const data = snap.data();
         const userInfo: RegularUser = {
-            email: "",
-            firstName: "",
-            lastName : "",
-            address: "",
-            zip: ""
+            email: data.email,
+            firstName: data.firstName,
+            lastName : data.lastName,
+            address: data.address,
+            zip: data.zip
         };
+        console.log("here: " + data);
         return userInfo;
     }else{
         throw("No such document!");

@@ -11,3 +11,10 @@ export interface RegularUser extends User{
 
 //User Info doc's NAME in FireStorage
 export const USER_KEY = "UserInfo";
+export const emptyRegularUser : RegularUser = {
+    email: "",
+    firstName: "",
+    lastName : "",
+    address: "",
+    zip: ""
+};

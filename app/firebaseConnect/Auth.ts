@@ -9,24 +9,12 @@ Method:
   - Check email format: need to be ...@..., if not, throw an error
   - Check password len: need to be longer than 6, if not, throw an 
 3) SignOut() - Sign out user
-*/
+  */
+  export const currentUser = FIREBASE_AUTH.currentUser;
 
-const validateEmail = (email: any) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-  
-  const validatePassword = (password: any) =>{
-    return String(password).length >= 6;
-  }
-  
   export const SignIn = async (email:any, password:any) => {
     await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
   }
-  
   
   //TODO: add zip code and address input?
   export const SignUp = async (firstname: any, lastname: any, email:any, password:any, confirmPW: any, address: any = "", zip: any = "") => {
@@ -46,6 +34,17 @@ const validateEmail = (email: any) => {
   }
   
   export const SignOut = () =>{
-    getUserInfo(FIREBASE_AUTH.currentUser?.uid);
     FIREBASE_AUTH.signOut();
+  }
+
+  const validateEmail = (email: any) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  
+  const validatePassword = (password: any) =>{
+    return String(password).length >= 6;
   }

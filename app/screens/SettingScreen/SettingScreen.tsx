@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { SignOut } from '../../firebaseConnect/Auth';
+import { currentUser, SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
+
 
 const Setting = () => {
   return (
