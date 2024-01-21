@@ -1,6 +1,6 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import { addUserInfo } from "./ProfileInfo";
+import { addUserInfo, getUserInfo } from "./ProfileInfo";
 
 /*
 Method:
@@ -46,5 +46,6 @@ const validateEmail = (email: any) => {
   }
   
   export const SignOut = () =>{
+    getUserInfo(FIREBASE_AUTH.currentUser?.uid);
     FIREBASE_AUTH.signOut();
   }

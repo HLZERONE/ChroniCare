@@ -1,9 +1,9 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
-import { USER_KEY } from "./data/User";
+import { RegularUser, USER_KEY } from "./data/User";
 
 /*
-FUNCTIONl add new user information to cloud
+FUNCTION: add new user information to cloud
 INPUT: user id, first name, last name, address, zip code
 */
 export const addUserInfo = async(id: any, _email: String, _firstName: String, _lastName: String, _address: String, _zip: String) => {
@@ -15,4 +15,28 @@ export const addUserInfo = async(id: any, _email: String, _firstName: String, _l
         zip : _zip
     };
     await setDoc(doc(FIREBASE_DB, USER_KEY, id), newUserInfo);
+}
+
+/*
+FUNCTION: get user info by id
+INPUT: user id
+ATTENCTION: May throw error if user id not exists
+*/
+export const getUserInfo = async(id: any) =>{
+    const ref = doc(FIREBASE_DB, USER_KEY, id);
+    const snap = await getDoc(ref);
+    if(snap.exists()){
+        const data = snap.data;
+        console.log(data);
+        const userInfo: RegularUser = {
+            email: "",
+            firstName: "",
+            lastName : "",
+            address: "",
+            zip: ""
+        };
+        return userInfo;
+    }else{
+        throw("No such document!");
+    }
 }
