@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { SignOut } from '../../../FirebaseConfig';
+import { View, Text, Pressable } from 'react-native';
+import { SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
 
 const Setting = () => {
@@ -13,6 +13,9 @@ const Setting = () => {
       }}>
       <Text>This is the Setting Screen</Text>
       <ChroniBlueButton onPress={SignOut}> Sign out</ChroniBlueButton>
+      <Pressable onPress={SignOut}>
+        <Text> Sign Out</Text>
+      </Pressable>
     </View>
   );
 };

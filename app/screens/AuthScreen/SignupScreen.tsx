@@ -1,6 +1,5 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { SignUp } from "../../../FirebaseConfig";
+import { SignUp } from "../../firebaseConnect/Auth";
 import { View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator } from "react-native";
 import ChroniBlueButton from "../../components/chroniBlueButton";
 
