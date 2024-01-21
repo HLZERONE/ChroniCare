@@ -1,42 +1,33 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
-import { RegularUser, USER_KEY } from "./data/User";
+import { regularUser, USER_KEY, regularUserConverter} from "./data/User";
 
 /*
 FUNCTION: add new user information to cloud
 INPUT: user id, first name, last name, address, zip code
 */
-export const addUserInfo = async(id: any, _email: String, _firstName: String, _lastName: String, _address: String, _zip: String) => {
-    const newUserInfo = {
-        email : _email,
-        firstName : _firstName,
-        lastName : _lastName,
-        address : _address,
-        zip : _zip
-    };
-    await setDoc(doc(FIREBASE_DB, USER_KEY, id), newUserInfo);
+export const addUserInfo = async(id: any, email: String, firstName: String, lastName: String, address: String, zip: String) => {
+    const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
+    await setDoc(ref, new regularUser(email, firstName, lastName, address, zip));
 }
 
 /*
 FUNCTION: get user info by id
 INPUT: user id
+RETURN: Promise<regularUser>
 ATTENCTION: May throw error if user id not exists
 */
-export const getUserInfo = async(id: any) =>{
-    const ref = doc(FIREBASE_DB, USER_KEY, id);
+export const getUserInfo = async(id: any): Promise<regularUser> =>{
+    const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
     const snap = await getDoc(ref);
     if(snap.exists()){
-        const data = snap.data();
-        const userInfo: RegularUser = {
-            email: data.email,
-            firstName: data.firstName,
-            lastName : data.lastName,
-            address: data.address,
-            zip: data.zip
-        };
-        console.log("here: " + data);
-        return userInfo;
+        const user = snap.data();
+        return user;
     }else{
         throw("No such document!");
     }
+}
+
+export const updateEmail = async () =>{
+
 }

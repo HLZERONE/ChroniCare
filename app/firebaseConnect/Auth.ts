@@ -1,6 +1,6 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import { addUserInfo, getUserInfo } from "./ProfileInfo";
+import { addUserInfo} from "./ProfileInfo";
 
 /*
 Method:
@@ -48,3 +48,4 @@ Method:
   const validatePassword = (password: any) =>{
     return String(password).length >= 6;
   }
+

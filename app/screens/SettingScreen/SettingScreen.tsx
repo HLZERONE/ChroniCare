@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { currentUser, SignOut } from '../../firebaseConnect/Auth';
+import {SignOut, currentUser } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
+import { getUserInfo } from '../../firebaseConnect/ProfileInfo';
 
 
 const Setting = () => {
@@ -16,6 +16,10 @@ const Setting = () => {
       <ChroniBlueButton onPress={SignOut}> Sign out</ChroniBlueButton>
       <Pressable onPress={SignOut}>
         <Text> Sign Out</Text>
+      </Pressable>
+      
+      <Pressable onPress={() => getUserInfo(currentUser?.uid)}>
+        <Text> get User Info</Text>
       </Pressable>
     </View>
   );
