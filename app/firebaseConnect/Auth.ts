@@ -1,6 +1,7 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import { addUserInfo} from "./ProfileInfo";
+import {getUserInfo, setUserInfo} from "./ProfileInfo";
+import { curUserInfo, regularUser } from "./data/User";
 
 /*
 Method:
@@ -13,7 +14,9 @@ Method:
   export const currentUser = FIREBASE_AUTH.currentUser;
 
   export const SignIn = async (email:any, password:any) => {
-    await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+    await signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then(async() => {
+      await(addUserInfo());
+    });
   }
   
   //TODO: add zip code and address input?
@@ -29,12 +32,26 @@ Method:
     }
     await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
         const user = userCredential.user;
-        addUserInfo(user.uid, email, firstname, lastname, address, zip);
+        curUserInfo.email = email;
+        curUserInfo.firstName = firstname;
+        curUserInfo.lastName = lastname;
+        curUserInfo.address = address;
+        curUserInfo.zip = zip;
+        setUserInfo(user.uid, curUserInfo);
       });
   }
   
   export const SignOut = () =>{
     FIREBASE_AUTH.signOut();
+  }
+
+  const addUserInfo = async() => {
+    const userInfo: regularUser = await(getUserInfo(currentUser?.uid));
+    curUserInfo.email = userInfo.email;
+    curUserInfo.firstName = userInfo.firstName;
+    curUserInfo.lastName = userInfo.lastName;
+    curUserInfo.address = userInfo.address;
+    curUserInfo.zip = userInfo.zip;
   }
 
   const validateEmail = (email: any) => {
