@@ -14,9 +14,10 @@ Method:
   export const currentUser = FIREBASE_AUTH.currentUser;
 
   export const SignIn = async (email:any, password:any) => {
-    await signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then(async() => {
-      await(addUserInfo());
-    });
+    signInWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
+      console.log(e);
+      throw e;
+    }).then(()=>{addUserInfo()});
   }
   
   //TODO: add zip code and address input?
@@ -30,7 +31,10 @@ Method:
     }else if(password != confirmPW){
       throw("confirm password needs to match password");
     }
-    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
+    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
+      console.log(e);
+      throw e;
+    }).then((userCredential) => {
         const user = userCredential.user;
         curUserInfo.email = email;
         curUserInfo.firstName = firstname;
@@ -46,12 +50,34 @@ Method:
   }
 
   const addUserInfo = async() => {
-    const userInfo: regularUser = await(getUserInfo(currentUser?.uid));
-    curUserInfo.email = userInfo.email;
-    curUserInfo.firstName = userInfo.firstName;
-    curUserInfo.lastName = userInfo.lastName;
-    curUserInfo.address = userInfo.address;
-    curUserInfo.zip = userInfo.zip;
+    if (!currentUser || !currentUser.uid) {
+      throw new Error('Current user or UID is undefined');
+    }
+  
+    try {
+      const userInfo = await getUserInfo(currentUser.uid);
+      if (!userInfo) {
+        throw new Error('User info is undefined');
+      }
+  
+      // Ensure userInfo has all required properties
+      const { email, firstName, lastName, address, zip } = userInfo;
+      if ([email, firstName, lastName, address, zip].some(prop => prop === undefined)) {
+        throw new Error('One or more user info properties are undefined');
+      }
+  
+      // Update curUserInfo state
+      // Replace this with your state update logic if using React state
+      curUserInfo.email = userInfo.email;
+      curUserInfo.firstName = userInfo.firstName;
+      curUserInfo.lastName = userInfo.lastName;
+      curUserInfo.address = userInfo.address;
+      curUserInfo.zip = userInfo.zip;
+    } catch (error) {
+      console.error('Error in addUserInfo:', error);
+      throw error;
+    }
+
   }
 
   const validateEmail = (email: any) => {
