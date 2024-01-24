@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 
 const Community = () => {
   return (
@@ -9,7 +9,14 @@ const Community = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>This is the Community Screen</Text>
+      <Text>Communities</Text>
+      <Text>Treading</Text>
+      <ScrollView
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+    ></ScrollView>
+    <Text>Joined Communities</Text>
+
     </View>
   );
 };
