@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image } from "react-native";
 import React, { useState } from "react";
-import { SignIn } from "../../../FirebaseConfig";
+import { SignIn } from "../../firebaseConnect/Auth";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import ChroniBlueButton from "../../components/chroniBlueButton";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
