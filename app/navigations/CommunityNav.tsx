@@ -9,7 +9,7 @@ const CommunityScreen = () => {
       <communityStack.Screen
         name="CommunityScreen"
         component={Community}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, }}
         />
     </communityStack.Navigator>
   );

@@ -1,10 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
-import JoinedCommunityTab from '../../components/joinedCommunityTab';
 
-var {height, width} = Dimensions.get('window');
 
 const Community = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -39,19 +37,19 @@ const Community = () => {
 
       <Text style={styles.trending}>Joined Communities</Text>
         <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
-          <View style={styles.makeRow}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
         </View>
 
         <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
         </View>
 
         <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
         </View>
         </ScrollView>
 
@@ -119,6 +117,5 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:'column',
     width:"90%",
-  },
-  makeRow:{flexDirection:'row', alignItems:'center',}
+  }
 })

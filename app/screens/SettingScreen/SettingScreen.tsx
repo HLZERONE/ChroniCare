@@ -14,14 +14,8 @@ const Setting = () => {
         alignItems: 'center',
       }}>
       <Text>This is the Setting Screen</Text>
-      <ChroniBlueButton onPress={SignOut}> Sign out</ChroniBlueButton>
-      <Pressable onPress={SignOut}>
-        <Text> Sign Out</Text>
-      </Pressable>
+      <ChroniBlueButton name="Sign Out" action={SignOut}></ChroniBlueButton>
 
-      <Pressable onPress={() => getUserInfo(currentUser?.uid)}>
-        <Text> get User Info</Text>
-      </Pressable>
       <Text>
         {curUserInfo.firstName + " " + curUserInfo.lastName}
       </Text>

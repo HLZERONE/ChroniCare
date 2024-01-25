@@ -19,14 +19,20 @@ ATTENCTION: May throw error if user id not exists
 */
 export const getUserInfo = async(id: any) =>{
     const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
-    const snap = await getDoc(ref);
-    if(snap.exists()){
-        const user = snap.data();
-        console.log(user.toString());
-        return user;
-    }else{
-        throw("No such document!");
+    try{
+        const snap = await getDoc(ref);
+        if(snap.exists()){
+            const user = snap.data();
+            console.log(user.toString());
+            return user;
+        }else{
+            throw("No such document!");
+        }
+    }catch(e){
+        console.log("getUserInfo error: "+e);
+        throw e;
     }
+
 }
 
 /*
