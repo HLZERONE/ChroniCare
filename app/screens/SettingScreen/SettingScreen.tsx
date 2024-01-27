@@ -2,7 +2,7 @@ import { View, Text} from 'react-native';
 import {SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
 import { curUserInfo } from '../../firebaseConnect/data/User';
-import { getAllDiseaseInfo} from '../../firebaseConnect/DiseaseDetailInfo';
+import { getAllDiseaseInfo} from '../../firebaseConnect/DiseaseDetail';
 
 
 const Setting = () => {
@@ -19,8 +19,6 @@ const Setting = () => {
       <Text>
         {curUserInfo.firstName + " " + curUserInfo.lastName}
       </Text>
-
-      <ChroniBlueButton name="Add Disease" action={() => {getAllDiseaseInfo()}}></ChroniBlueButton>
 
     </View>
   );
