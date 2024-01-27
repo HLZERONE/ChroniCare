@@ -1,5 +1,3 @@
-
-
 //User Info doc's NAME in FireStorage
 export const USER_KEY = "UserInfo";
 
@@ -9,12 +7,18 @@ export class regularUser implements RegularUser{
     lastName: String;
     address: String;
     zip: String;
-    constructor(email: String, firstName: String, lastName: String, address: String, zip: String){
+    diseases: String[];
+    constructor(email: String, firstName: String, lastName: String, address: String, zip: String, diseases: String[]){
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.zip = zip;
+        this.diseases = diseases;
+    }
+
+    addNewDisease(name : String){
+        this.diseases.push(name);
     }
     
     toString() {
@@ -29,21 +33,23 @@ export const regularUserConverter = {
             firstName: rU.firstName,
             lastName : rU.lastName,
             address: rU.address,
-            zip: rU.zip
+            zip: rU.zip,
+            diseases: rU.diseases
         };
     },
     fromFirestore: (snapshot: any, id: any) => {
         const data = snapshot.data(id);
-        return new regularUser(data.email, data.firstName, data.lastName, data.address, data.zip);
+        return new regularUser(data.email, data.firstName, data.lastName, data.address, data.zip, data.diseases);
     }
 }
 
-export const curUserInfo: regularUser = new regularUser("","","","","");
+export const curUserInfo: regularUser = new regularUser("","","","","", []);
 
 interface User{
     email : String;
     firstName: String;
     lastName : String;
+    diseases: String[];
 }
 
 interface RegularUser extends User{
