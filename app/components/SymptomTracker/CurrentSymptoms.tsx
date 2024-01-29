@@ -1,32 +1,129 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Modal, TextInput, Button } from "react-native";
 import Symptom from "../../firebaseConnect/data/Symptom";
 import Slider from "@react-native-community/slider";
 import { FontAwesome } from "@expo/vector-icons";
 
+interface EditSymptomModalProps {
+	visible: boolean;
+	symptom: Symptom;
+	onClose: () => void;
+	onSave: (symptom: Symptom) => void;
+	onDelete: (id: string) => void;
+}
+
+const EditSymptomModal: React.FC<EditSymptomModalProps> = ({
+	visible,
+	symptom,
+	onClose,
+	onSave,
+	onDelete,
+}) => {
+	const [editedSymptom, setEditedSymptom] = useState<Symptom>(symptom);
+
+	const handleSave = () => {
+		onSave(editedSymptom);
+	};
+
+	const handleDelete = () => {
+		onDelete(symptom.id);
+		onClose();
+	};
+
+	return (
+		<Modal
+			animationType="slide"
+			transparent={true}
+			visible={visible}
+			onRequestClose={onClose}
+		>
+			<View style={styles.modalView}>
+				<Text>Edit Symptom</Text>
+				<Slider
+					style={styles.slider}
+					minimumValue={1}
+					maximumValue={10}
+					value={editedSymptom.severity}
+					onValueChange={(value) =>
+						setEditedSymptom({ ...editedSymptom, severity: value })
+					}
+					step={1}
+				/>
+				<Text style={styles.sliderValue}>{editedSymptom.severity}</Text>
+				<TextInput
+					style={styles.input}
+					onChangeText={(text) =>
+						setEditedSymptom({ ...editedSymptom, notes: text })
+					}
+					value={editedSymptom.notes}
+					placeholder="Add notes"
+				/>
+				<Button title="Save Changes" onPress={handleSave} />
+				<Button title="Delete" onPress={handleDelete} color="red" />
+			</View>
+		</Modal>
+	);
+};
+
 interface SymptomProps {
-	name: string;
-	onChange: (value: number) => void;
-	value: number;
+	onChange: (symptom: Symptom) => void;
+	onDelete: (id: string) => void;
+	symptom: Symptom;
 }
 
 // Individual symptom component
-const SingleSymptom: React.FC<SymptomProps> = ({ name, onChange, value }) => (
-	<View style={styles.symptomContainer}>
-		<View style={styles.symptomTitle}>
-			<Text style={styles.symptomName}>{name}</Text>
-			<FontAwesome name="pencil-square-o" size={24} color="black" />
+const SingleSymptom: React.FC<SymptomProps> = ({
+	onChange,
+	onDelete,
+	symptom,
+}) => {
+	const [editMode, setEditMode] = useState(false);
+	const [singleSymptom, setSingleSymptom] = useState(symptom);
+
+	const handleEditSave = (newSymptom: Symptom) => {
+		setSingleSymptom({
+			...singleSymptom,
+			severity: newSymptom.severity,
+			notes: newSymptom.notes,
+		});
+		onChange(newSymptom);
+		setEditMode(false);
+	};
+
+	const handleEditDelete = (id: string) => {
+		// Delete the symptom
+		setEditMode(false);
+		onDelete(id);
+	};
+
+	return (
+		<View style={styles.symptomContainer}>
+			<View style={styles.symptomTitle}>
+				<Text style={styles.symptomName}>{singleSymptom.name}</Text>
+				<FontAwesome
+					name="pencil-square-o"
+					size={24}
+					color="black"
+					onPress={() => setEditMode(true)}
+				/>
+			</View>
+			<Slider
+				style={styles.slider}
+				minimumValue={1}
+				maximumValue={10}
+				value={symptom.severity}
+			/>
+			<Text style={styles.sliderValue}>{symptom.severity}</Text>
+			<EditSymptomModal
+				visible={editMode}
+				symptom={symptom}
+				onClose={() => setEditMode(false)}
+				onSave={handleEditSave}
+				onDelete={handleEditDelete}
+			/>
 		</View>
-		<Slider
-			style={styles.slider}
-			minimumValue={0}
-			maximumValue={10}
-			value={value}
-			onValueChange={onChange}
-		/>
-		<Text style={styles.sliderValue}>{value}</Text>
-	</View>
-);
+	);
+};
 
 interface CurrentSymptomsProps {
 	symptoms: Symptom[];
@@ -35,12 +132,19 @@ interface CurrentSymptomsProps {
 const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
 	const [symptomValues, setSymptomValues] = useState(symptoms);
 
-	const handleSliderChange = (name: string, newValue: number) => {
-		setSymptomValues((prevValues) =>
-			prevValues.map((symptom) =>
-				symptom.name === name ? { ...symptom, severity: newValue } : symptom
-			)
+	const handleEditModalChange = (newSymptom: Symptom) => {
+		// Update the symptom severity and notes
+		setSymptomValues(
+			[
+				...symptomValues.filter((symptom) => symptom.id !== newSymptom.id),
+				newSymptom,
+			].sort((a, b) => parseInt(a.id) - parseInt(b.id))
 		);
+	};
+
+	const handleDelete = (id: string) => {
+		// Delete the symptom
+		setSymptomValues(symptomValues.filter((symptom) => symptom.id !== id));
 	};
 
 	useEffect(() => {
@@ -51,7 +155,7 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
 				name: "Fever",
 				date: new Date(),
 				severity: 7,
-				notes: "I have a fever",
+				notes: "I have a feverss",
 			},
 			{
 				id: "2",
@@ -59,6 +163,20 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
 				date: new Date(),
 				severity: 3,
 				notes: "I have a cough",
+			},
+			{
+				id: "3",
+				name: "QqQ",
+				date: new Date(),
+				severity: 1,
+				notes: "QQ",
+			},
+			{
+				id: "4",
+				name: "51231",
+				date: new Date(),
+				severity: 2,
+				notes: "55",
 			},
 		]);
 	}, []);
@@ -68,10 +186,10 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
 			<Text style={styles.header}>Current Symptoms</Text>
 			{symptomValues.map((symptom, index) => (
 				<SingleSymptom
-					key={index}
-					name={symptom.name}
-					value={symptom.severity}
-					onChange={(newValue) => handleSliderChange(symptom.name, newValue)}
+					key={symptom.id}
+					symptom={symptom}
+					onChange={(newSymptom) => handleEditModalChange(newSymptom)}
+					onDelete={(id) => handleDelete(id)}
 				/>
 			))}
 		</View>
@@ -98,11 +216,34 @@ const styles = StyleSheet.create({
 	sliderValue: {
 		textAlign: "right",
 	},
-    symptomTitle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    }
+	symptomTitle: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: "white",
+		borderRadius: 20,
+		padding: 35,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+	},
+	input: {
+		height: 40,
+		borderColor: "gray",
+		borderWidth: 1,
+		width: "100%",
+		marginTop: 10,
+		padding: 10,
+	},
 });
 
 export default CurrentSymptoms;
