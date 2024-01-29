@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SignIn } from "../../firebaseConnect/Auth";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import ChroniBlueButton from "../../components/chroniBlueButton";
@@ -32,6 +32,11 @@ const Login = ({ navigation }: RouterProps) => {
         });
     }
 
+    // FOR TEST PURPOSES ONLY
+	useEffect(() => {
+		setEmail("test@test.com");
+		setPassword("testtest");
+	}, []);
 
     return (
         <View style={styles.container}>
