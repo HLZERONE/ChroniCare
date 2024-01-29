@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, ScrollView, Text } from "react-native";
 import CurrentSymptoms from "../../components/SymptomTracker/CurrentSymptoms";
 import AddSymptomModal from "../../components/SymptomTracker/CreateSymptomModal";
 import Symptom from "../../firebaseConnect/data/Symptom";
@@ -45,8 +45,8 @@ const SymptomTracker = () => {
 	};
 
 	return (
-		<View
-			style={{
+		<ScrollView
+			contentContainerStyle={{
 				flex: 1,
 				justifyContent: "center",
 				alignItems: "center",
@@ -63,7 +63,7 @@ const SymptomTracker = () => {
 				symptoms={symptoms}
 				onChange={handleChangeCurrentSymptoms}
 			/>
-		</View>
+		</ScrollView>
 	);
 };
 export default SymptomTracker;

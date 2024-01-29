@@ -28,7 +28,7 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 			return;
 		}
 		onSave({
-			id: "",
+			id: Math.random().toString(),
 			name: symptomName,
 			date: new Date(),
 			severity: severity,
