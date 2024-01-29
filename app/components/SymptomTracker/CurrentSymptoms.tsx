@@ -60,6 +60,7 @@ const EditSymptomModal: React.FC<EditSymptomModalProps> = ({
 				/>
 				<Button title="Save Changes" onPress={handleSave} />
 				<Button title="Delete" onPress={handleDelete} color="red" />
+				<Button title="Cancel" onPress={onClose} color="gray" />
 			</View>
 		</Modal>
 	);
@@ -127,10 +128,18 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 
 interface CurrentSymptomsProps {
 	symptoms: Symptom[];
+	onChange: (symptoms: Symptom[]) => void;
 }
 
-const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
+const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({
+	symptoms,
+	onChange,
+}) => {
 	const [symptomValues, setSymptomValues] = useState(symptoms);
+
+	useEffect(() => {
+		setSymptomValues(symptoms);
+	}, [symptoms]);
 
 	const handleEditModalChange = (newSymptom: Symptom) => {
 		// Update the symptom severity and notes
@@ -140,46 +149,14 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({ symptoms }) => {
 				newSymptom,
 			].sort((a, b) => parseInt(a.id) - parseInt(b.id))
 		);
+		onChange(symptomValues);
 	};
 
 	const handleDelete = (id: string) => {
 		// Delete the symptom
 		setSymptomValues(symptomValues.filter((symptom) => symptom.id !== id));
+		onChange(symptomValues);
 	};
-
-	useEffect(() => {
-		// dummy data
-		setSymptomValues([
-			{
-				id: "1",
-				name: "Fever",
-				date: new Date(),
-				severity: 7,
-				notes: "I have a feverss",
-			},
-			{
-				id: "2",
-				name: "Cough",
-				date: new Date(),
-				severity: 3,
-				notes: "I have a cough",
-			},
-			{
-				id: "3",
-				name: "QqQ",
-				date: new Date(),
-				severity: 1,
-				notes: "QQ",
-			},
-			{
-				id: "4",
-				name: "51231",
-				date: new Date(),
-				severity: 2,
-				notes: "55",
-			},
-		]);
-	}, []);
 
 	return (
 		<View>
