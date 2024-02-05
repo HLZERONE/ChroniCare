@@ -1,12 +1,16 @@
 import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/build/Ionicons';
 import React, { useState } from 'react';
-import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
+import TabBar from '../../components/tabBar';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 
 const Dashboard = () => {
   const [searchValue, setSearchValue] = useState('');
-
+  const navigation = useNavigation();
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
   };
@@ -32,21 +36,45 @@ const Dashboard = () => {
             <Text style={styles.boxText}>Find a Doctor</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.box, { backgroundColor: '#DEEBFF' }]}>
+          <TouchableOpacity style={[styles.box, { backgroundColor: '#DEEBFF' }]} onPress={() => navigation.navigate('SymptomTracker')}>
             <FontAwesome5 name="pills" size={32} color="#1648CE" />
             <Text style={styles.boxText}>Track Symptoms</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Resource')}>
             <MaterialIcons name="library-books" size={32} color="#117639" />
             <Text style={styles.boxText}>View Library</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.communityContainer}>
             <Text style={styles.community}>Communities</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Community' as never)}>
             <Text style={styles.viewAll}>View All</Text>
+          </TouchableOpacity>
+
+        </View>
+          {/* Community Descriptions */}
+          <View style={styles.communityBoxContainer}>
+          {/* Community Box 1 */}
+          <View style={styles.communityBox}>
+          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
+            <Text style={styles.communityTitle}>Community 1 Title</Text>
+          </View>
+
+          {/* Community Box 2 */}
+          <View style={styles.communityBox}>
+          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
+            <Text style={styles.communityTitle}>Community 2 Title</Text>
+          </View>
+
+          {/* Community Box 3 */}
+          <View style={styles.communityBox}>
+          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
+            <Text style={styles.communityTitle}>Community 3 Title</Text>
+          </View>
         </View>
       </ScrollView>
+      
     </View>
   );
 };
@@ -121,7 +149,6 @@ const styles = StyleSheet.create({
   boxText: {
     color: '#091F44',
     fontSize: 14,
-    fontFamily: 'Montserrat',
     fontWeight: '400',
     lineHeight: 14,
     marginTop: 4,
@@ -144,6 +171,34 @@ const styles = StyleSheet.create({
     color: '#1EAFB3',
     fontSize: 16,
     fontWeight: '500',
+  },
+  communityBoxContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '100%', 
+    alignItems: 'center',
+    marginTop: '5%',
+  },
+  communityBox: {
+    width: '85%',
+    height: 120,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'flex-start',
+    padding: 8,
+    marginBottom: '3%',
+    flexDirection: 'row',
+  },
+  communityImage: {
+    width: '35%',
+    height: '100%',
+    marginVertical: '1%',
+  },
+  communityTitle: {
+    color: '#091F44',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop:'2%',
   }
 })
 
