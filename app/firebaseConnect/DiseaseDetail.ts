@@ -37,7 +37,7 @@ export const getDiseaseInfo = async(name: any) =>{
 
 /*
 FUNCTION: get all disease info
-RETURN: Promise<Disease>
+RETURN: Array<Disease>
 */
 export const getAllDiseaseInfo = async() =>{
     const q = query(collection(FIREBASE_DB, DISEASE_KEY)).withConverter(diseaseConverter);
@@ -47,6 +47,7 @@ export const getAllDiseaseInfo = async() =>{
         querySnapshot.forEach((doc : any) => {
             diseases.push(doc.data());
         });
+        return diseases;
     }catch(e){
         console.log("getAllDiseaseInfo error: "+e);
         throw e;
