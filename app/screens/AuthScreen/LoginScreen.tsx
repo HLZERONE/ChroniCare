@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, Pressable, Image } from "react-native";
 import React, { useState } from "react";
 import { SignIn } from "../../firebaseConnect/Auth";
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 import ChroniBlueButton from "../../components/chroniBlueButton";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -40,13 +40,13 @@ const Login = ({ navigation }: RouterProps) => {
                 <TextInput value={email}
                     placeholder="Email"
                     autoCapitalize="none"
-                    style={{ borderColor: "#fff" }}
+                    style={{ borderColor: "#fff", width: "100%" }}
                     onChangeText={(text) => { setEmail(text) }}></TextInput>
             </View>
             <View style={styles.inputBox}>
                 <TextInput secureTextEntry={!showPassword}
                     value={password} placeholder="Password"
-                    autoCapitalize="none" style={{ borderColor: "#fff" }}
+                    autoCapitalize="none" style={{ borderColor: "#fff" , width:'100%'}}
                     onChangeText={(text) => { setPassword(text) }}></TextInput>
                 <MaterialCommunityIcons
                     name={showPassword ? 'eye-off' : 'eye'}

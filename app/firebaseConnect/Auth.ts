@@ -1,7 +1,7 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {getUserInfo, setUserInfo} from "./ProfileInfo";
-import { curUserInfo, regularUser } from "./data/User";
+import { curUserInfo } from "./data/User";
 
 /*
 Method:
@@ -11,13 +11,15 @@ Method:
   - Check password len: need to be longer than 6, if not, throw an 
 3) SignOut() - Sign out user
   */
+ // need to add a listner to check if the Firebase current user is initializing
+ //https://firebase.google.com/docs/auth/unity/manage-users#:~:text=If%20a%20user%20isn't,need%20to%20handle%20this%20case.
   export const currentUser = FIREBASE_AUTH.currentUser;
 
   export const SignIn = async (email:any, password:any) => {
     signInWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
       console.log(e);
       throw e;
-    }).then(()=>{addUserInfo()});
+    }).then(()=>{addUserInfo()}).catch((e)=>{console.log(e)});
   }
   
   //TODO: add zip code and address input?
@@ -31,10 +33,7 @@ Method:
     }else if(password != confirmPW){
       throw("confirm password needs to match password");
     }
-    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
-      console.log(e);
-      throw e;
-    }).then((userCredential) => {
+    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
         const user = userCredential.user;
         curUserInfo.email = email;
         curUserInfo.firstName = firstname;
@@ -42,6 +41,9 @@ Method:
         curUserInfo.address = address;
         curUserInfo.zip = zip;
         setUserInfo(user.uid, curUserInfo);
+      }).catch((e)=>{
+        console.log(e);
+        throw e;
       });
   }
   
@@ -50,6 +52,7 @@ Method:
   }
 
   const addUserInfo = async() => {
+    // console.log(currentUser)
     if (!currentUser || !currentUser.uid) {
       throw new Error('Current user or UID is undefined');
     }
