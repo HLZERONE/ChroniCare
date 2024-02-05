@@ -1,63 +1,48 @@
-import { Ionicons } from '@expo/vector-icons';
+import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
-import CommunityTab from '../../components/communityTab';
+import {Text, View, StyleSheet, Image } from 'react-native';
+import { CommunityStackNavList } from './CommunityTypes';
+import JoinButton from '../../components/joinButton';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from 'expo-router';
+
+//get the information from CommunityScreen
+type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
+
+//enable sending information to the postScreen
+type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
 
 
-const Community = () => {
-  const [searchValue, setSearchValue] = useState('');
+type Props = {
+  route: SingleCommunityScreenRouteProp;
+};
 
-  const handleSearchChange = (text: React.SetStateAction<string>) => {
-    setSearchValue(text);
-  };
+
+const SingleCommunityScreen = ({ route }: Props) => {
+  //take ifjoin from database
+  const [isJoined, setIsJoined] = useState("false")
+  const img = require('../../../assets/favicon.png');
+  const navigation = useNavigation<SingleCommunityScreenNavigationProp>()
+
+
+  const communityID = route.params;
   return (
     <View
       style={styles.container}>
-      <Text style={styles.Communities}>Communities</Text>
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={30} color="#4D4D99" style={styles.searchIcon} />
-        <TextInput
-          placeholder="Search symptoms, medications..."
-          style={styles.searchInput}
-          placeholderTextColor="#4D4D99"
-          value={searchValue}
-          onChangeText={handleSearchChange}
-        />
-      </View>
-      <Text style={styles.trending}>Treading</Text>
-      <View style={styles.horizontalScrollBox}> 
-        <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-
-        </ScrollView>
-      </View>
-
-      <Text style={styles.trending}>Joined Communities</Text>
-        <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+        {/* first row */}
+        <View>
+        <Image source={img}  resizeMode="contain"></Image>
+        <Text>This is a Community</Text>
+        <Text>1563 members</Text>
+        <JoinButton></JoinButton>
         </View>
-
-        <View style={{flexDirection:'row'}}>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-        </View>
-
-        <View style={{flexDirection:'row'}}>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-        <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-        </View>
-        </ScrollView>
+        <Text>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
 
 
     </View>
   );
 };
-export default Community;
+export default SingleCommunityScreen;
 
 const styles = StyleSheet.create({
   container: {

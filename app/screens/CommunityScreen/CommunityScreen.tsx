@@ -1,13 +1,20 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { CommunityStackNavList } from './CommunityTypes';
+import CommunityScreen from '../../navigations/CommunityNav';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-var {height, width} = Dimensions.get('window');
+type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
+
 
 const Community = () => {
   const [searchValue, setSearchValue] = useState('');
+  const navigation = useNavigation<CommunitiesNavigationProp>();
+
 
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
@@ -26,13 +33,11 @@ const Community = () => {
           onChangeText={handleSearchChange}
         />
       </View>
-      <Text style={styles.trending}>Treading</Text>
-      <View style={styles.horizontalScrollBox}> 
+      <Text style={styles.trending}>Trending</Text>
+      <View style={styles.horizontalScrollBox}>
         <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+          <CommunityTab action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'213'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+          <CommunityTab action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'100'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
 
         </ScrollView>
       </View>

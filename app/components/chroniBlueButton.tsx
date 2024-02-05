@@ -1,6 +1,5 @@
 import { Pressable } from "react-native"
 import { Text } from "react-native";
-import { StyleSheet } from "react-native";
 
 function ChroniBlueButton(props: any){
     return(
