@@ -1,21 +1,22 @@
 import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, Button } from 'react-native';
 import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from 'expo-router';
 import PostTab from './PostTab';
-
-//get the information from CommunityScreen
-type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
 //enable sending information to the postScreen
 type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
 
+//get the information from CommunityScreen
+type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
+
+
+
 
 type Props = {
-  navigation: StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
+  navigation: SingleCommunityScreenNavigationProp;
   route: SingleCommunityScreenRouteProp;
 };
 

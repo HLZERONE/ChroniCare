@@ -1,11 +1,8 @@
-import { Pressable, ScrollView, View, Text, StyleSheet, GestureResponderEvent, Image } from "react-native"
-
-type Props = {
-    action: (event: GestureResponderEvent) => void
-}
+import { Pressable, View, Text, StyleSheet, Image } from "react-native"
 
 
-const PostTab = ({action}:Props)=>{
+
+const PostTab = (props:any)=>{
     const likeButton = require('../../../assets/likeButton.png');
     const dislikeButton = require('../../../assets/dislikeButton.png')
 
@@ -18,24 +15,24 @@ const PostTab = ({action}:Props)=>{
     };
     
     return(
-        <Pressable onPress={action}>
-    <View style={styles.tabcontainer}>
-        <Text>This is the First Post</Text>
-        <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et</Text>
-        <View style={styles.bottomArea}>
-            <View style={styles.likeAndDislike}>
-                <Pressable onPress={handleLike}>
-                    <Image source={likeButton} style={styles.likebutton}></Image>
+        <Pressable onPress={props.action}>
+            <View style={styles.tabcontainer}>
+                <Text>This is the First Post</Text>
+                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et</Text>
+                <View style={styles.bottomArea}>
+                    <View style={styles.likeAndDislike}>
+                        <Pressable onPress={handleLike}>
+                            <Image source={likeButton} style={styles.likebutton}></Image>
 
-                </Pressable>
-                <View style={styles.divider} />
-                <Pressable onPress={handleDisLike}>
-                <Image source={dislikeButton} style={styles.likebutton}></Image>
-                </Pressable>
+                        </Pressable>
+                        <View style={styles.divider} />
+                        <Pressable onPress={handleDisLike}>
+                        <Image source={dislikeButton} style={styles.likebutton}></Image>
+                        </Pressable>
+                    </View>
+                        <Text>9 Responses</Text>
+                </View>
             </View>
-                <Text>9 Responses</Text>
-        </View>
-    </View>
     </Pressable>
 
     )

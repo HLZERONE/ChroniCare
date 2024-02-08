@@ -3,16 +3,17 @@ import React, { useState } from 'react';
 import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
-import { useNavigation } from '@react-navigation/native';
 import { CommunityStackNavList } from './CommunityTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
+type Props = {
+  navigation: CommunitiesNavigationProp;
+};
 
-const Community = () => {
+const Community = ({navigation}: Props) => {
   const [searchValue, setSearchValue] = useState('');
-  const navigation = useNavigation<CommunitiesNavigationProp>();
 
   //need to call function to download the joined states of each card
 
