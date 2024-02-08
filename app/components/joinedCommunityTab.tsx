@@ -13,7 +13,7 @@ function JoinedCommunityTab(props: any){
 
             
             <View style={styles.bottomSpace}>
-                <JoinButton></JoinButton>
+                <JoinButton ifJoined={props.ifJoined}></JoinButton>
                 <Text style={styles.joinedNum}>1563 Members</Text>
             </View>
         </Pressable>

@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, Text } from "react-native"
 
+type joinState = {
+    ifJoined:boolean
+}
 
 
+function JoinButton({ifJoined}: joinState){
 
-function JoinButton(){
+    const [buttonText, setButtonText] = useState(ifJoined ? 'Join' :'Joined');
 
-    const [buttonText, setButtonText] = useState('Join');
 
     const handlePress = () => {
       console.log('pressed');
@@ -28,8 +31,8 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
         borderRadius:14,
         borderWidth:2,
-        borderColor:'#1EAFB3'
-
+        borderColor:'#1EAFB3',
+        alignSelf:'center'
     },
     joinText:{
         fontSize:14,

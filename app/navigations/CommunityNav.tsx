@@ -15,7 +15,7 @@ const CommunityScreen = () => {
         component={Community}
         options={{ headerShown: false, }}
         />
-        <communityStack.Screen name="SingleCommunityScreen" component={SingleCommunityScreen} options={{headerShown: false}}></communityStack.Screen>
+        <communityStack.Screen name="SingleCommunityScreen" component={SingleCommunityScreen} ></communityStack.Screen>
         <communityStack.Screen name = 'PostScreen' component={PostScreen}></communityStack.Screen>
     </communityStack.Navigator>
   );

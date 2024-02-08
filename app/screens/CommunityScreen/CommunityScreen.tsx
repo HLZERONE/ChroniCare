@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { CommunityStackNavList } from './CommunityTypes';
-import CommunityScreen from '../../navigations/CommunityNav';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
@@ -15,6 +14,7 @@ const Community = () => {
   const [searchValue, setSearchValue] = useState('');
   const navigation = useNavigation<CommunitiesNavigationProp>();
 
+  //need to call function to download the joined states of each card
 
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
@@ -36,8 +36,7 @@ const Community = () => {
       <Text style={styles.trending}>Trending</Text>
       <View style={styles.horizontalScrollBox}>
         <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'213'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-          <CommunityTab action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'100'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+          <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
 
         </ScrollView>
       </View>
@@ -45,18 +44,18 @@ const Community = () => {
       <Text style={styles.trending}>Joined Communities</Text>
         <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
           <View style={styles.makeRow}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
 
         <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
 
         <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
+        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
         </ScrollView>
 
