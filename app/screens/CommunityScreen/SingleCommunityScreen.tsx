@@ -43,15 +43,11 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
         </View>
         <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
         <View>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
+          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
+          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
+          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
+          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
 
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
-
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
-
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213' }) }}></PostTab>
 
 
 
