@@ -1,7 +1,7 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import {getUserInfo, setUserInfo} from "./ProfileInfo";
-import { curUserInfo } from "./data/User";
+import {setUserInfo} from "./ProfileInfo";
+import {curUserInfo, addCurrentUserInfo} from "./CurrentUserInfo";
 
 /*
 Method:
@@ -11,15 +11,12 @@ Method:
   - Check password len: need to be longer than 6, if not, throw an 
 3) SignOut() - Sign out user
   */
- // need to add a listner to check if the Firebase current user is initializing
- //https://firebase.google.com/docs/auth/unity/manage-users#:~:text=If%20a%20user%20isn't,need%20to%20handle%20this%20case.
-  export const currentUser = FIREBASE_AUTH.currentUser;
 
   export const SignIn = async (email:any, password:any) => {
     signInWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
       console.log(e);
       throw e;
-    }).then(()=>{addUserInfo()}).catch((e)=>{console.log(e)});
+    }).then(()=>{addCurrentUserInfo()});
   }
   
   //TODO: add zip code and address input?
@@ -33,7 +30,10 @@ Method:
     }else if(password != confirmPW){
       throw("confirm password needs to match password");
     }
-    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
+    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
+      console.log(e);
+      throw e;
+    }).then((userCredential) => {
         const user = userCredential.user;
         curUserInfo.email = email;
         curUserInfo.firstName = firstname;
@@ -41,46 +41,11 @@ Method:
         curUserInfo.address = address;
         curUserInfo.zip = zip;
         setUserInfo(user.uid, curUserInfo);
-      }).catch((e)=>{
-        console.log(e);
-        throw e;
       });
   }
   
   export const SignOut = () =>{
     FIREBASE_AUTH.signOut();
-  }
-
-  const addUserInfo = async() => {
-    // console.log(currentUser)
-    if (!currentUser || !currentUser.uid) {
-      throw new Error('Current user or UID is undefined');
-    }
-  
-    try {
-      const userInfo = await getUserInfo(currentUser.uid);
-      if (!userInfo) {
-        throw new Error('User info is undefined');
-      }
-  
-      // Ensure userInfo has all required properties
-      const { email, firstName, lastName, address, zip } = userInfo;
-      if ([email, firstName, lastName, address, zip].some(prop => prop === undefined)) {
-        throw new Error('One or more user info properties are undefined');
-      }
-  
-      // Update curUserInfo state
-      // Replace this with your state update logic if using React state
-      curUserInfo.email = userInfo.email;
-      curUserInfo.firstName = userInfo.firstName;
-      curUserInfo.lastName = userInfo.lastName;
-      curUserInfo.address = userInfo.address;
-      curUserInfo.zip = userInfo.zip;
-    } catch (error) {
-      console.error('Error in addUserInfo:', error);
-      throw error;
-    }
-
   }
 
   const validateEmail = (email: any) => {

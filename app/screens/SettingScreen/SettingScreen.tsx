@@ -1,7 +1,7 @@
 import { View, Text} from 'react-native';
 import {SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
-import { curUserInfo } from '../../firebaseConnect/data/User';
+import { curUserInfo } from '../../firebaseConnect/CurrentUserInfo';
 
 
 const Setting = () => {

@@ -1,5 +1,3 @@
-import { currentUser } from "../Auth";
-
 export const SYMPTOM_KEY = "Symptom";
 
 export class Symptom {

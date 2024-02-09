@@ -1,7 +1,7 @@
 import { getDocs, collection, doc, getDoc, addDoc, setDoc, query, where} from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
 import { SYMPTOM_KEY, Symptom, symptomConverter} from "./data/Symptom";
-import { currentUser } from "./Auth";
+import { currentUser } from "./CurrentUserInfo";
 
 /*
 FUNCTION: Add new symptom information to cloud

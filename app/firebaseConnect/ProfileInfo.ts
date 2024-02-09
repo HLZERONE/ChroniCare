@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
-import { regularUser, USER_KEY, regularUserConverter, curUserInfo} from "./data/User";
-import { currentUser } from "./Auth";
+import { regularUser, USER_KEY, regularUserConverter} from "./data/User";
+import {currentUser, curUserInfo} from "./CurrentUserInfo";
 
 /*
 FUNCTION: add new user information to cloud

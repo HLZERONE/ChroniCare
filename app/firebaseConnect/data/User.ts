@@ -43,8 +43,6 @@ export const regularUserConverter = {
     }
 }
 
-export const curUserInfo: regularUser = new regularUser("","","","","", []);
-
 interface User{
     email : String;
     firstName: String;
