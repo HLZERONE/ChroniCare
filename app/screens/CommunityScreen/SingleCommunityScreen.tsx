@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   memberNum: {
     fontWeight: '400',
     fontSize: 10,
-    color:'rgba(, 0, 0, 0.5)'
+    color:'rgba(0, 0, 0.5)'
   },
   description:{
     margin: '2%',
