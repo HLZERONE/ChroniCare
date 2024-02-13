@@ -12,29 +12,7 @@ export const addUserInfo = async(id: any, email: String, firstName: String, last
     await setDoc(ref, new regularUser(email, firstName, lastName, address, zip, []));
 }
 
-/*
-FUNCTION: get user info by id
-INPUT: user id
-RETURN: Promise<regularUser>
-ATTENCTION: May throw error if user id not exists
-*/
-export const getUserInfo = async(id: any) =>{
-    const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
-    try{
-        const snap = await getDoc(ref);
-        if(snap.exists()){
-            const user = snap.data();
-            console.log(user.toString());
-            return user;
-        }else{
-            throw("No such document!");
-        }
-    }catch(e){
-        console.log("getUserInfo error: "+e);
-        throw e;
-    }
 
-}
 
 /*
 FUNCTION: add or update user Info

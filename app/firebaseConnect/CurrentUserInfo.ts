@@ -1,10 +1,35 @@
-import {FIREBASE_AUTH} from "../../FirebaseConfig"
-import {getUserInfo} from "./ProfileInfo";
-import {regularUser } from "./data/User";
+import { doc, getDoc } from "firebase/firestore";
+import {FIREBASE_AUTH, FIREBASE_DB} from "../../FirebaseConfig"
+import {USER_KEY, regularUser, regularUserConverter } from "./data/User";
 
 
 export const currentUser = FIREBASE_AUTH.currentUser;
 export const curUserInfo: regularUser = new regularUser("","","","","", []);
+
+
+/*
+FUNCTION: get user info by id
+INPUT: user id
+RETURN: Promise<regularUser>
+ATTENCTION: May throw error if user id not exists
+*/
+export const getUserInfo = async(id: any) =>{
+  const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
+  try{
+      const snap = await getDoc(ref);
+      if(snap.exists()){
+          const user = snap.data();
+          console.log(user.toString());
+          return user;
+      }else{
+          throw("No such document!");
+      }
+  }catch(e){
+      console.log("getUserInfo error: "+e);
+      throw e;
+  }
+
+}
 
 export const addCurrentUserInfo = async() => {
     if (!currentUser || !currentUser.uid) {
