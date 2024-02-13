@@ -46,13 +46,14 @@ const Login = ({ navigation }: RouterProps) => {
             <View style={styles.inputBox}>
                 <TextInput secureTextEntry={!showPassword}
                     value={password} placeholder="Password"
-                    autoCapitalize="none" style={{ borderColor: "#fff" , width:'100%'}}
+                    autoCapitalize="none" style={{ borderColor: "#fff" , flex:1}}
                     onChangeText={(text) => { setPassword(text) }}></TextInput>
                 <MaterialCommunityIcons
                     name={showPassword ? 'eye-off' : 'eye'}
                     size={24}
                     color="#aaa"
                     onPress={toggleShowPassword}
+                    style={{zIndex:1}}
                 />
             </View>
             {loading ? (<ActivityIndicator size="large" color="@0000ff" />) : (

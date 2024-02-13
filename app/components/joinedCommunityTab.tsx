@@ -8,8 +8,8 @@ var {height, width} = Dimensions.get('window');
 function JoinedCommunityTab(props: any){
     return(
         <Pressable onPress={(props.action)} style={styles.tabContainer}>
-            <Text style={styles.tabTitle} ellipsizeMode="tail">{props.title}</Text>
-            <Text style={styles.tabTexts} ellipsizeMode="tail" >{props.intro}</Text>
+            <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>{props.title}</Text>
+            <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>{props.intro}</Text>
 
             
             <View style={styles.bottomSpace}>
@@ -28,9 +28,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius:16,
         height:height*0.2,
-        width: width*0.45,
-        paddingHorizontal:3,
-        paddingTop:5,
+        width: width*0.435,
+padding:width*0.025,
         margin:3,
 
     },
