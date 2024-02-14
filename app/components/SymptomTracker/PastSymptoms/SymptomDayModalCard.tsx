@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     title: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 20,
     },
     symptomName: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     titleSeverity: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: 'blue'
+        color: 'blue',
     },
     notes: {
         fontSize: 12, // Adjusted for better readability
