@@ -1,4 +1,3 @@
-import { useState, } from "react";
 import { FIREBASE_AUTH } from "../../FirebaseConfig";
 import { View, Text, StyleSheet } from "react-native";
 

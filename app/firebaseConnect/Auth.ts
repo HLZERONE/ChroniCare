@@ -1,7 +1,7 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import {getUserInfo, setUserInfo} from "./ProfileInfo";
-import { curUserInfo, regularUser } from "./data/User";
+import {setUserInfo} from "./ProfileInfo";
+import {curUserInfo, addCurrentUserInfo} from "./CurrentUserInfo";
 
 /*
 Method:
@@ -11,12 +11,12 @@ Method:
   - Check password len: need to be longer than 6, if not, throw an 
 3) SignOut() - Sign out user
   */
-  export const currentUser = FIREBASE_AUTH.currentUser;
 
   export const SignIn = async (email:any, password:any) => {
-    await signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then(async() => {
-      await(addUserInfo());
-    });
+    signInWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
+      console.log(e);
+      throw e;
+    }).then(()=>{addCurrentUserInfo()});
   }
   
   //TODO: add zip code and address input?
@@ -30,7 +30,10 @@ Method:
     }else if(password != confirmPW){
       throw("confirm password needs to match password");
     }
-    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
+    await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
+      console.log(e);
+      throw e;
+    }).then((userCredential) => {
         const user = userCredential.user;
         curUserInfo.email = email;
         curUserInfo.firstName = firstname;
@@ -43,15 +46,6 @@ Method:
   
   export const SignOut = () =>{
     FIREBASE_AUTH.signOut();
-  }
-
-  const addUserInfo = async() => {
-    const userInfo: regularUser = await(getUserInfo(currentUser?.uid));
-    curUserInfo.email = userInfo.email;
-    curUserInfo.firstName = userInfo.firstName;
-    curUserInfo.lastName = userInfo.lastName;
-    curUserInfo.address = userInfo.address;
-    curUserInfo.zip = userInfo.zip;
   }
 
   const validateEmail = (email: any) => {
