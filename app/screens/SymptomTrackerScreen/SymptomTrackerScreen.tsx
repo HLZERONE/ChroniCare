@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, ScrollView, Text } from "react-native";
+import { Button, ScrollView, Text, StyleSheet } from "react-native";
 import CurrentSymptoms from "../../components/SymptomTracker/CurrentSymptoms";
 import AddSymptomModal from "../../components/SymptomTracker/CreateSymptomModal";
 import Symptom from "../../firebaseConnect/data/Symptom";
+import PastSymptoms from "../../components/SymptomTracker/PastSymptoms/PastSymptoms";
 
 const SymptomTracker = () => {
 	const [addSymptomMode, setAddSymptomMode] = useState(false);
@@ -52,7 +53,7 @@ const SymptomTracker = () => {
 				alignItems: "center",
 			}}
 		>
-			<Text>Symptom Tracker</Text>
+			<Text style={styles.headerStyle}>Symptom Tracker</Text>
 			<Button title="+ Add Symptom" onPress={() => setAddSymptomMode(true)} />
 			<AddSymptomModal
 				visible={addSymptomMode}
@@ -63,7 +64,19 @@ const SymptomTracker = () => {
 				symptoms={symptoms}
 				onChange={handleChangeCurrentSymptoms}
 			/>
+			<PastSymptoms symptoms={symptoms} />
 		</ScrollView>
 	);
 };
 export default SymptomTracker;
+
+const styles = StyleSheet.create({
+	headerStyle: {
+	  fontSize: 24, // Larger font size for headers
+	  fontWeight: 'bold', // Bold font weight to make it stand out
+	  color: '#000', // Typically, headers are in a darker or different color
+	  textAlign: 'center', // Center-aligned text is common for headers
+	  marginTop: 20, // Optional: add some margin to the top for spacing
+	  marginBottom: 10, // Optional: add some margin to the bottom for spacing
+	},
+  });

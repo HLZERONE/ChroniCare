@@ -69,7 +69,7 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 					value={notes}
 					placeholder="Add notes"
 				/>
-				<Button title="Save" onPress={handleSave} />
+				<Button title="Add" onPress={handleSave} />
 				<Button title="Cancel" onPress={onClose} color="gray" />
 			</View>
 		</Modal>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		padding: 35,
 		alignItems: "center",
+		justifyContent: "center",
 		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,
