@@ -9,7 +9,7 @@ const SymptomDayModalCard: React.FC<SymptomDayModalCardProps> = ({ Symptom }) =>
     return (
         <View style={styles.card}>
             <View style={styles.title}>
-                <Text style={styles.symptomName}>{Symptom.name}</Text>
+                <Text style={styles.symptomName}>{Symptom.diseaseName}</Text>
                 <Text style={[styles.severity, styles.titleSeverity]}>{Symptom.severity}</Text>
             </View>
             <Text>Pain Level</Text>
