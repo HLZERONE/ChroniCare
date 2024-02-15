@@ -10,29 +10,34 @@ const SymptomTracker = () => {
 	const [symptoms, setSymptoms] = useState<Symptom[]>([]);
 
 	useEffect(() => {
-		// dummy data
 		setSymptoms([
 			{
 				id: "1",
-				name: "Fever",
+				userId: "1",
+				diseaseName: "Fever",
+				duration: 1,
 				date: new Date(),
-				severity: 7,
-				notes: "I have a feverss",
+				severity: 5,
+				notes: "I have a fever",
 			},
 			{
 				id: "2",
-				name: "Cough",
+				userId: "1",
+				diseaseName: "Headache",
+				duration: 1,
 				date: new Date(),
 				severity: 3,
-				notes: "I have a cough",
+				notes: "I have a headache",
 			},
 			{
 				id: "3",
-				name: "QqQ",
+				userId: "1",
+				diseaseName: "Cough",
+				duration: 1,
 				date: new Date(),
-				severity: 1,
-				notes: "QQ",
-			},
+				severity: 2,
+				notes: "I have a cough",
+			}
 		]);
 	}, []);
 

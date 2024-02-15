@@ -100,7 +100,7 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 	return (
 		<View style={styles.symptomContainer}>
 			<View style={styles.symptomTitle}>
-				<Text style={styles.symptomName}>{singleSymptom.name}</Text>
+				<Text style={styles.symptomName}>{singleSymptom.diseaseName}</Text>
 				<FontAwesome
 					name="pencil-square-o"
 					size={24}
