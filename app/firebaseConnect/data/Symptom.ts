@@ -6,7 +6,7 @@ export class Symptom {
 	diseaseName: string;
 	notes: string;
 	severity: number;
-	duration: number;
+	duration: number | null;
 	date: Date;
 	constructor(
 		id: any,
