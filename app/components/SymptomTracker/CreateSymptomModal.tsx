@@ -17,6 +17,7 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 	const [symptomName, setSymptomName] = useState("");
 	const [severity, setSeverity] = useState(1);
 	const [notes, setNotes] = useState("");
+	const [duration, setDuration] = useState<number | null>(null);
 
 	const handleSave = () => {
 		if (symptomName === "") {
@@ -31,7 +32,7 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 			id: Math.random().toString(),
 			userId: "1",
 			diseaseName: symptomName,
-			duration: 1,
+			duration: duration || null,
 			date: new Date(),
 			severity: severity,
 			notes: notes,
@@ -49,27 +50,39 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 			onRequestClose={onClose}
 		>
 			<View style={styles.modalView}>
-				<Text>Add Symptom</Text>
+				<Text style={styles.title}>Add Symptom</Text>
+				<Text style={styles.inputTitle}>Symptom Name</Text>
 				<TextInput
 					style={styles.input}
 					onChangeText={(text) => setSymptomName(text)}
 					value={symptomName}
 					placeholder="Symptom Name"
 				/>
-				<Slider
-					style={styles.slider}
-					minimumValue={1}
-					maximumValue={10}
-					value={severity}
-					onValueChange={(value) => setSeverity(value)}
-					step={1}
-				/>
-				<Text style={styles.sliderValue}>{severity}</Text>
+				<Text style={styles.inputTitle}>Pain Level</Text>
+				<View style={styles.painLevelNumber}>
+					<Slider
+						style={styles.slider}
+						minimumValue={1}
+						maximumValue={10}
+						value={severity}
+						onValueChange={(value) => setSeverity(value)}
+						step={1}
+					/>
+					<Text style={styles.sliderValue}>{severity}</Text>
+				</View>
+				<Text style={styles.inputTitle}>Notes</Text>
 				<TextInput
 					style={styles.input}
 					onChangeText={(text) => setNotes(text)}
 					value={notes}
 					placeholder="Add notes"
+				/>
+				<Text style={styles.inputTitle}>Duration (Days)</Text>
+				<TextInput
+					style={styles.input}
+					placeholder="Duration"
+					value={duration?.toString()}
+					keyboardType="numeric"
 				/>
 				<Button title="Add" onPress={handleSave} />
 				<Button title="Cancel" onPress={onClose} color="gray" />
@@ -84,10 +97,13 @@ const styles = StyleSheet.create({
 	slider: {
 		width: "100%",
 		height: 40,
+		maxWidth: "80%",
 		color: "#000",
 	},
 	sliderValue: {
-		textAlign: "right",
+		fontSize: 20,
+		fontWeight: "bold",
+		marginLeft: 10,
 	},
 	modalView: {
 		margin: 20,
@@ -113,4 +129,22 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		padding: 10,
 	},
+	inputTitle: {
+		fontSize: 15,
+		fontWeight: "bold",
+		marginVertical: 10,
+		textAlign: "left",
+		alignSelf: "flex-start",
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 20,
+	},
+	painLevelNumber: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	}
 });
