@@ -33,6 +33,7 @@ const PastSymptoms: React.FC<PastSymptomsProps> = ({ symptoms }) => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.header}>Past Symptoms</Text>
             <SymptomDayModal Symptoms={symptoms} visible={dayModalOpened} onClose={() => {
                 setDayModalOpened(false);
                 setSelectedDateSymptoms([]);
@@ -48,6 +49,10 @@ const PastSymptoms: React.FC<PastSymptomsProps> = ({ symptoms }) => {
                     setSelectedDateSymptoms(symptomsOnDate);
                     setDayModalOpened(true);
                 }}
+                style={{
+                    borderRadius: 20,
+                    overflow: "hidden",
+                }}
             />
         </View>
     );
@@ -56,8 +61,13 @@ const PastSymptoms: React.FC<PastSymptomsProps> = ({ symptoms }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "white",
+        width: "85%",
     },
+    header: {
+        fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 20,
+    }
 });
 
 export default PastSymptoms;

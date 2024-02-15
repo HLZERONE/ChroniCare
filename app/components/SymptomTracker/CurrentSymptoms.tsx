@@ -38,18 +38,22 @@ const EditSymptomModal: React.FC<EditSymptomModalProps> = ({
 			onRequestClose={onClose}
 		>
 			<View style={styles.modalView}>
-				<Text>Edit Symptom</Text>
-				<Slider
-					style={styles.slider}
-					minimumValue={1}
-					maximumValue={10}
-					value={editedSymptom.severity}
-					onValueChange={(value) =>
-						setEditedSymptom({ ...editedSymptom, severity: value })
-					}
-					step={1}
-				/>
-				<Text style={styles.sliderValue}>{editedSymptom.severity}</Text>
+				<Text style={styles.title}>Edit Symptom</Text>
+				<Text style={styles.inputTitle}>Pain Level</Text>
+				<View style={styles.painLevelNumber}>
+					<Slider
+						style={styles.slider}
+						minimumValue={1}
+						maximumValue={10}
+						value={editedSymptom.severity}
+						onValueChange={(value) =>
+							setEditedSymptom({ ...editedSymptom, severity: value })
+						}
+						step={1}
+					/>
+					<Text style={styles.sliderValue}>{editedSymptom.severity}</Text>
+				</View>
+				<Text style={styles.inputTitle}>Notes</Text>
 				<TextInput
 					style={styles.input}
 					onChangeText={(text) =>
@@ -99,7 +103,7 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 
 	return (
 		<View style={styles.symptomContainer}>
-			<View style={styles.symptomTitle}>
+			<View style={styles.symptomTitleRow}>
 				<Text style={styles.symptomName}>{singleSymptom.diseaseName}</Text>
 				<FontAwesome
 					name="pencil-square-o"
@@ -108,13 +112,16 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 					onPress={() => setEditMode(true)}
 				/>
 			</View>
-			<Slider
-				style={styles.slider}
-				minimumValue={1}
-				maximumValue={10}
-				value={symptom.severity}
-			/>
-			<Text style={styles.sliderValue}>{symptom.severity}</Text>
+			<View style={styles.painLevelNumber}>
+				<Slider
+					style={styles.slider}
+					minimumValue={1}
+					maximumValue={10}
+					value={symptom.severity}
+					disabled={true}
+				/>
+				<Text style={styles.sliderValue}>{symptom.severity}</Text>
+			</View>
 			<EditSymptomModal
 				visible={editMode}
 				symptom={symptom}
@@ -159,44 +166,64 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({
 	};
 
 	return (
-		<View>
+		<View style={styles.currentSymptomsContainer}>
 			<Text style={styles.header}>Current Symptoms</Text>
-			{symptomValues.map((symptom, index) => (
-				<SingleSymptom
-					key={symptom.id}
-					symptom={symptom}
-					onChange={(newSymptom) => handleEditModalChange(newSymptom)}
-					onDelete={(id) => handleDelete(id)}
-				/>
-			))}
+			<View style={styles.symptomsContainer}>
+				{symptomValues.map((symptom, index) => (
+					<SingleSymptom
+						key={symptom.id}
+						symptom={symptom}
+						onChange={(newSymptom) => handleEditModalChange(newSymptom)}
+						onDelete={(id) => handleDelete(id)}
+					/>
+				))}
+			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	currentSymptomsContainer: {
+		width: "85%",
+		marginBottom: 20,
+	},
+	symptomsContainer: {
+		backgroundColor: "white",
+		borderRadius: 20,
+		padding: 20,
+	},
+	symptomContainer: {
+		marginBottom: 20,
+	},
 	header: {
 		fontSize: 20,
 		fontWeight: "bold",
 		marginBottom: 20,
 	},
-	symptomContainer: {
-		marginBottom: 20,
-	},
 	symptomName: {
 		fontSize: 16,
+		fontWeight: "bold",
 	},
 	slider: {
 		width: "100%",
+		maxWidth: "80%",
 		height: 40,
 		color: "#000",
 	},
 	sliderValue: {
-		textAlign: "right",
+		fontSize: 20,
+		fontWeight: "bold",
+		marginLeft: 10,
 	},
-	symptomTitle: {
+	symptomTitleRow: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: "bold",
+		marginBottom: 20,
 	},
 	modalView: {
 		margin: 20,
@@ -220,6 +247,19 @@ const styles = StyleSheet.create({
 		width: "100%",
 		marginTop: 10,
 		padding: 10,
+	},
+	painLevelNumber: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	inputTitle: {
+		fontSize: 15,
+		fontWeight: "bold",
+		marginVertical: 10,
+		textAlign: "left",
+		alignSelf: "flex-start",
 	},
 });
 

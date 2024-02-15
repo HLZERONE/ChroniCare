@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, ScrollView, Text, StyleSheet } from "react-native";
+import { ScrollView, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
 import CurrentSymptoms from "../../components/SymptomTracker/CurrentSymptoms";
-import AddSymptomModal from "../../components/SymptomTracker/CreateSymptomModal";
+import AddSymptomModal from "../../components/SymptomTracker/AddSymptomModal";
 import Symptom from "../../firebaseConnect/data/Symptom";
 import PastSymptoms from "../../components/SymptomTracker/PastSymptoms/PastSymptoms";
 
@@ -51,37 +51,65 @@ const SymptomTracker = () => {
 	};
 
 	return (
-		<ScrollView
-			contentContainerStyle={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
-			<Text style={styles.headerStyle}>Symptom Tracker</Text>
-			<Button title="+ Add Symptom" onPress={() => setAddSymptomMode(true)} />
-			<AddSymptomModal
-				visible={addSymptomMode}
-				onClose={() => setAddSymptomMode(false)}
-				onSave={handleSaveAddSymptom}
-			/>
-			<CurrentSymptoms
-				symptoms={symptoms}
-				onChange={handleChangeCurrentSymptoms}
-			/>
-			<PastSymptoms symptoms={symptoms} />
-		</ScrollView>
+		<SafeAreaView style={{
+			flex: 1,
+			backgroundColor: 'rgba(117, 196, 205, 0.19)',
+		}}>
+			<ScrollView
+				contentContainerStyle={{
+					justifyContent: "center",
+					alignItems: "center",
+					paddingBottom: 40,
+				}}
+				style={styles.container}
+			>
+				<Text style={styles.headerStyle}>Symptom Tracker</Text>
+				<Pressable onPress={() => setAddSymptomMode(true)} style={styles.button}>
+					<Text style={styles.buttonText}>+ Add Symptom</Text>
+				</Pressable>
+				<AddSymptomModal
+					visible={addSymptomMode}
+					onClose={() => setAddSymptomMode(false)}
+					onSave={handleSaveAddSymptom}
+				/>
+				<CurrentSymptoms
+					symptoms={symptoms}
+					onChange={handleChangeCurrentSymptoms}
+				/>
+				<PastSymptoms symptoms={symptoms}/>
+			</ScrollView>
+		</SafeAreaView>
 	);
 };
 export default SymptomTracker;
 
 const styles = StyleSheet.create({
 	headerStyle: {
-	  fontSize: 24, // Larger font size for headers
+	  fontSize: 30, // Larger font size for headers
 	  fontWeight: 'bold', // Bold font weight to make it stand out
 	  color: '#000', // Typically, headers are in a darker or different color
 	  textAlign: 'center', // Center-aligned text is common for headers
-	  marginTop: 20, // Optional: add some margin to the top for spacing
 	  marginBottom: 10, // Optional: add some margin to the bottom for spacing
+	},
+	container: {
+		paddingVertical: 24,
+	},
+	button: {
+		backgroundColor: '#1EAFB3',
+		padding: 15,
+		borderRadius: 30,
+		marginVertical: 10,
+		width: '50%',
+		shadowOffset: {
+			width: 0,
+			height: 4,
+		},
+		shadowOpacity: 0.32,
+	},
+	buttonText: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		color: 'white',
 	},
   });
