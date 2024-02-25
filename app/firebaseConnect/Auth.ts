@@ -1,7 +1,7 @@
 import {FIREBASE_AUTH} from "../../FirebaseConfig"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import {setUserInfo} from "./ProfileInfo";
-import {curUserInfo, addCurrentUserInfo} from "./CurrentUserInfo";
+import {curUserInfo} from "./CurrentUserInfo";
 
 /*
 Method:
@@ -12,12 +12,15 @@ Method:
 3) SignOut() - Sign out user
   */
 
-  export const SignIn = async (email:any, password:any) => {
-    signInWithEmailAndPassword(FIREBASE_AUTH, email, password).catch((e)=>{
-      console.log(e);
-      throw e;
-    }).then(()=>{addCurrentUserInfo()});
-  }
+  export const SignIn = async (email: string, password: string) => {
+    try {
+        // Await the completion of the sign in process
+        await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+    } catch (e) {
+        console.error(e);
+        throw e; // Rethrow the error to handle it outside or to indicate failure
+    }
+  };
   
   //TODO: add zip code and address input?
   export const SignUp = async (firstname: any, lastname: any, email:any, password:any, confirmPW: any, address: any = "", zip: any = "") => {

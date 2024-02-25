@@ -1,4 +1,4 @@
-import { getDocs, collection, doc, getDoc, addDoc, setDoc, query, where} from "firebase/firestore";
+import { getDocs, collection, doc, addDoc, setDoc, query, where, writeBatch} from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
 import { SYMPTOM_KEY, Symptom, symptomConverter} from "./data/Symptom";
 import { currentUser } from "./CurrentUserInfo";
@@ -14,9 +14,6 @@ export const addSymptomInfo = async(
     _severity: number,
     _duration: number,
     _date: Date) => {
-    //const symptomRef = doc(FIREBASE_DB, SYMPTOM_KEY, symptom.id).withConverter(symptomConverter);
-    //await setDoc(symptomRef, symptom);
-
     const symptomRef = await addDoc(collection(FIREBASE_DB, SYMPTOM_KEY), {
         userId: currentUser?.uid,
         diseaseName: _diseaseName,
@@ -38,6 +35,16 @@ export const updateSymptomInfo = async(symptom: Symptom) => {
     await setDoc(symptomRef, symptom);
 }
 
+export const batchUpdateSymptomInfo = async (symptoms: Symptom[]) => {
+    const batch = writeBatch(FIREBASE_DB); // Use writeBatch with the Firestore instance
+
+    symptoms.forEach((symptom) => {
+        const symptomRef = doc(FIREBASE_DB, SYMPTOM_KEY, symptom.id).withConverter(symptomConverter);
+        batch.set(symptomRef, symptom);
+    });
+
+    await batch.commit();
+}
 
 /*
 FUNCTION: get all symptom info that related to the provided userId
