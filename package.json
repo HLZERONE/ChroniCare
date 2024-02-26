@@ -26,7 +26,6 @@
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.7.1",
     "font-awesome": "^4.7.0",
-    "html-to-text": "^9.0.5",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-calendars": "^1.1303.0",

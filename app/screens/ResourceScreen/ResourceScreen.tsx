@@ -1,7 +1,8 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import {ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResourceEntry from '../../components/Resources/ResourceEntry';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface BlogResponse {
@@ -21,16 +22,19 @@ const Resource = () => {
 
   useLayoutEffect(() => {
     getContentCollectionByType('blog').then((data) => {
-      setBlogs(data.blog.map((blog: any) => {
+      setBlogs(data.blog.slice(0, 20).map((blog: any) => {
         return {
           title: blog.title,
           content: blog.content,
-          }
-          }));
+        }
+      }));
     });
   }, []);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+			flex: 1,
+			backgroundColor: 'rgba(117, 196, 205, 0.19)',
+		}}>
       <ScrollView>
         {
           blogs.map((blog, index) => {
