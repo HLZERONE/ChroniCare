@@ -39,6 +39,15 @@ const EditSymptomModal: React.FC<EditSymptomModalProps> = ({
 		>
 			<View style={styles.modalView}>
 				<Text style={styles.title}>Edit Symptom</Text>
+				<Text style={styles.inputTitle}>Symptom Name</Text>
+				<TextInput
+					style={styles.input}
+					onChangeText={(text) =>
+						setEditedSymptom({ ...editedSymptom, diseaseName: text })
+					}
+					value={editedSymptom.diseaseName}
+					placeholder="Add symptom name"
+				/>
 				<Text style={styles.inputTitle}>Pain Level</Text>
 				<View style={styles.painLevelNumber}>
 					<Slider
@@ -148,7 +157,7 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({
 			[
 				...symptomValues.filter((symptom) => symptom.id !== newSymptom.id),
 				newSymptom,
-			].sort((a, b) => parseInt(a.id) - parseInt(b.id))
+			].sort((a, b) => a.diseaseName.localeCompare(b.diseaseName))
 		);
 		onChange(symptomValues);
 	};
