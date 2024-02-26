@@ -42,9 +42,10 @@ export const symptomConverter = {
 			date: s.date,
 		};
 	},
-	fromFirestore: (snapshot: any, id: any) => {
-		const data = snapshot.data(id);
-		return new Symptom(id, data.userId, data.diseaseName, data.notes, data.severity, data.duration, data.date);
+	fromFirestore: (snapshot: any) => {
+		const data = snapshot.data();
+		data.date = data.date.toDate();
+		return new Symptom(snapshot.id, data.userId, data.diseaseName, data.notes, data.severity, data.duration, data.date);
 	},
 };
 

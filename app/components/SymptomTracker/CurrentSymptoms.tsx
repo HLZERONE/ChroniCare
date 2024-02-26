@@ -83,14 +83,8 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 	symptom,
 }) => {
 	const [editMode, setEditMode] = useState(false);
-	const [singleSymptom, setSingleSymptom] = useState(symptom);
 
 	const handleEditSave = (newSymptom: Symptom) => {
-		setSingleSymptom({
-			...singleSymptom,
-			severity: newSymptom.severity,
-			notes: newSymptom.notes,
-		});
 		onChange(newSymptom);
 		setEditMode(false);
 	};
@@ -104,7 +98,7 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 	return (
 		<View style={styles.symptomContainer}>
 			<View style={styles.symptomTitleRow}>
-				<Text style={styles.symptomName}>{singleSymptom.diseaseName}</Text>
+				<Text style={styles.symptomName}>{symptom.diseaseName}</Text>
 				<FontAwesome
 					name="pencil-square-o"
 					size={24}
