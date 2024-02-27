@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, ScrollView, Button } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, Button, Pressable } from 'react-native';
 import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +11,18 @@ type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNav
 
 //get the information from CommunityScreen
 type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
+
+type Post = {
+  postID: string;
+  communityID: string;
+}
+
+const mockingPosts: Post[] = [
+  { postID: '001', communityID: '001' },
+  { postID: '002', communityID: '001' },
+  { postID: '003', communityID: '001' },
+
+];
 
 
 
@@ -25,9 +37,20 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
   //take ifjoin from database
   const [isJoined, setIsJoined] = useState(false)
   const img = require('../../../assets/favicon.png');
-
+  const plus = require('../../../assets/plus.png');
+  var posts = mockingPosts;
 
   const communityID = route.params.communityID;
+
+  const renderItem = () =>{
+    var elements = [];
+    for(let i = 0; i< posts.length; i++){
+      elements.push(
+        <PostTab key={posts[i].postID} action={() => { navigation.navigate('PostScreen', { postID: posts[i].postID, communityID: posts[i].communityID}) }}></PostTab>
+      );
+    }
+    return elements;
+  }
 
   return (
     <View
@@ -43,18 +66,12 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
         </View>
         <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
         <View>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
-          <PostTab action={() => { navigation.navigate('PostScreen', { postID: '213', communityID: "This is the First Community"}) }}></PostTab>
-
-
-
-
+          {renderItem()}
         </View>
       </ScrollView>
-
-
+          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunityID: '001'})}}>
+            <Image source={plus} style={styles.plusButton}></Image>
+          </Pressable>
     </View>
   );
 };
@@ -62,7 +79,7 @@ export default SingleCommunityScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(117, 196, 205, 0.19)',
@@ -92,6 +109,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 14,
     color: '#091F44',
+  },
+  plusButton:{
+    width:50,
+    height:50,
+    position: 'absolute',
+    right: '-40%',
+    bottom: '20%'
+
   }
 
 

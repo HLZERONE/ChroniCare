@@ -21,6 +21,7 @@ const Community = ({navigation}: Props) => {
     setSearchValue(text);
   };
   return (
+    <ScrollView>
     <View
       style={styles.container}>
       <Text style={styles.Communities}>Communities</Text>
@@ -43,7 +44,6 @@ const Community = ({navigation}: Props) => {
       </View>
 
       <Text style={styles.trending}>Joined Communities</Text>
-        <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
           <View style={styles.makeRow}>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
@@ -58,10 +58,10 @@ const Community = ({navigation}: Props) => {
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
-        </ScrollView>
 
 
     </View>
+    </ScrollView>
   );
 };
 export default Community;

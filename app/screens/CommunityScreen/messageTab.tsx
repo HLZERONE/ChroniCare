@@ -38,7 +38,7 @@ const MessageTab = (props:any)=>{
                         </Pressable>
                     </View>
                     
-                        <Pressable onPress={()=>{}} >
+                        <Pressable onPress={props.action} style={styles.pressableBox} >
                             <Text>Reply</Text>
                         </Pressable>
                 </View>
@@ -97,4 +97,11 @@ const styles = StyleSheet.create({
         alignItems:'center',
         gap:3,
     },
+    pressableBox:{
+        width:50,
+        height:25,
+        alignItems:'center',
+        justifyContent:'center',
+
+    }
 })
