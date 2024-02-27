@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
 import { CommunityStackNavList } from './CommunityTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import CommunityModel from '../../firebaseConnect/data/Community';
+import { getCommunities } from '../../firebaseConnect/Forum';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
@@ -14,7 +16,20 @@ type Props = {
 
 const Community = ({navigation}: Props) => {
   const [searchValue, setSearchValue] = useState('');
+  const [communities, setCommunities] = useState<CommunityModel[]>([]);
 
+
+  useLayoutEffect(() => {
+    // populate the communities
+    getCommunities().then((communities: CommunityModel[]) => {
+      // only show the first 2 communities for development purposes
+      setCommunities(communities.slice(0, 2));
+    }).catch((e) => {
+      console.log("Error getting communities: " + e);
+    });
+    return () => {};
+  });
+  
   //need to call function to download the joined states of each card
 
   const handleSearchChange = (text: React.SetStateAction<string>) => {
@@ -39,8 +54,14 @@ const Community = ({navigation}: Props) => {
       <Text style={styles.trending}>Trending</Text>
       <View style={styles.horizontalScrollBox}>
         <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-
+          {
+            communities.map((community: CommunityModel, index: number) => {
+              return (
+                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {communityID: community.name})}} community={community} key={index}></CommunityTab>
+              );
+            })
+          }
+          {/* <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab> */}
         </ScrollView>
       </View>
 

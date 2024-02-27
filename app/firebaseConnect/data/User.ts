@@ -43,7 +43,7 @@ export const regularUserConverter = {
     }
 }
 
-interface User{
+export interface User{
     email : String;
     firstName: String;
     lastName : String;
