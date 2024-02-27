@@ -24,6 +24,7 @@ const Community = ({navigation}: Props) => {
     <ScrollView>
     <View
       style={styles.container}>
+
       <Text style={styles.Communities}>Communities</Text>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={30} color="#4D4D99" style={styles.searchIcon} />
@@ -59,21 +60,21 @@ const Community = ({navigation}: Props) => {
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
 
-
     </View>
     </ScrollView>
+
   );
 };
 export default Community;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
-    height: '100%',
+
     position: 'relative',
     backgroundColor: 'rgba(117, 196, 205, 0.19)',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent:'center'
   },
   Communities: {
     width: '90%',
@@ -123,7 +124,6 @@ const styles = StyleSheet.create({
   verticalScrollLayout:{
     flex:1,
     flexDirection:'column',
-    width:"90%",
   },
   makeRow:{flexDirection:'row', alignItems:'center',}
 })

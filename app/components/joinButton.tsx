@@ -8,7 +8,7 @@ type joinState = {
 
 function JoinButton({ifJoined}: joinState){
 
-    const [buttonText, setButtonText] = useState(ifJoined ? 'Join' :'Joined');
+    const [buttonText, setButtonText] = useState(ifJoined ? 'Joined' :'Join');
 
 
     const handlePress = () => {
