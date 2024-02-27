@@ -2,19 +2,20 @@ import { Dimensions, Pressable, View } from "react-native"
 import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import JoinButton from "./joinButton";
+import Community from "../firebaseConnect/data/Community";
 
 var {height, width} = Dimensions.get('window');
 
-function CommunityTab(props: any){
+function CommunityTab(props: {ifJoined: boolean, action: any, community: Community}){
     return(
         <Pressable onPress={(props.action)} style={styles.tabContainer}>
-            <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>{props.title}</Text>
-            <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>{props.intro}</Text>
+            <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>{props.community.name}</Text>
+            <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>{props.community.description}</Text>
 
             
             <View style={styles.bottomSpace}>
                 <JoinButton ifJoined={props.ifJoined}></JoinButton>
-                <Text style={styles.joinedNum}>1563 Members</Text>
+                <Text style={styles.joinedNum}>{props.community.members} Members</Text>
             </View>
         </Pressable>
     )
