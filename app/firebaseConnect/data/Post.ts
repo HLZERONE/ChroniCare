@@ -3,12 +3,14 @@ import { User } from "./User";
 export const POST_KEY = "Post";
 
 export class Post {
-    title: String;
-    content: String;
+    id: string;
+    title: string;
+    content: string;
     user: User;
     upVotes: number = 0;
     downVotes: number = 0;
-    constructor(_title: String, _content: String, _user: User, _upVotes: number, _downVotes: number){
+    constructor(_id: string, _title: string, _content: string, _user: User, _upVotes: number, _downVotes: number){
+        this.id = _id;
         this.title = _title;
         this.content = _content;
         this.user = _user;
@@ -34,6 +36,6 @@ export const postConverter = {
     },
     fromFirestore: (snapshot: any, options: any): Post => {
         const data = snapshot.data(options);
-        return new Post(data.title, data.content, data.user, data.upVotes, data.downVotes);
+        return new Post(data.id, data.title, data.content, data.user, data.upVotes, data.downVotes);
     }
 }

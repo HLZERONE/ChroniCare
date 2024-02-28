@@ -1,30 +1,18 @@
 import { RouteProp } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button, Pressable } from 'react-native';
 import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import PostTab from './PostTab';
+import { getPosts } from '../../firebaseConnect/Forum';
+import { Post } from '../../firebaseConnect/data/Post';
 
 //enable sending information to the postScreen
 type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
 
 //get the information from CommunityScreen
 type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
-
-type Post = {
-  postID: string;
-  communityID: string;
-}
-
-const mockingPosts: Post[] = [
-  { postID: '001', communityID: '001' },
-  { postID: '002', communityID: '001' },
-  { postID: '003', communityID: '001' },
-
-];
-
-
 
 
 type Props = {
@@ -36,9 +24,15 @@ type Props = {
 const SingleCommunityScreen = ({ navigation, route }: Props) => {
   //take ifjoin from database
   const [isJoined, setIsJoined] = useState(false)
+  const [posts, setPosts] = useState<Post[]>([]);
   const img = require('../../../assets/favicon.png');
   const plus = require('../../../assets/plus.png');
-  var posts = mockingPosts;
+
+  useLayoutEffect(() => {
+    getPosts(route.params.communityID).then((posts) => {
+      setPosts(posts);
+    });
+  });
 
   const communityID = route.params.communityID;
 
@@ -46,7 +40,7 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
     var elements = [];
     for(let i = 0; i< posts.length; i++){
       elements.push(
-        <PostTab key={posts[i].postID} action={() => { navigation.navigate('PostScreen', { postID: posts[i].postID, communityID: posts[i].communityID}) }}></PostTab>
+        <PostTab key={posts[i].id} action={() => { navigation.navigate('PostScreen', { postID: posts[i].id, communityID: route.params.communityID}) }}></PostTab>
       );
     }
     return elements;

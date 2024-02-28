@@ -1,7 +1,7 @@
 import { getDocs, collection, doc, getDoc, setDoc, query, addDoc} from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
 import { postConverter, Post } from "./data/Post";
-import { COMMUNITY_KEY, communityConverter } from "./data/Community";
+import Community, { COMMUNITY_KEY, communityConverter } from "./data/Community";
 import Reply, { replyConverter } from "./data/Reply";
 
 // TODO: Should implement these functions in the future
@@ -12,9 +12,14 @@ export const getCommunities = async() => {
     const q = query(collection(FIREBASE_DB, COMMUNITY_KEY)).withConverter(communityConverter);
     try{
         const querySnapshot = await getDocs(q);
-        let communities: Array<any> = [];
+        let communities: Array<Community> = [];
         querySnapshot.forEach((doc : any) => {
-            communities.push(doc.data());
+            communities.push({
+                id: doc.id,
+                name: doc.data().name,
+                description: doc.data().description,
+                members: doc.data().members
+            });
         });
         return communities;
     }catch(e){
@@ -30,7 +35,14 @@ export const getPosts = async(communityId: string) => {
         const querySnapshot = await getDocs(q);
         let posts: Array<Post> = [];
         querySnapshot.forEach((doc : any) => {
-            posts.push(doc.data());
+            posts.push({
+                id: doc.id,
+                title: doc.data().title,
+                content: doc.data().content,
+                user: doc.data().user,
+                upVotes: doc.data().upVotes,
+                downVotes: doc.data().downVotes
+            })
         });
         return posts;
     }catch(e){
@@ -46,7 +58,14 @@ export const getReplies = async(postId: string) => {
         const querySnapshot = await getDocs(q);
         let replies: Array<Reply> = [];
         querySnapshot.forEach((doc : any) => {
-            replies.push(doc.data());
+            replies.push({
+                id: doc.id,
+                postId: doc.data().postId,
+                user: doc.data().user,
+                content: doc.data().content,
+                upVotes: doc.data().upVotes,
+                downVotes: doc.data().downVotes
+            });
         });
         return replies;
     }catch(e){
@@ -57,11 +76,23 @@ export const getReplies = async(postId: string) => {
 
 export const createPost = async(communityId: string, title: string, content: string, user: any) => {
     const communityRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId);
-    await addDoc(collection(communityRef, "posts"), new Post(title, content, user, 0, 0));
+    await addDoc(collection(communityRef, "posts"), {
+        title: title,
+        content: content,
+        user: user,
+        upVotes: 0,
+        downVotes: 0
+    });
 }
 
 export const createReply = async(postId: string, content: string, user: any) => {
     const postRef = doc(FIREBASE_DB, postId);
-    await addDoc(collection(postRef, "replies"), new Reply(postId, user, content, 0, 0));
+    await addDoc(collection(postRef, "replies"), {
+        postId: postId,
+        user: user,
+        content: content,
+        upVotes: 0,
+        downVotes: 0
+    });
 }
 

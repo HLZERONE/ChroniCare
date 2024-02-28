@@ -1,10 +1,12 @@
 export const COMMUNITY_KEY = "Community";
 
 class Community {
+    id: string;
     name: string;
     description: string;
     members: number;
-    constructor(name: string, description: string, members: number) {
+    constructor(id: string, name: string, description: string, members: number) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.members = members;
@@ -22,7 +24,7 @@ export const communityConverter = {
     },
     fromFirestore: (snapshot: any) => {
         const data = snapshot.data();
-        return new Community(data.name, data.description, data.members);
+        return new Community(data.id, data.name, data.description, data.members);
     }
 };
 

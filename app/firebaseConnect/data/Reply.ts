@@ -3,13 +3,15 @@ import { User } from "./User";
 export const REPLY_KEY = "Reply";
 
 class Reply {
+    id: string;
     postId: string;
     user: User;
     content: string;
     upVotes: number;
     downVotes: number;
 
-    constructor(postId: string, user: User, content: string, upVotes: number, downVotes: number) {
+    constructor(id: string, postId: string, user: User, content: string, upVotes: number, downVotes: number) {
+        this.id = id;
         this.postId = postId;
         this.user = user;
         this.content = content;
@@ -30,7 +32,7 @@ export const replyConverter = {
     },
     fromFirestore: (snapshot: any, options: any): Reply => {
         const data = snapshot.data(options);
-        return new Reply(data.postId, data.user, data.content, data.upVotes, data.downVotes);
+        return new Reply(data.id, data.postId, data.user, data.content, data.upVotes, data.downVotes);
     }
 }
 

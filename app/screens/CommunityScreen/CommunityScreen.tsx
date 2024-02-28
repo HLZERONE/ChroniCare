@@ -28,7 +28,8 @@ const Community = ({navigation}: Props) => {
       console.log("Error getting communities: " + e);
     });
     return () => {};
-  });
+  // We might need to add a dependency array here, but I'm not sure what it would be
+  }, []);
   
   //need to call function to download the joined states of each card
 
@@ -57,7 +58,7 @@ const Community = ({navigation}: Props) => {
           {
             communities.map((community: CommunityModel, index: number) => {
               return (
-                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {communityID: community.name})}} community={community} key={index}></CommunityTab>
+                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {communityID: community.id})}} community={community} key={index}></CommunityTab>
               );
             })
           }
