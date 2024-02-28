@@ -58,7 +58,7 @@ const Community = ({navigation}: Props) => {
           {
             communities.map((community: CommunityModel, index: number) => {
               return (
-                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {communityID: community.id})}} community={community} key={index}></CommunityTab>
+                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {community: community})}} community={community} key={index}></CommunityTab>
               );
             })
           }

@@ -1,8 +1,13 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native"
+import { Post } from "../../firebaseConnect/data/Post";
 
+interface PostTabProps {
+    post: Post;
+    communityID: string;
+    action: ()=>void;
+}
 
-
-const PostTab = (props:any)=>{
+const PostTab = ({post, communityID, action}: PostTabProps)=>{
     const likeButton = require('../../../assets/likeButton.png');
     const dislikeButton = require('../../../assets/dislikeButton.png')
 
@@ -13,12 +18,16 @@ const PostTab = (props:any)=>{
     const handleDisLike = ()=>{
         console.log("Dislike button pressed")
     };
+
+    const getWrappedContent = (content: string) => {
+        return content.length > 50 ? content.substring(0, 50) + "..." : content;
+    }
     
     return(
-        <Pressable onPress={props.action}>
+        <Pressable onPress={action}>
             <View style={styles.tabcontainer}>
-                <Text>This is the First Post</Text>
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et</Text>
+                <Text>{ post.title }</Text>
+                <Text>{ getWrappedContent(post.content) }</Text>
                 <View style={styles.bottomArea}>
                     <View style={styles.likeAndDislike}>
                         <Pressable onPress={handleLike}>
@@ -30,7 +39,7 @@ const PostTab = (props:any)=>{
                         <Image source={dislikeButton} style={styles.likebutton}></Image>
                         </Pressable>
                     </View>
-                        <Text>9 Responses</Text>
+                        <Text> { post.replyCount } Responses</Text>
                 </View>
             </View>
     </Pressable>

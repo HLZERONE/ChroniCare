@@ -1,16 +1,16 @@
-import { User } from "./User";
+import { User, regularUser } from "./User";
 
 export const REPLY_KEY = "Reply";
 
 class Reply {
     id: string;
     postId: string;
-    user: User;
+    user: regularUser;
     content: string;
     upVotes: number;
     downVotes: number;
 
-    constructor(id: string, postId: string, user: User, content: string, upVotes: number, downVotes: number) {
+    constructor(id: string, postId: string, user: regularUser, content: string, upVotes: number, downVotes: number) {
         this.id = id;
         this.postId = postId;
         this.user = user;

@@ -1,17 +1,34 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ScrollView, TextInput, View, Text, Pressable, StyleSheet } from "react-native"
+import { createPost } from "../../firebaseConnect/Forum";
+import { curUserInfo } from "../../firebaseConnect/CurrentUserInfo";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 
+interface CreatePostPageRouteParams {
+    cummunityID: string;
+}
 
 const CreatePostPage = () =>{
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const navigation = useNavigation();
+    const route = useRoute<RouteProp<{ params: CreatePostPageRouteParams }, 'params'>>();
+    const {cummunityID} = route.params;
+
+    const onSubmit = () => {
+        createPost(cummunityID, title, content, curUserInfo).then(() => {
+            navigation.goBack();
+        }).catch((e) => {
+            console.log("Error creating post: " + e);
+        });
+    }
 
     return(
         <ScrollView style={{backgroundColor: 'rgba(117, 196, 205, 0.19)'}}>
             <View style={styles.headerView}>
             <Text >CommunityName</Text>
             <Pressable style={styles.postButton} 
-            onPress={()=>{console.log('postPressed')}}>
+            onPress={onSubmit}>
                 <Text style={styles.postText}>Post</Text>
             </Pressable>
             </View>

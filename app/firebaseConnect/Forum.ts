@@ -3,6 +3,7 @@ import { FIREBASE_DB } from "../../FirebaseConfig";
 import { postConverter, Post } from "./data/Post";
 import Community, { COMMUNITY_KEY, communityConverter } from "./data/Community";
 import Reply, { replyConverter } from "./data/Reply";
+import { User, regularUser, regularUserConverter } from "./data/User";
 
 // TODO: Should implement these functions in the future
 //  - getJoinedCommunitiesByUser
@@ -41,7 +42,9 @@ export const getPosts = async(communityId: string) => {
                 content: doc.data().content,
                 user: doc.data().user,
                 upVotes: doc.data().upVotes,
-                downVotes: doc.data().downVotes
+                downVotes: doc.data().downVotes,
+                replies: doc.data().replies,
+                replyCount: doc.data().replies.length
             })
         });
         return posts;
@@ -74,22 +77,23 @@ export const getReplies = async(postId: string) => {
     };
 }
 
-export const createPost = async(communityId: string, title: string, content: string, user: any) => {
+export const createPost = async(communityId: string, title: string, content: string, user: regularUser) => {
     const communityRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId);
     await addDoc(collection(communityRef, "posts"), {
         title: title,
         content: content,
-        user: user,
+        user: regularUserConverter.toFirestore(user),
+        replies: [],
         upVotes: 0,
         downVotes: 0
     });
 }
 
-export const createReply = async(postId: string, content: string, user: any) => {
+export const createReply = async(postId: string, content: string, user: regularUser) => {
     const postRef = doc(FIREBASE_DB, postId);
     await addDoc(collection(postRef, "replies"), {
         postId: postId,
-        user: user,
+        user: regularUserConverter.toFirestore(user),
         content: content,
         upVotes: 0,
         downVotes: 0

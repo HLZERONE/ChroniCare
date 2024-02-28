@@ -1,4 +1,4 @@
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button, Pressable } from 'react-native';
 import { CommunityStackNavList } from './CommunityTypes';
@@ -27,24 +27,13 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const img = require('../../../assets/favicon.png');
   const plus = require('../../../assets/plus.png');
+  const community = route.params.community
 
-  useLayoutEffect(() => {
-    getPosts(route.params.communityID).then((posts) => {
+  useFocusEffect(() => {
+    getPosts(community.id).then((posts) => {
       setPosts(posts);
     });
   });
-
-  const communityID = route.params.communityID;
-
-  const renderItem = () =>{
-    var elements = [];
-    for(let i = 0; i< posts.length; i++){
-      elements.push(
-        <PostTab key={posts[i].id} action={() => { navigation.navigate('PostScreen', { postID: posts[i].id, communityID: route.params.communityID}) }}></PostTab>
-      );
-    }
-    return elements;
-  }
 
   return (
     <View
@@ -54,16 +43,22 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
         {/* first row */}
         <View style={styles.headerArea}>
           <Image source={img} resizeMode="contain"></Image>
-          <Text style={styles.title}>{communityID}</Text>
-          <Text style={styles.memberNum}>1563 members</Text>
+          <Text style={styles.title}>{community.name}</Text>
+          <Text style={styles.memberNum}>{ community.members }</Text>
           <JoinButton ifJoined={true}></JoinButton>
         </View>
         <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
         <View>
-          {renderItem()}
+          {posts.map((post: Post) => {
+            return (
+              <PostTab post={post} key={post.id} communityID={community.id} 
+              action={() => navigation.navigate('PostScreen', {post: post, communityID: community.id})}></PostTab>
+            );
+          })
+          }
         </View>
       </ScrollView>
-          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunityID: '001'})}}>
+          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunityID: community.id})}}>
             <Image source={plus} style={styles.plusButton}></Image>
           </Pressable>
     </View>
