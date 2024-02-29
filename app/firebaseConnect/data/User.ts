@@ -21,6 +21,10 @@ export class regularUser implements RegularUser{
         this.diseases.push(name);
     }
     
+    get fullName(){
+        return this.firstName + ' ' + this.lastName;
+    }
+
     toString() {
         return this.email + ', ' + this.firstName + ', ' + this.lastName;
     }

@@ -1,6 +1,6 @@
-import { getDocs, collection, doc, getDoc, setDoc, query, addDoc} from "firebase/firestore";
+import { getDocs, collection, doc, getDoc, setDoc, query, addDoc, runTransaction} from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
-import { postConverter, Post } from "./data/Post";
+import { postConverter, Post, POST_KEY } from "./data/Post";
 import Community, { COMMUNITY_KEY, communityConverter } from "./data/Community";
 import Reply, { replyConverter } from "./data/Reply";
 import { User, regularUser, regularUserConverter } from "./data/User";
@@ -29,6 +29,29 @@ export const getCommunities = async() => {
     }
 }
 
+export const getPost = async(communityId: string, postId: string): Promise<Post> => {
+    const postRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId, POST_KEY, postId);
+    try{
+        const postDoc = await getDoc(postRef);
+        if(postDoc.exists()){
+            return {
+                id: postDoc.id,
+                title: postDoc.data().title,
+                content: postDoc.data().content,
+                user: postDoc.data().user,
+                upVotes: postDoc.data().upVotes,
+                downVotes: postDoc.data().downVotes,
+                replyCount: postDoc.data().replyCount
+            }
+        }else{
+            throw new Error("Post not found");
+        }
+    }catch(e){
+        console.log("getPost error: "+e);
+        throw e;
+    }
+}
+
 export const getPosts = async(communityId: string) => {
     const communityRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId);
     const q = query(collection(communityRef, "posts")).withConverter(postConverter);
@@ -43,8 +66,7 @@ export const getPosts = async(communityId: string) => {
                 user: doc.data().user,
                 upVotes: doc.data().upVotes,
                 downVotes: doc.data().downVotes,
-                replies: doc.data().replies,
-                replyCount: doc.data().replies.length
+                replyCount: doc.data().replyCount
             })
         });
         return posts;
@@ -54,12 +76,12 @@ export const getPosts = async(communityId: string) => {
     };
 }
 
-export const getReplies = async(postId: string) => {
-    const postRef = doc(FIREBASE_DB, postId);
+export const getReplies = async(communityId: string, postId: string): Promise<Reply[]> => {
+    const postRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId, POST_KEY, postId);
     const q = query(collection(postRef, "replies")).withConverter(replyConverter);
     try{
         const querySnapshot = await getDocs(q);
-        let replies: Array<Reply> = [];
+        const replies: Array<Reply> = [];
         querySnapshot.forEach((doc : any) => {
             replies.push({
                 id: doc.id,
@@ -83,20 +105,37 @@ export const createPost = async(communityId: string, title: string, content: str
         title: title,
         content: content,
         user: regularUserConverter.toFirestore(user),
-        replies: [],
         upVotes: 0,
         downVotes: 0
     });
 }
 
-export const createReply = async(postId: string, content: string, user: regularUser) => {
-    const postRef = doc(FIREBASE_DB, postId);
-    await addDoc(collection(postRef, "replies"), {
-        postId: postId,
-        user: regularUserConverter.toFirestore(user),
-        content: content,
-        upVotes: 0,
-        downVotes: 0
+export const createReply = async(communityId: string, postId: string, content: string, user: regularUser) => {
+    const postRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId, POST_KEY, postId);
+    const newReplyRef = collection(postRef, "replies");
+
+    // Start a Firestore transaction to ensure atomicity
+    return await runTransaction(FIREBASE_DB, async (transaction) => {
+        // Add the new reply
+        const newReplyDocRef = await addDoc(newReplyRef, {
+            postId: postId,
+            user: regularUserConverter.toFirestore(user),
+            content: content,
+            upVotes: 0,
+            downVotes: 0
+        });
+
+        // Get the current post document
+        const postDoc = await transaction.get(postRef);
+        if (!postDoc.exists()) {
+            throw "Post does not exist!";
+        }
+
+        // Increment the replyCount in the post document
+        const currentReplyCount = postDoc.data().replyCount || 0;
+        transaction.update(postRef, { replyCount: currentReplyCount + 1 });
+
+        // Return the newly created reply object
+        return new Reply(newReplyDocRef.id, postId, user, content, 0, 0);
     });
 }
-

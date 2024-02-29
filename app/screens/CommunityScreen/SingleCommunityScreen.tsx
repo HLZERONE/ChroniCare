@@ -1,5 +1,5 @@
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button, Pressable } from 'react-native';
 import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
@@ -29,11 +29,11 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
   const plus = require('../../../assets/plus.png');
   const community = route.params.community
 
-  useFocusEffect(() => {
+  useFocusEffect(useCallback(() => {
     getPosts(community.id).then((posts) => {
       setPosts(posts);
     });
-  });
+  }, []));
 
   return (
     <View
@@ -44,7 +44,7 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
         <View style={styles.headerArea}>
           <Image source={img} resizeMode="contain"></Image>
           <Text style={styles.title}>{community.name}</Text>
-          <Text style={styles.memberNum}>{ community.members }</Text>
+          <Text style={styles.memberNum}>{ community.members } members</Text>
           <JoinButton ifJoined={true}></JoinButton>
         </View>
         <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
@@ -52,7 +52,7 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
           {posts.map((post: Post) => {
             return (
               <PostTab post={post} key={post.id} communityID={community.id} 
-              action={() => navigation.navigate('PostScreen', {post: post, communityID: community.id})}></PostTab>
+              action={() => navigation.navigate('PostScreen', {post: post, community: community})}></PostTab>
             );
           })
           }

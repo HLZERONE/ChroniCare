@@ -1,7 +1,7 @@
 import Reply from "./Reply";
 import { User } from "./User";
 
-export const POST_KEY = "Post";
+export const POST_KEY = "posts";
 
 export class Post {
     id: string;
@@ -10,19 +10,15 @@ export class Post {
     user: User;
     upVotes: number = 0;
     downVotes: number = 0;
-    replies: Array<Reply> = [];
-    constructor(_id: string, _title: string, _content: string, _user: User, _upVotes: number, _downVotes: number, _replies: Array<Reply> = []){
+    replyCount: number = 0;
+    constructor(_id: string, _title: string, _content: string, _user: User, _upVotes: number, _downVotes: number, _replyCount: number = 0){
         this.id = _id;
         this.title = _title;
         this.content = _content;
         this.user = _user;
         this.upVotes = _upVotes;
         this.downVotes = _downVotes;
-        this.replies = _replies;
-    }
-    
-    public get replyCount(): number {
-        return this.replies.length;
+        this.replyCount = _replyCount;
     }
     
     toString() {
@@ -37,7 +33,6 @@ export const postConverter = {
             title: p.title,
             content: p.content,
             user: p.user,
-            replies: p.replies,
             upVotes: p.upVotes,
             downVotes: p.downVotes,
             };
@@ -45,6 +40,6 @@ export const postConverter = {
     },
     fromFirestore: (snapshot: any, options: any): Post => {
         const data = snapshot.data(options);
-        return new Post(data.id, data.title, data.content, data.user, data.upVotes, data.downVotes, data.replies);
+        return new Post(data.id, data.title, data.content, data.user, data.upVotes, data.downVotes, data.replyCount);
     }
 }
