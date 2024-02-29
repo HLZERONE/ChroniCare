@@ -5,9 +5,9 @@ export class regularUser implements RegularUser{
     email: String;
     firstName: String;
     lastName: String;
-    address: String;
-    zip: String;
-    diseases: String[];
+    address: String = "";
+    zip: String = "";
+    diseases: String[] = [];
     constructor(email: String, firstName: String, lastName: String, address: String, zip: String, diseases: String[]){
         this.email = email;
         this.firstName = firstName;
@@ -21,8 +21,8 @@ export class regularUser implements RegularUser{
         this.diseases.push(name);
     }
     
-    toString() {
-        return this.email + ', ' + this.firstName + ', ' + this.lastName;
+    getUserName() {
+        return this.firstName + ' ' + this.lastName;
     }
 }
 

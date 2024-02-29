@@ -10,10 +10,10 @@ OUTPUT: a Symptom class that contains these information with auto generate id
 */
 export const addSymptomInfo = async(
     _diseaseName: string,
-    _notes: string,
     _severity: number,
     _duration: number,
-    _date: Date) => {
+    _date: Date=new Date(),
+    _notes: string="") => {
     //const symptomRef = doc(FIREBASE_DB, SYMPTOM_KEY, symptom.id).withConverter(symptomConverter);
     //await setDoc(symptomRef, symptom);
 
@@ -26,7 +26,7 @@ export const addSymptomInfo = async(
         date: _date,
       });
 
-    return new Symptom(symptomRef.id, currentUser?.uid, _diseaseName, _notes, _severity, _duration, _date);
+    return new Symptom(symptomRef.id, currentUser?.uid, _diseaseName, _severity, _duration, _date, _notes);
 }
 
 /*
@@ -56,6 +56,30 @@ export const getAllSymptomInfoByUser = async(userId: any) =>{
         return symptoms;
     }catch(e){
         console.log("getAllSymptomInfoByUser error: "+e);
+        throw e;
+    }
+}
+
+
+/*
+FUNCTION: get all symptom info related to the provided userId within the time range 
+INPUT: UserId, startDate, endDate(optional, default is today)
+RETURN: Array<Symptom>
+*/
+export const getSymptomByDateRange = async(userId: any, startDate: Date, endDate: Date = new Date()) =>{
+    const q = query(collection(FIREBASE_DB, SYMPTOM_KEY)
+    , where("userId", "==", userId)
+    , where("date", ">=", startDate)
+    , where("date", "<=", endDate)).withConverter(symptomConverter);
+    try{
+        const querySnapshot = await getDocs(q);
+        let symptoms: Array<Symptom> = [];
+        querySnapshot.forEach((doc : any) => {
+            symptoms.push(doc.data());
+        });
+        return symptoms;
+    }catch(e){
+        console.log("getSymptomByDateRange error: "+e);
         throw e;
     }
 }

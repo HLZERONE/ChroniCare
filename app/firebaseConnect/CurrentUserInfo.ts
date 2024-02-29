@@ -11,7 +11,7 @@ export const curUserInfo: regularUser = new regularUser("","","","","", []);
 FUNCTION: get user info by id
 INPUT: user id
 RETURN: Promise<regularUser>
-ATTENCTION: May throw error if user id not exists
+ATTENTION: May throw an error if the user id does not exist
 */
 export const getUserInfo = async(id: any) =>{
   const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter);
