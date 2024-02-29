@@ -40,7 +40,7 @@ const PostScreen = ({navigation, route }: Props)=>{
 
     return(
         <View  style={styles.container}>
-            <ScrollView>
+            <ScrollView style={{width: "100%"}}>
                 <View style={styles.headerArea}>
                     <Image source={img} resizeMode="contain"></Image>
                     <Text style={styles.title}>{community.name}</Text>
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
     headerArea: {
       paddingLeft:'2%',
       flexDirection: 'row',
-      gap: 10
+      gap: 10,
+      width: "100%"
     },
     title: {
       fontWeight: '600',
