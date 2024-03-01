@@ -79,7 +79,7 @@ export const getSymptomByDateRange = async(userId: any, startDate: Date, endDate
         });
         return symptoms;
     }catch(e){
-        console.log("getSymptomByDateRange error: "+e);
+        console.log("getSymptomByDateRange error: " + e);
         throw e;
     }
 }
