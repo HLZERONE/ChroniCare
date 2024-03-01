@@ -21,8 +21,12 @@ export class regularUser implements RegularUser{
         this.diseases.push(name);
     }
     
-    getUserName() {
+    get fullName(){
         return this.firstName + ' ' + this.lastName;
+    }
+
+    toString() {
+        return this.email + ', ' + this.firstName + ', ' + this.lastName;
     }
 }
 
@@ -43,7 +47,7 @@ export const regularUserConverter = {
     }
 }
 
-interface User{
+export interface User{
     email : String;
     firstName: String;
     lastName : String;

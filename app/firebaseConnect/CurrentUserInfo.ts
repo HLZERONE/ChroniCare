@@ -1,11 +1,19 @@
 import { doc, getDoc } from "firebase/firestore";
 import {FIREBASE_AUTH, FIREBASE_DB} from "../../FirebaseConfig"
 import {USER_KEY, regularUser, regularUserConverter } from "./data/User";
+import { onAuthStateChanged } from "firebase/auth";
 
 
-export const currentUser = FIREBASE_AUTH.currentUser;
+export let currentUser = FIREBASE_AUTH.currentUser;
 export const curUserInfo: regularUser = new regularUser("","","","","", []);
 
+
+onAuthStateChanged(FIREBASE_AUTH, (user) => {
+  if (user) {
+    currentUser = user;
+    addCurrentUserInfo();
+  }
+});
 
 /*
 FUNCTION: get user info by id

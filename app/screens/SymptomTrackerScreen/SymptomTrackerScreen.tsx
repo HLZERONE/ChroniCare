@@ -4,49 +4,40 @@ import CurrentSymptoms from "../../components/SymptomTracker/CurrentSymptoms";
 import AddSymptomModal from "../../components/SymptomTracker/AddSymptomModal";
 import Symptom from "../../firebaseConnect/data/Symptom";
 import PastSymptoms from "../../components/SymptomTracker/PastSymptoms/PastSymptoms";
+import { addSymptomInfo, batchUpdateSymptomInfo, getAllSymptomInfoByUser, updateSymptomInfo } from "../../firebaseConnect/SymptomInfo";
+import { currentUser } from "../../firebaseConnect/CurrentUserInfo";
+
+export interface NewSymptom {
+	diseaseName: string;
+	duration: number | null;
+	date: Date;
+	severity: number;
+	notes: string;
+}
 
 const SymptomTracker = () => {
 	const [addSymptomMode, setAddSymptomMode] = useState(false);
 	const [symptoms, setSymptoms] = useState<Symptom[]>([]);
 
 	useEffect(() => {
-		setSymptoms([
-			{
-				id: "1",
-				userId: "1",
-				diseaseName: "Fever",
-				duration: 1,
-				date: new Date(),
-				severity: 5,
-				notes: "I have a fever",
-			},
-			{
-				id: "2",
-				userId: "1",
-				diseaseName: "Headache",
-				duration: 1,
-				date: new Date(),
-				severity: 3,
-				notes: "I have a headache",
-			},
-			{
-				id: "3",
-				userId: "1",
-				diseaseName: "Cough",
-				duration: 1,
-				date: new Date(),
-				severity: 2,
-				notes: "I have a cough",
-			}
-		]);
+		// Fetch symptoms from database
+		getAllSymptomInfoByUser(currentUser?.uid).then((symptoms) => {
+			setSymptoms(symptoms);
+		});
+		return () => {};
 	}, []);
 
-	const handleSaveAddSymptom = (symptom: Symptom) => {
-		setSymptoms([...symptoms, symptom]);
-		setAddSymptomMode(false);
+	const handleSaveAddSymptom = (newSymptom: NewSymptom) => {
+		addSymptomInfo(newSymptom.diseaseName, newSymptom.notes, newSymptom.severity, 1, newSymptom.date).then((symptom) => {
+			setSymptoms([...symptoms, symptom]);
+		}).finally(() => {
+			setAddSymptomMode(false);
+		});
 	};
 
 	const handleChangeCurrentSymptoms = (symptoms: Symptom[]) => {
+		// Update symptoms in database
+		batchUpdateSymptomInfo(symptoms);
 		setSymptoms(symptoms);
 	};
 

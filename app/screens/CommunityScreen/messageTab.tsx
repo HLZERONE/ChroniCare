@@ -6,7 +6,7 @@ const MessageTab = (props:any)=>{
     const img = require('../../../assets/favicon.png')
     const likeButton = require('../../../assets/likeButton.png');
     const dislikeButton = require('../../../assets/dislikeButton.png')
-    const {posterAvatarURL, poster, message} = props
+    const {action, poster, reply} = props
 
     const handleLike = ()=>{
         console.log("like button pressed")
@@ -20,10 +20,10 @@ const MessageTab = (props:any)=>{
             <View style={styles.tabcontainer}>
                 <View style={styles.headerArea}>
                     <Image source={img} style={styles.userImage}></Image>
-                    <Text>{poster}</Text>
+                    <Text>{poster.name}</Text>
                 </View>
                 <Text>
-                    {message}
+                    {reply.content}
                 </Text>
                 <View style={styles.bottomArea}>
                     <View style={styles.likeAndDislike}>
@@ -38,7 +38,7 @@ const MessageTab = (props:any)=>{
                         </Pressable>
                     </View>
                     
-                        <Pressable onPress={()=>{}} >
+                        <Pressable onPress={action} style={styles.pressableBox} >
                             <Text>Reply</Text>
                         </Pressable>
                 </View>
@@ -97,4 +97,11 @@ const styles = StyleSheet.create({
         alignItems:'center',
         gap:3,
     },
+    pressableBox:{
+        width:50,
+        height:25,
+        alignItems:'center',
+        justifyContent:'center',
+
+    }
 })

@@ -39,6 +39,15 @@ const EditSymptomModal: React.FC<EditSymptomModalProps> = ({
 		>
 			<View style={styles.modalView}>
 				<Text style={styles.title}>Edit Symptom</Text>
+				<Text style={styles.inputTitle}>Symptom Name</Text>
+				<TextInput
+					style={styles.input}
+					onChangeText={(text) =>
+						setEditedSymptom({ ...editedSymptom, diseaseName: text })
+					}
+					value={editedSymptom.diseaseName}
+					placeholder="Add symptom name"
+				/>
 				<Text style={styles.inputTitle}>Pain Level</Text>
 				<View style={styles.painLevelNumber}>
 					<Slider
@@ -83,14 +92,8 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 	symptom,
 }) => {
 	const [editMode, setEditMode] = useState(false);
-	const [singleSymptom, setSingleSymptom] = useState(symptom);
 
 	const handleEditSave = (newSymptom: Symptom) => {
-		setSingleSymptom({
-			...singleSymptom,
-			severity: newSymptom.severity,
-			notes: newSymptom.notes,
-		});
 		onChange(newSymptom);
 		setEditMode(false);
 	};
@@ -104,7 +107,7 @@ const SingleSymptom: React.FC<SymptomProps> = ({
 	return (
 		<View style={styles.symptomContainer}>
 			<View style={styles.symptomTitleRow}>
-				<Text style={styles.symptomName}>{singleSymptom.diseaseName}</Text>
+				<Text style={styles.symptomName}>{symptom.diseaseName}</Text>
 				<FontAwesome
 					name="pencil-square-o"
 					size={24}
@@ -154,7 +157,7 @@ const CurrentSymptoms: React.FC<CurrentSymptomsProps> = ({
 			[
 				...symptomValues.filter((symptom) => symptom.id !== newSymptom.id),
 				newSymptom,
-			].sort((a, b) => parseInt(a.id) - parseInt(b.id))
+			].sort((a, b) => a.diseaseName.localeCompare(b.diseaseName))
 		);
 		onChange(symptomValues);
 	};

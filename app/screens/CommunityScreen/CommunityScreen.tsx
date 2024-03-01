@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
 import { CommunityStackNavList } from './CommunityTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import CommunityModel from '../../firebaseConnect/data/Community';
+import { getCommunities } from '../../firebaseConnect/Forum';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
@@ -14,15 +16,31 @@ type Props = {
 
 const Community = ({navigation}: Props) => {
   const [searchValue, setSearchValue] = useState('');
+  const [communities, setCommunities] = useState<CommunityModel[]>([]);
 
+
+  useLayoutEffect(() => {
+    // populate the communities
+    getCommunities().then((communities: CommunityModel[]) => {
+      // only show the first 2 communities for development purposes
+      setCommunities(communities.slice(0, 2));
+    }).catch((e) => {
+      console.log("Error getting communities: " + e);
+    });
+    return () => {};
+  // We might need to add a dependency array here, but I'm not sure what it would be
+  }, []);
+  
   //need to call function to download the joined states of each card
 
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
   };
   return (
+    <ScrollView>
     <View
       style={styles.container}>
+
       <Text style={styles.Communities}>Communities</Text>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={30} color="#4D4D99" style={styles.searchIcon} />
@@ -37,13 +55,18 @@ const Community = ({navigation}: Props) => {
       <Text style={styles.trending}>Trending</Text>
       <View style={styles.horizontalScrollBox}>
         <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
-
+          {
+            communities.map((community: CommunityModel, index: number) => {
+              return (
+                <CommunityTab ifJoined={false} action={() => {navigation.navigate('SingleCommunityScreen', {community: community})}} community={community} key={index}></CommunityTab>
+              );
+            })
+          }
+          {/* <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab> */}
         </ScrollView>
       </View>
 
       <Text style={styles.trending}>Joined Communities</Text>
-        <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
           <View style={styles.makeRow}>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
@@ -58,22 +81,22 @@ const Community = ({navigation}: Props) => {
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
-        </ScrollView>
-
 
     </View>
+    </ScrollView>
+
   );
 };
 export default Community;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
-    height: '100%',
+
     position: 'relative',
     backgroundColor: 'rgba(117, 196, 205, 0.19)',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent:'center'
   },
   Communities: {
     width: '90%',
@@ -123,7 +146,6 @@ const styles = StyleSheet.create({
   verticalScrollLayout:{
     flex:1,
     flexDirection:'column',
-    width:"90%",
   },
   makeRow:{flexDirection:'row', alignItems:'center',}
 })

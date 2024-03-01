@@ -2,11 +2,12 @@ import { useState } from "react";
 import Symptom from "../../firebaseConnect/data/Symptom";
 import Slider from "@react-native-community/slider";
 import { View, Text, StyleSheet, Modal, TextInput, Button } from "react-native";
+import { NewSymptom } from "../../screens/SymptomTrackerScreen/SymptomTrackerScreen";
 
 interface AddSympModalProps {
 	visible: boolean;
 	onClose: () => void;
-	onSave: (symptom: Symptom) => void;
+	onSave: (symptom: NewSymptom) => void;
 }
 
 const AddSymptomModal: React.FC<AddSympModalProps> = ({
@@ -29,8 +30,6 @@ const AddSymptomModal: React.FC<AddSympModalProps> = ({
 			return;
 		}
 		onSave({
-			id: Math.random().toString(),
-			userId: "1",
 			diseaseName: symptomName,
 			duration: duration || null,
 			date: new Date(),
