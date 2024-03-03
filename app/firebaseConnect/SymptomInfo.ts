@@ -10,13 +10,10 @@ OUTPUT: a Symptom class that contains these information with auto generate id
 */
 export const addSymptomInfo = async(
     _diseaseName: string,
+    _notes: string,
     _severity: number,
     _duration: number,
-    _date: Date=new Date(),
-    _notes: string="") => {
-    //const symptomRef = doc(FIREBASE_DB, SYMPTOM_KEY, symptom.id).withConverter(symptomConverter);
-    //await setDoc(symptomRef, symptom);
-
+    _date: Date) => {
     const symptomRef = await addDoc(collection(FIREBASE_DB, SYMPTOM_KEY), {
         userId: currentUser?.uid,
         diseaseName: _diseaseName,
@@ -26,7 +23,7 @@ export const addSymptomInfo = async(
         date: _date,
       });
 
-    return new Symptom(symptomRef.id, currentUser?.uid, _diseaseName, _severity, _duration, _date, _notes);
+    return new Symptom(symptomRef.id, currentUser?.uid, _diseaseName, _notes, _severity, _duration, _date);
 }
 
 /*
@@ -93,4 +90,3 @@ export const getSymptomByDateRange = async(userId: any, startDate: Date, endDate
         throw e;
     }
 }
-

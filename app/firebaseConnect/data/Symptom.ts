@@ -12,10 +12,10 @@ export class Symptom {
 		id: any,
 		userId : any,
 		diseaseName: string,
+		notes: string,
 		severity: number,
 		duration: number,
-		date: Date = new Date(),
-		notes: string = "",
+		date: Date
 	) {
 		this.id = id;
 		this.userId = userId;
@@ -36,10 +36,10 @@ export const symptomConverter = {
 		return {
 			userId: s.userId,
 			diseaseName: s.diseaseName,
+			notes: s.notes,
 			severity: s.severity,
 			duration: s.duration,
 			date: s.date,
-			notes: s.notes,
 		};
 	},
 	fromFirestore: (snapshot: any) => {

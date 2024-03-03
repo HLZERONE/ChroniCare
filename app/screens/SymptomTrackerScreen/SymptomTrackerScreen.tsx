@@ -28,7 +28,7 @@ const SymptomTracker = () => {
 	}, []);
 
 	const handleSaveAddSymptom = (newSymptom: NewSymptom) => {
-		addSymptomInfo(newSymptom.diseaseName, newSymptom.severity, 1, newSymptom.date, newSymptom.notes).then((symptom) => {
+		addSymptomInfo(newSymptom.diseaseName, newSymptom.notes, newSymptom.severity, 1, newSymptom.date).then((symptom) => {
 			setSymptoms([...symptoms, symptom]);
 		}).finally(() => {
 			setAddSymptomMode(false);
