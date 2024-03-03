@@ -2,7 +2,6 @@ import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/build/Ionicons';
 import React, { useState } from 'react';
 import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
-import TabBar from '../../components/tabBar';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -31,7 +30,7 @@ const Dashboard = () => {
           />
         </View>
         <View style={styles.boxContainer}>
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('FindDoctor')}>
             <FontAwesome5 name="hospital" size={32} color="#E35F47" />
             <Text style={styles.boxText}>Find a Doctor</Text>
           </TouchableOpacity>
