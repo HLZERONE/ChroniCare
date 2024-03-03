@@ -10,7 +10,12 @@ const bottomTab = createBottomTabNavigator();
 
 function BottomTabNav() {
 	return (
-		<bottomTab.Navigator initialRouteName="dashboard">
+		<bottomTab.Navigator initialRouteName="dashboard"
+		screenOptions={{
+			headerShown: false,
+			tabBarStyle: { display: 'none' } // This hides the tab bar itself
+		}}
+		>
 			<bottomTab.Screen
 				name="Community"
 				component={CommunityScreen}

@@ -5,10 +5,12 @@ import { curUserInfo } from '../../firebaseConnect/CurrentUserInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import TabBar from "../../components/tabBar";
+import { useNavigation } from "@react-navigation/native";
 
 
 const Setting = () => {
-
+  const navigation = useNavigation();
   const handleEditProfile = () => {
     console.log('Edit Profile');
   };
@@ -65,7 +67,7 @@ const Setting = () => {
 ];
 
   return(  
-  <SafeAreaView style = {{flex: 1}}>
+  <View style = {{flex: 1}}>
   <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
           <Text style={styles.title}> <FontAwesome5 name="arrow-left" size={25} color="white" style= {{marginRight: 10}}/> Settings</Text>
@@ -137,7 +139,8 @@ const Setting = () => {
       <ChroniBlueButton name="Log Out" action={SignOut}></ChroniBlueButton>
       
   </ScrollView>
-</SafeAreaView>
+  <TabBar navigation={navigation} state={{ index: 4 }} />
+</View>
 )
 
 
@@ -146,11 +149,11 @@ const Setting = () => {
 
 const styles = StyleSheet.create({
 container: {
-paddingVertical: 24,
+
 },
 header: {
 
-marginBottom: 12,
+marginBottom: 10,
 },
 title: {
 fontSize: 32,

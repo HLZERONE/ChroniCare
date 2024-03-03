@@ -7,6 +7,7 @@ import { CommunityStackNavList } from './CommunityTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CommunityModel from '../../firebaseConnect/data/Community';
 import { getCommunities } from '../../firebaseConnect/Forum';
+import TabBar from '../../components/tabBar';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
@@ -37,6 +38,7 @@ const Community = ({navigation}: Props) => {
     setSearchValue(text);
   };
   return (
+    <View style={{flex: 1}}>
     <ScrollView>
     <View
       style={styles.container}>
@@ -81,9 +83,10 @@ const Community = ({navigation}: Props) => {
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
         </View>
-
     </View>
     </ScrollView>
+    <TabBar navigation={navigation} state={{index: 1}} />
+    </View>
 
   );
 };
