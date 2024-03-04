@@ -7,11 +7,16 @@ import { faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import TabBar from "../../components/tabBar";
 import { useNavigation } from "@react-navigation/native";
+import EditProfile from "./EditProfileScreen";
+import EditPassword from "./EditPassword";
+import PrivacyScreen from "./PrivacyScreen";
+import AboutUsScreen from "./AboutUsScreen";
 
 
 const Setting = () => {
   const navigation = useNavigation();
   const handleEditProfile = () => {
+    navigation.navigate('EditProfile');
     console.log('Edit Profile');
   };
 
@@ -28,15 +33,19 @@ const Setting = () => {
   };
 
   const handleChangePassword = () => {
+    navigation.navigate('EditPassword');
     console.log('Change Password');
   };
 
   const handlePrivacy = () => {
+    navigation.navigate('PrivacyScreen');
     console.log('Privacy');
   };
 
   const handleAboutUs = () => {
+    navigation.navigate('AboutUsScreen');
     console.log('About Us');
+
   };
   
   const handleLogout = () => {
@@ -49,7 +58,7 @@ const Setting = () => {
         header: 'Account',
         items:[
             { id: 'profile', icon: 'user', label: 'Edit Profile', type: 'select',},
-            { id: 'achievements', icon: 'star', label: 'View Achievements', type: 'select'},
+          
             { id: 'location', icon:'location-arrow', label: 'Turn On Location', type: 'toggle'},
             { id: 'notifications',icon: 'bell-o', label: 'Push Notifications', type: 'toggle'}
         ],
@@ -70,7 +79,7 @@ const Setting = () => {
   <View style = {{flex: 1}}>
   <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-          <Text style={styles.title}> <FontAwesome5 name="arrow-left" size={25} color="white" style= {{marginRight: 10}}/> Settings</Text>
+      <Text style={styles.title}>  Settings</Text>
       </View>
 
       {sections.map(({header, items}) => (
@@ -148,68 +157,64 @@ const Setting = () => {
 
 
 const styles = StyleSheet.create({
-container: {
-
-},
-header: {
-
-marginBottom: 10,
-},
-title: {
-fontSize: 32,
-fontWeight: '700',
-color: '#FFFFFF',
-marginBottom: 6,
-paddingTop: 131,
-paddingHorizontal: 10,
-paddingBottom: 9,
-backgroundColor: '#1EAFB3'
-},
-subtitle: {
-fontSize: 15, 
-fontWeight: '500', 
-color: '#929292',
-},
-section: {
-paddingTop: 12,
-},
-sectionHeader:{
-paddingHorizontal: 24, 
-paddingVertical: 8,
-},
-
-sectionHeaderText: {
-fontSize: 17, 
-fontWeight: '700', 
-color: '#000',
-textTransform: 'uppercase',
-},
-rowWrapper: {
-paddingLeft: 24,
-borderTopWidth: 1,
-borderColor: '#e3e3e3',
-backgroundColor: '#fff'
-},
-row: {
-height: 50,
-flexDirection: 'row',
-alignItems: 'center',
-justifyContent: 'flex-start',
-paddingRight: 24
-
-},
-rowLabel: {
-fontSize: 16,
-fontWeight: '400',
-color: '#000'
-},
-rowSpacer: {
-flex: 1,
-},
-rowValue: {
-fontSize: 17,
-color: '#616161',
-marginRight: 4,
-},
-});
-export default Setting;
+  container: {
+  paddingVertical: '6%',
+  },
+  header: {
+  
+  marginBottom: '3%',
+  },
+  title: {
+  fontSize: 32,
+  fontWeight: '700',
+  color: '#FFFFFF',
+  marginBottom: '1%',
+  paddingTop: "29%",
+  paddingHorizontal: '3%',
+  paddingBottom: '2%',
+  backgroundColor: '#1EAFB3'
+  },
+  subtitle: {
+  fontSize: 15, 
+  fontWeight: '500', 
+  color: '#929292',
+  },
+  section: {
+  paddingTop: '3%',
+  },
+  sectionHeader:{
+  paddingHorizontal: '6%', 
+  paddingVertical: '2%',
+  },
+  
+  sectionHeaderText: {
+  fontSize: 17, 
+  fontWeight: '700', 
+  color: '#000',
+  textTransform: 'uppercase',
+  },
+  rowWrapper: {
+  paddingLeft: '6%',
+  borderTopWidth: 1,
+  borderColor: '#e3e3e3',
+  backgroundColor: '#fff'
+  },
+  row: {
+  height: 50,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  paddingRight: '6%'
+  
+  },
+  rowLabel: {
+  fontSize: 16,
+  fontWeight: '400',
+  color: '#000'
+  },
+  rowSpacer: {
+  flex: 1,
+  },
+  
+  });
+  export default Setting;

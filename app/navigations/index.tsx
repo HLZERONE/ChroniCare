@@ -3,7 +3,7 @@ import React from "react";
 import CommunityScreen from "./CommunityNav";
 import DashboardScreen from "./DashboardNav";
 import ResourceScreen from "./ResourceNav";
-import SettingScreen from "./SettingNav";
+import SettingScreen from "./settingNav"
 import SymptomTrackerScreen from "./SymptomTrackerNav";
 
 const bottomTab = createBottomTabNavigator();
