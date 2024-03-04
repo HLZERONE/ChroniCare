@@ -3,7 +3,6 @@ import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from "reac
 
 export default function TabBar(props: any) {
     const { index } = props.state;
-  console.log(index)
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => props.navigation.navigate("Community")} style={styles.imageContianer}>

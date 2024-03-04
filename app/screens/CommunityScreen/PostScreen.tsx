@@ -11,6 +11,7 @@ import { Post } from "../../firebaseConnect/data/Post";
 import Reply from "../../firebaseConnect/data/Reply";
 
 
+
 type PostScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'CreateReplyPage'>;
 
 
@@ -59,7 +60,7 @@ const PostScreen = ({navigation, route }: Props)=>{
                   replies.map((reply) => {
                       return (
                           <MessageTab action={()=>{navigation.navigate('CreateReplyPage', {postIDReplyTo:post.id})}} poster={reply.user} 
-                          reply={reply} key={reply.id}>
+                          reply={reply} communityID={community.id} postID={post.id} key={reply.id}>
                           </MessageTab>
                       );
                   })

@@ -38,7 +38,7 @@ export const regularUserConverter = {
             lastName : rU.lastName,
             address: rU.address,
             zip: rU.zip,
-            diseases: rU.diseases
+            diseases: rU.diseases,
         };
     },
     fromFirestore: (snapshot: any, id: any) => {
