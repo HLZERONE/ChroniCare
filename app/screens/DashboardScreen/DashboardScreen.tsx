@@ -40,7 +40,7 @@ const Dashboard = () => {
             <Text style={styles.boxText}>Track Symptoms</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Resource' as never)}>
+          <TouchableOpacity style={[styles.box, {backgroundColor: '#E4F8EB'}]} onPress={() => navigation.navigate('Resource' as never)}>
             <MaterialIcons name="library-books" size={32} color="#117639" />
             <Text style={styles.boxText}>View Library</Text>
           </TouchableOpacity>

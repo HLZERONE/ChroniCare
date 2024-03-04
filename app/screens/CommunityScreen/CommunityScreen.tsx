@@ -38,7 +38,7 @@ const Community = ({navigation}: Props) => {
     setSearchValue(text);
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1 }}>
     <ScrollView>
     <View
       style={styles.container}>
