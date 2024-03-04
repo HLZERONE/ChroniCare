@@ -27,7 +27,6 @@ export const getUserInfo = async(id: any) =>{
       const snap = await getDoc(ref);
       if(snap.exists()){
           const user = snap.data();
-          console.log(user.toString());
           return user;
       }else{
           throw("No such document!");

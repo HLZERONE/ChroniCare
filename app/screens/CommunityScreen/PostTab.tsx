@@ -1,5 +1,9 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native"
 import { Post } from "../../firebaseConnect/data/Post";
+import { currentUser } from "../../firebaseConnect/CurrentUserInfo";
+import { upvoteDownvotePost } from "../../firebaseConnect/Forum";
+import { FontAwesome } from '@expo/vector-icons';
+import { useState } from "react";
 
 interface PostTabProps {
     post: Post;
@@ -8,15 +12,20 @@ interface PostTabProps {
 }
 
 const PostTab = ({post, communityID, action}: PostTabProps)=>{
-    const likeButton = require('../../../assets/likeButton.png');
-    const dislikeButton = require('../../../assets/dislikeButton.png')
+    const [userEngagement, setUserEngagement] = useState(post.userEngagement);
 
-    const handleLike = ()=>{
-        console.log("like button pressed")
+    const handleUpvote = () => {
+        post.upvote(currentUser!.uid);
+        upvoteDownvotePost(communityID, post);
+        setUserEngagement(post.userEngagement.copy);
+        // Update local state to trigger re-render
     };
 
-    const handleDisLike = ()=>{
-        console.log("Dislike button pressed")
+    const handleDownvote = () => {
+        post.downvote(currentUser!.uid);
+        upvoteDownvotePost(communityID, post);
+        setUserEngagement(post.userEngagement.copy);
+        // Update local state to trigger re-render
     };
 
     const getWrappedContent = (content: string) => {
@@ -30,13 +39,23 @@ const PostTab = ({post, communityID, action}: PostTabProps)=>{
                 <Text>{ getWrappedContent(post.content) }</Text>
                 <View style={styles.bottomArea}>
                     <View style={styles.likeAndDislike}>
-                        <Pressable onPress={handleLike}>
-                            <Image source={likeButton} style={styles.likebutton}></Image>
-
+                        <Pressable onPress={handleUpvote}>
+                            {
+                                userEngagement.isUpVoted(currentUser!.uid) ? 
+                                <FontAwesome name="thumbs-up" size={24} color="black" /> :
+                                <FontAwesome name="thumbs-o-up" size={24} color="black" />
+                            }
                         </Pressable>
+                        {
+                            userEngagement.weightedUpVotes != 0 ? <Text>{ userEngagement.weightedUpVotes }</Text> : null
+                        }
                         <View style={styles.divider} />
-                        <Pressable onPress={handleDisLike}>
-                        <Image source={dislikeButton} style={styles.likebutton}></Image>
+                        <Pressable onPress={handleDownvote}>
+                            {
+                                userEngagement.isDownVoted(currentUser!.uid) ? 
+                                <FontAwesome name="thumbs-down" size={24} color="black" /> :
+                                <FontAwesome name="thumbs-o-down" size={24} color="black" />
+                            }
                         </Pressable>
                     </View>
                         <Text> { post.replyCount } Responses</Text>
@@ -58,8 +77,12 @@ const styles = StyleSheet.create({
         maxHeight:'100%'
     },
     divider:{
-        borderRightColor: '#000',
-        borderRightWidth:1
+        width: 1,
+        backgroundColor: 'black',
+        marginHorizontal: 4,
+        // height: '100%'
+        // Setting height to 100% doesn't work for some reason
+        height: 24
     },
     likeAndDislike:{
         flexDirection:'row',
@@ -73,8 +96,8 @@ const styles = StyleSheet.create({
         paddingVertical:4,
         maxWidth:'25%',
         marginTop:3,
-        minWidth:'24%'
-
+        minWidth:'24%',
+        alignItems:'center'
     },
     likebutton:{
         width:24,
@@ -84,5 +107,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         gap:3
+    },
+    upvotes: {
+        
     }
 })

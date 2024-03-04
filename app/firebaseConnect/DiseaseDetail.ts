@@ -23,7 +23,6 @@ export const getDiseaseInfo = async(name: any) =>{
         const snap = await getDoc(ref);
         if(snap.exists()){
             const disease = snap.data();
-            console.log(disease.toString());
             return disease;
         }else{
             throw("No such document!");
