@@ -12,8 +12,9 @@ import { FIREBASE_DB } from "../../FirebaseConfig";
 import { postConverter, Post, POST_KEY } from "./data/Post";
 import Community, { COMMUNITY_KEY, communityConverter } from "./data/Community";
 import Reply, { REPLY_KEY, replyConverter } from "./data/Reply";
-import { User, regularUser, regularUserConverter } from "./data/User";
+import { USER_KEY, User, regularUser, regularUserConverter } from "./data/User";
 import UserEngagement from "./data/UserEngagement";
+import { currentUser } from "./CurrentUserInfo";
 
 // TODO: Should implement these functions in the future
 //  - getJoinedCommunitiesByUser
@@ -40,6 +41,56 @@ export const getCommunities = async () => {
 		throw e;
 	}
 };
+
+// joinedCommunities is a subcollection of the user document
+export const getCurrentUserJoinedCommunities = async () => {
+	const userRef = doc(FIREBASE_DB, USER_KEY, currentUser!.uid);
+	const q = query(collection(userRef, "joinedCommunities")).withConverter(
+		communityConverter
+	);
+	try {
+		const querySnapshot = await getDocs(q);
+		let communities: Array<Community> = [];
+		querySnapshot.forEach((doc: any) => {
+			communities.push({
+				id: doc.id,
+				name: doc.data().name,
+				description: doc.data().description,
+				members: doc.data().members,
+			});
+		});
+		return communities;
+	} catch (e) {
+		console.log("getJoinedCommunitiesByUser error: " + e);
+		throw e;
+	}
+};
+
+export const joinCommunity = async (communityId: string) => {
+	const communityRef = doc(FIREBASE_DB, COMMUNITY_KEY, communityId);
+	const userRef = doc(FIREBASE_DB, USER_KEY, currentUser!.uid);
+	const userJoinedCommunitiesRef = collection(userRef, "joinedCommunities");
+	const communityDoc = await getDoc(communityRef);
+	const userDoc = await getDoc(userRef);
+	if (communityDoc.exists() && userDoc.exists()) {
+		await runTransaction(FIREBASE_DB, async (transaction) => {
+			// Add the community to the user's joinedCommunities subcollection
+			const communityData = communityDoc.data();
+			transaction.set(
+				doc(userJoinedCommunitiesRef, communityId),
+				communityData
+			);
+		});
+	}
+}
+
+export const leaveCommunity = async (communityId: string) => {
+	const userRef = doc(FIREBASE_DB, USER_KEY, currentUser!.uid);
+	const userJoinedCommunitiesRef = doc(userRef, "joinedCommunities", communityId);
+	await runTransaction(FIREBASE_DB, async (transaction) => {
+		transaction.delete(userJoinedCommunitiesRef);
+	});
+}
 
 export const getPost = async (
 	communityId: string,
