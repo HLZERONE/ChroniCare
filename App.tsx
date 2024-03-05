@@ -9,12 +9,7 @@ import Login from './app/screens/AuthScreen/LoginScreen';
 import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
-import { LogBox } from 'react-native';
 
-// This doesn't work for some reason...
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
 
 const Stack = createNativeStackNavigator()
 
