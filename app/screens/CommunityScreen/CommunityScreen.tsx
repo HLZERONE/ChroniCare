@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TextInput, Pressable } from 'react-native';
 import CommunityTab from '../../components/communityTab';
 import JoinedCommunityTab from '../../components/joinedCommunityTab';
 import { CommunityStackNavList } from './CommunityTypes';
@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import CommunityModel from '../../firebaseConnect/data/Community';
 import { getCommunities } from '../../firebaseConnect/Forum';
 import TabBar from '../../components/tabBar';
+import { search } from '../../firebaseConnect/Search';
 
 type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
 
@@ -19,6 +20,12 @@ const Community = ({navigation}: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const [communities, setCommunities] = useState<CommunityModel[]>([]);
 
+  const  handleSearchAction = (()=>{
+   search(searchValue).then((result)=>{
+    console.log(result)
+   }
+    );
+  })
 
   useLayoutEffect(() => {
     // populate the communities
@@ -52,6 +59,8 @@ const Community = ({navigation}: Props) => {
           placeholderTextColor="#4D4D99"
           value={searchValue}
           onChangeText={handleSearchChange}
+          onSubmitEditing={handleSearchAction}
+          blurOnSubmit={true}
         />
       </View>
       <Text style={styles.trending}>Trending</Text>
