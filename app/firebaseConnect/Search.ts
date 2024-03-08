@@ -1,26 +1,37 @@
-import { collection, query, orderBy, startAt, endAt, getDocs } from 'firebase/firestore';
+import { collection, query, orderBy, startAt, endAt, getDocs, where, or } from 'firebase/firestore';
 import { FIREBASE_DB } from "../../FirebaseConfig";
+import Community, { COMMUNITY_KEY, communityConverter } from "./data/Community";
 
 
-// Assuming FIREBASE_DB is your Firestore database instance
+
+
 export const search = async (searchKey: string) => {
-  // Define the collection you want to search
-  const usersRef = collection(FIREBASE_DB, 'UserInfo');
+  const ref = collection(FIREBASE_DB, COMMUNITY_KEY);
 
-  // Construct the query
+  // for now, the firebase native api only supports these kind of query, which makes it only returns if there is a exact match.
+  // and now it only supports query communites as the native api does not support query subcollections.
   const q = query(
-    usersRef
-  );
+    ref,
+    or(where("description", "==", searchKey),
+    where("name", "==", searchKey)
+    )
 
-  // Execute the query
+  ).withConverter(
+		communityConverter
+	);
+
   const querySnapshot = await getDocs(q);
 
-  // Process the query results
-  const users = querySnapshot.docs
-  .map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-    console.log(users);
-  return users;
+  let communities: Array<Community> = [];
+  querySnapshot.forEach((doc: any) => {
+    communities.push({
+      id: doc.id,
+      name: doc.data().name,
+      description: doc.data().description,
+      members: doc.data().members,
+    });
+  });
+  return communities;
+
 };
+

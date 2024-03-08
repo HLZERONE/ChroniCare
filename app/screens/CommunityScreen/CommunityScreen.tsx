@@ -22,6 +22,7 @@ const Community = ({navigation}: Props) => {
 
   const  handleSearchAction = (()=>{
    search(searchValue).then((result)=>{
+    navigation.navigate("SearchResult", {communities:result});
     console.log(result)
    }
     );
@@ -43,6 +44,7 @@ const Community = ({navigation}: Props) => {
 
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
+
   };
   return (
     <View style={{flex: 1 }}>
