@@ -1,5 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
-import { Pressable, ScrollView, Text, View, StyleSheet} from "react-native";
+import { Pressable, ScrollView, Text, View, StyleSheet, Dimensions} from "react-native";
 import { CommunityStackNavList } from "./CommunityTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CommunityModel from '../../firebaseConnect/data/Community';
@@ -8,6 +8,8 @@ import CommunityModel from '../../firebaseConnect/data/Community';
 
 type SearchResultNavigationProp = StackNavigationProp<CommunityStackNavList, 'SearchResult'>;
 type SearchResultRouteProp = RouteProp<CommunityStackNavList, 'SearchResult'>;
+var {height, width} = Dimensions.get('window');
+
 
 type Props = {
     navigation: SearchResultNavigationProp;
@@ -18,7 +20,7 @@ const SearchResult = ({navigation, route}:Props)=>{
     const {communities} = route.params;
 
     return(
-        <View>
+        <View style={styles.container}>
             <ScrollView>
                           {
             communities.map((community: CommunityModel, index: number) => {
@@ -43,12 +45,22 @@ const SearchResult = ({navigation, route}:Props)=>{
 export default SearchResult;
 
 const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+    
+        position: 'relative',
+        backgroundColor: 'rgba(117, 196, 205, 0.19)',
+        alignItems: 'center',
+        justifyContent:'center'
+      },
     tabContainer:{
+        flex:1,
         backgroundColor: "#fff",
         borderRadius:16,
-        height:"90%",
-padding:8,
-        marginHorizontal:3
+        width:width*0.9,
+        marginHorizontal:3,
+        paddingHorizontal:"5%",
+        marginVertical:"2%"
     },
     tabTitle:{
         color: "#091F44", 
@@ -56,17 +68,14 @@ padding:8,
         textAlign: 'left', 
         fontWeight: '500',
         fontSize: 14,
-        height:'20%'
     },
     tabTexts: {
         color: "#091F44", 
         fontSize: 12,
         fontWeight: '400',
-        height:'45%'
     },
     bottomSpace:{
         flexDirection:'row',
-        height:'35%',
         justifyContent:'flex-start',
         paddingHorizontal:3,
         alignItems:'center'
