@@ -6,9 +6,10 @@ import MessageTab from "./messageTab";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useCallback, useState } from "react";
 import { curUserInfo } from "../../firebaseConnect/CurrentUserInfo";
-import { createReply, getReplies } from "../../firebaseConnect/Forum";
+import { createReply, getReplies, joinCommunity, leaveCommunity } from "../../firebaseConnect/Forum";
 import { Post } from "../../firebaseConnect/data/Post";
 import Reply from "../../firebaseConnect/data/Reply";
+import { useCommunityContext } from "../../providers/CommunityProvider";
 
 
 
@@ -30,6 +31,8 @@ const PostScreen = ({navigation, route }: Props)=>{
     const [replyContent, setReplyContent] = useState('')
     const [post, setPost] = useState<Post>(route.params.post);
     const [replies, setReplies] = useState<Reply[]>([]);
+    const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
+  const [joined, setJoined] = useState(joinedCommunities.includes(community));
 
     useFocusEffect(useCallback(() => {
       getReplies(community.id, post.id).then((replies)=>{
@@ -38,6 +41,15 @@ const PostScreen = ({navigation, route }: Props)=>{
         console.log('getReplies error: '+e);
       });
       }, []));
+     
+    const handlePress = () => {
+      if (joined) {
+        leaveCommunity(community);
+      } else {
+        joinCommunity(community);
+      }
+      setJoined((current) => !current);
+    }
 
     return(
         <View  style={styles.container}>
@@ -46,7 +58,7 @@ const PostScreen = ({navigation, route }: Props)=>{
                     <Image source={img} resizeMode="contain"></Image>
                     <Text style={styles.title}>{community.name}</Text>
                     <Text style={styles.memberNum}>{community.members} members</Text>
-                    <JoinButton ifJoined={true}></JoinButton>
+                    <JoinButton ifJoined={joined} onPress={handlePress}></JoinButton>
                 </View>
                 <Text style={styles.description}>{community.description}</Text>
 

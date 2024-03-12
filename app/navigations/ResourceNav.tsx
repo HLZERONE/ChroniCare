@@ -1,7 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Resource from "../screens/ResourceScreen/ResourceScreen";
+import ResourceShow from "../screens/ResourceScreen/ResourceShow";
+import { ResourceStackNavList } from "../screens/ResourceScreen/ResourceTypes";
 
-const resourceStack = createNativeStackNavigator();
+const resourceStack = createNativeStackNavigator<ResourceStackNavList>();
 
 const ResourceScreen = () => {
   return (
@@ -10,7 +12,13 @@ const ResourceScreen = () => {
         name="ResourceScreen"
         component={Resource}
         options={{ headerShown: false }}
-        />
+      />
+      <resourceStack.Screen
+        name="ResourceShow"
+        component={ResourceShow}
+        initialParams={{ resourceTitle: '', content: '' }}
+        options={{ title: 'Resource' }}
+      />
     </resourceStack.Navigator>
   );
 }

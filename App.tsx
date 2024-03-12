@@ -10,6 +10,7 @@ import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
 
+
 const Stack = createNativeStackNavigator()
 
 export default function App() {

@@ -5,8 +5,9 @@ import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import PostTab from './PostTab';
-import { getPosts } from '../../firebaseConnect/Forum';
+import { getPosts, joinCommunity, leaveCommunity } from '../../firebaseConnect/Forum';
 import { Post } from '../../firebaseConnect/data/Post';
+import { useCommunityContext } from '../../providers/CommunityProvider';
 
 //enable sending information to the postScreen
 type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
@@ -22,18 +23,27 @@ type Props = {
 
 
 const SingleCommunityScreen = ({ navigation, route }: Props) => {
-  //take ifjoin from database
-  const [isJoined, setIsJoined] = useState(false)
   const [posts, setPosts] = useState<Post[]>([]);
   const img = require('../../../assets/favicon.png');
   const plus = require('../../../assets/plus.png');
   const community = route.params.community
+  const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
+  const [joined, setJoined] = useState(joinedCommunities.includes(community));
 
   useFocusEffect(useCallback(() => {
     getPosts(community.id).then((posts) => {
       setPosts(posts);
     });
-  }, []));
+  }, [community.id]));
+
+  const handlePress = () => {
+    if (joined) {
+      leaveCommunity(community);
+    } else {
+      joinCommunity(community);
+    }
+    setJoined((current) => !current);
+  }
 
   return (
     <View
@@ -45,7 +55,7 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
           <Image source={img} resizeMode="contain"></Image>
           <Text style={styles.title}>{community.name}</Text>
           <Text style={styles.memberNum}>{ community.members } members</Text>
-          <JoinButton ifJoined={true}></JoinButton>
+          <JoinButton ifJoined={joined} onPress={handlePress}></JoinButton>
         </View>
         <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
         <View>
