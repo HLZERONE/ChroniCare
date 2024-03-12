@@ -5,6 +5,7 @@ import { CommunityStackNavList } from "../screens/CommunityScreen/CommunityTypes
 import PostScreen from "../screens/CommunityScreen/PostScreen";
 import CreatePostPage from "../screens/CommunityScreen/CreatePost";
 import CreateReplyPage from "../screens/CommunityScreen/CreateReply";
+import SearchResult from "../screens/CommunityScreen/SearchResult";
 import { CommunityProvider } from "../providers/CommunityProvider";
 
 const communityStack = createNativeStackNavigator<CommunityStackNavList>();
@@ -34,6 +35,7 @@ const CommunityScreen = () => {
 					name="CreateReplyPage"
 					component={CreateReplyPage}
 				></communityStack.Screen>
+				<communityStack.Screen name = 'SearchResult' component={SearchResult}></communityStack.Screen>
 			</communityStack.Navigator>
 		</CommunityProvider>
 	);

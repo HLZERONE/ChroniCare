@@ -7,6 +7,7 @@ export type CommunityStackNavList = {
     SingleCommunityScreen: {community: Community};
     PostScreen: {community: Community, post: Post};
     CreatePostPage: {cummunityID: string};
-    CreateReplyPage: {postIDReplyTo: string}
+    CreateReplyPage: {postIDReplyTo: string};
+    SearchResult: {communities: Community[]}
   };
   

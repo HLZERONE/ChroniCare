@@ -18,9 +18,8 @@ import {
 } from "../../firebaseConnect/Forum";
 import TabBar from "../../components/tabBar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-	useCommunityContext,
-} from "../../providers/CommunityProvider";
+import { useCommunityContext } from "../../providers/CommunityProvider";
+import { search } from "../../firebaseConnect/Search";
 
 type CommunitiesNavigationProp = StackNavigationProp<
 	CommunityStackNavList,
@@ -36,6 +35,12 @@ const Community = ({ navigation }: Props) => {
 	const [communities, setCommunities] = useState<CommunityModel[]>([]);
 	const { joinedCommunities, updateJoinedCommunities } = useCommunityContext();
 
+	const handleSearchAction = () => {
+		search(searchValue).then((result) => {
+			navigation.navigate("SearchResult", { communities: result });
+			console.log(result);
+		});
+	};
 	useLayoutEffect(() => {
 		// populate the communities
 		getCommunities()
@@ -83,6 +88,8 @@ const Community = ({ navigation }: Props) => {
 						placeholderTextColor="#4D4D99"
 						value={searchValue}
 						onChangeText={handleSearchChange}
+						onSubmitEditing={handleSearchAction}
+						blurOnSubmit={true}
 					/>
 				</View>
 
