@@ -2,9 +2,8 @@ import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/build/Ionicons';
 import React, { useState } from 'react';
 import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
-import TabBar from '../../components/tabBar';
 import { useNavigation } from '@react-navigation/native';
-
+import TabBar from '../../components/tabBar';
 
 
 
@@ -31,17 +30,17 @@ const Dashboard = () => {
           />
         </View>
         <View style={styles.boxContainer}>
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('FindDoctor' as never)}>
             <FontAwesome5 name="hospital" size={32} color="#E35F47" />
             <Text style={styles.boxText}>Find a Doctor</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.box, { backgroundColor: '#DEEBFF' }]} onPress={() => navigation.navigate('SymptomTracker')}>
+          <TouchableOpacity style={[styles.box, { backgroundColor: '#DEEBFF' }]} onPress={() => navigation.navigate('SymptomTracker' as never)}>
             <FontAwesome5 name="pills" size={32} color="#1648CE" />
             <Text style={styles.boxText}>Track Symptoms</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Resource')}>
+          <TouchableOpacity style={[styles.box, {backgroundColor: '#E4F8EB'}]} onPress={() => navigation.navigate('Resource' as never)}>
             <MaterialIcons name="library-books" size={32} color="#117639" />
             <Text style={styles.boxText}>View Library</Text>
           </TouchableOpacity>
@@ -74,7 +73,7 @@ const Dashboard = () => {
           </View>
         </View>
       </ScrollView>
-      
+      <TabBar navigation={navigation} state={3} />
     </View>
   );
 };

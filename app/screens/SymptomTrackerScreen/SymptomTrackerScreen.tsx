@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { ScrollView, Text, StyleSheet, Pressable, SafeAreaView, View } from "react-native";
 import CurrentSymptoms from "../../components/SymptomTracker/CurrentSymptoms";
 import AddSymptomModal from "../../components/SymptomTracker/AddSymptomModal";
 import Symptom from "../../firebaseConnect/data/Symptom";
 import PastSymptoms from "../../components/SymptomTracker/PastSymptoms/PastSymptoms";
 import { addSymptomInfo, batchUpdateSymptomInfo, getAllSymptomInfoByUser, updateSymptomInfo } from "../../firebaseConnect/SymptomInfo";
 import { currentUser } from "../../firebaseConnect/CurrentUserInfo";
+import TabBar from "../../components/tabBar";
+import { useNavigation } from "@react-navigation/native";
 
 export interface NewSymptom {
 	diseaseName: string;
@@ -18,6 +20,7 @@ export interface NewSymptom {
 const SymptomTracker = () => {
 	const [addSymptomMode, setAddSymptomMode] = useState(false);
 	const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+	const navigation = useNavigation();
 
 	useEffect(() => {
 		// Fetch symptoms from database
@@ -42,15 +45,17 @@ const SymptomTracker = () => {
 	};
 
 	return (
-		<SafeAreaView style={{
+		<View style={{
 			flex: 1,
 			backgroundColor: 'rgba(117, 196, 205, 0.19)',
 		}}>
+			<View style={{flex: 1}}>
 			<ScrollView
 				contentContainerStyle={{
+					flexGrow: 1,
 					justifyContent: "center",
 					alignItems: "center",
-					paddingBottom: 40,
+					paddingBottom: 50,
 				}}
 				style={styles.container}
 			>
@@ -69,7 +74,10 @@ const SymptomTracker = () => {
 				/>
 				<PastSymptoms symptoms={symptoms}/>
 			</ScrollView>
-		</SafeAreaView>
+			<TabBar navigation={navigation} state={{index: 3}} />
+			</View>
+			
+		</View>
 	);
 };
 export default SymptomTracker;
@@ -80,7 +88,8 @@ const styles = StyleSheet.create({
 	  fontWeight: 'bold', // Bold font weight to make it stand out
 	  color: '#000', // Typically, headers are in a darker or different color
 	  textAlign: 'center', // Center-aligned text is common for headers
-	  marginBottom: 10, // Optional: add some margin to the bottom for spacing
+	  marginBottom: 12, // Optional: add some margin to the bottom for spacing
+	  marginTop: 15,
 	},
 	container: {
 		paddingVertical: 24,

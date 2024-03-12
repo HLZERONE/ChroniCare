@@ -1,5 +1,5 @@
 
-//User Info doc's NAME in FireStorage
+//Disease doc's NAME in FireStorage
 export const DISEASE_KEY = "Disease";
 
 export class Disease {

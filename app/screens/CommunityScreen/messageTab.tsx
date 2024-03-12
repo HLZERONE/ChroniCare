@@ -1,44 +1,65 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native"
+import { FontAwesome } from '@expo/vector-icons';
+import { currentUser } from "../../firebaseConnect/CurrentUserInfo";
+import { upvoteDownvoteReply } from "../../firebaseConnect/Forum";
+import { useState } from "react";
 
 
 
 const MessageTab = (props:any)=>{
     const img = require('../../../assets/favicon.png')
-    const likeButton = require('../../../assets/likeButton.png');
-    const dislikeButton = require('../../../assets/dislikeButton.png')
-    const {posterAvatarURL, poster, message} = props
+    const {action, poster, reply, communityID, postID} = props
+    const [userEngagement, setUserEngagement] = useState(reply.userEngagement);
 
-    const handleLike = ()=>{
-        console.log("like button pressed")
+    const handleUpvote = () => {
+        reply.upvote(currentUser!.uid);
+        upvoteDownvoteReply(communityID, postID, reply);
+        setUserEngagement(reply.userEngagement.copy);
+        // Update local state to trigger re-render
     };
 
-    const handleDisLike = ()=>{
-        console.log("Dislike button pressed")
+    const handleDownvote = () => {
+        reply.downvote(currentUser!.uid);
+        upvoteDownvoteReply(communityID, postID, reply);
+        setUserEngagement(reply.userEngagement.copy);
+        // Update local state to trigger re-render
     };
     
     return(
             <View style={styles.tabcontainer}>
                 <View style={styles.headerArea}>
                     <Image source={img} style={styles.userImage}></Image>
-                    <Text>{poster}</Text>
+                    <Text>{poster.name}</Text>
                 </View>
                 <Text>
-                    {message}
+                    {reply.content}
                 </Text>
                 <View style={styles.bottomArea}>
                     <View style={styles.likeAndDislike}>
-                        <Pressable onPress={handleLike}>
-                            <Image source={likeButton} style={styles.likebutton}></Image>
+                        <Pressable onPress={handleUpvote}>
+                            {
+                                userEngagement.isUpVoted(currentUser!.uid) ? 
+                                <FontAwesome name="thumbs-up" size={24} color="black" /> :
+                                <FontAwesome name="thumbs-o-up" size={24} color="black" />
+                            }
                         </Pressable>
+
+                        {
+                            userEngagement.weightedUpVotes != 0 ? <Text>{ userEngagement.weightedUpVotes }</Text> : null
+                        }
 
                         <View style={styles.divider} />
 
-                        <Pressable onPress={handleDisLike}>
-                            <Image source={dislikeButton} style={styles.likebutton}></Image>
+                        <Pressable onPress={handleDownvote}>
+                            {
+                                userEngagement.isDownVoted(currentUser!.uid) ? 
+                                <FontAwesome name="thumbs-down" size={24} color="black" /> :
+                                <FontAwesome name="thumbs-o-down" size={24} color="black" />
+                            }
                         </Pressable>
                     </View>
                     
-                        <Pressable onPress={()=>{}} >
+                        <Pressable onPress={action} style={styles.pressableBox} >
                             <Text>Reply</Text>
                         </Pressable>
                 </View>
@@ -59,8 +80,12 @@ const styles = StyleSheet.create({
         maxHeight:'100%'
     },
     divider:{
-        borderRightColor: '#000',
-        borderRightWidth:1
+        width: 1,
+        backgroundColor: 'black',
+        marginHorizontal: 4,
+        // height: '100%'
+        // Setting height to 100% doesn't work for some reason
+        height: 24
     },
     likeAndDislike:{
         flexDirection:'row',
@@ -74,8 +99,8 @@ const styles = StyleSheet.create({
         paddingVertical:4,
         maxWidth:'25%',
         marginTop:3,
-        minWidth:'24%'
-
+        minWidth:'24%',
+        alignItems:'center'
     },
     likebutton:{
         width:24,
@@ -97,4 +122,11 @@ const styles = StyleSheet.create({
         alignItems:'center',
         gap:3,
     },
+    pressableBox:{
+        width:50,
+        height:25,
+        alignItems:'center',
+        justifyContent:'center',
+
+    }
 })

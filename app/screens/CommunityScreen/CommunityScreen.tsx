@@ -1,129 +1,186 @@
-import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput } from 'react-native';
-import CommunityTab from '../../components/communityTab';
-import JoinedCommunityTab from '../../components/joinedCommunityTab';
-import { CommunityStackNavList } from './CommunityTypes';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Ionicons } from "@expo/vector-icons";
+import React, { useLayoutEffect, useState } from "react";
+import {
+	ScrollView,
+	Text,
+	View,
+	StyleSheet,
+	TextInput,
+	FlatList,
+} from "react-native";
+import CommunityTab from "../../components/communityTab";
+import { CommunityStackNavList } from "./CommunityTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
+import CommunityModel from "../../firebaseConnect/data/Community";
+import {
+	getCommunities,
+	getCurrentUserJoinedCommunities,
+} from "../../firebaseConnect/Forum";
+import TabBar from "../../components/tabBar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+	useCommunityContext,
+} from "../../providers/CommunityProvider";
 
-type CommunitiesNavigationProp = StackNavigationProp<CommunityStackNavList, 'SingleCommunityScreen'>;
+type CommunitiesNavigationProp = StackNavigationProp<
+	CommunityStackNavList,
+	"SingleCommunityScreen"
+>;
 
 type Props = {
-  navigation: CommunitiesNavigationProp;
+	navigation: CommunitiesNavigationProp;
 };
 
-const Community = ({navigation}: Props) => {
-  const [searchValue, setSearchValue] = useState('');
+const Community = ({ navigation }: Props) => {
+	const [searchValue, setSearchValue] = useState("");
+	const [communities, setCommunities] = useState<CommunityModel[]>([]);
+	const { joinedCommunities, updateJoinedCommunities } = useCommunityContext();
 
-  //need to call function to download the joined states of each card
+	useLayoutEffect(() => {
+		// populate the communities
+		getCommunities()
+			.then((communities: CommunityModel[]) => {
+				// only show the first 2 communities for development purposes
+				setCommunities(communities.slice(0, 2));
+			})
+			.catch((e) => {
+				console.log("Error getting communities: " + e);
+			});
+		getCurrentUserJoinedCommunities()
+			.then((communities: CommunityModel[]) => {
+				updateJoinedCommunities(communities);
+			})
+			.catch((e) => {
+				console.log("Error getting joined communities: " + e);
+			});
+		return () => {};
+		// We might need to add a dependency array here, but I'm not sure what it would be
+	}, []);
 
-  const handleSearchChange = (text: React.SetStateAction<string>) => {
-    setSearchValue(text);
-  };
-  return (
-    <View
-      style={styles.container}>
-      <Text style={styles.Communities}>Communities</Text>
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={30} color="#4D4D99" style={styles.searchIcon} />
-        <TextInput
-          placeholder="Search symptoms, medications..."
-          style={styles.searchInput}
-          placeholderTextColor="#4D4D99"
-          value={searchValue}
-          onChangeText={handleSearchChange}
-        />
-      </View>
-      <Text style={styles.trending}>Trending</Text>
-      <View style={styles.horizontalScrollBox}>
-        <ScrollView indicatorStyle='black'horizontal={true}>
-          <CommunityTab ifJoined={false} action={()=>{navigation.navigate('SingleCommunityScreen', {communityID:'This is the First Community'})}} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></CommunityTab>
+	const communityAction = (community: CommunityModel) => {
+		navigation.navigate("SingleCommunityScreen", {
+			community: community,
+		});
+	};
 
-        </ScrollView>
-      </View>
+	const handleSearchChange = (text: React.SetStateAction<string>) => {
+		setSearchValue(text);
+	};
+	return (
+		<SafeAreaView style={{ flex: 1 }}>
+			<ScrollView style={styles.container}>
+				<Text style={styles.header}>Communities</Text>
+				<View style={styles.searchContainer}>
+					<Ionicons
+						name="search"
+						size={30}
+						color="#4D4D99"
+						style={styles.searchIcon}
+					/>
+					<TextInput
+						placeholder="Search symptoms, medications..."
+						style={styles.searchInput}
+						placeholderTextColor="#4D4D99"
+						value={searchValue}
+						onChangeText={handleSearchChange}
+					/>
+				</View>
 
-      <Text style={styles.trending}>Joined Communities</Text>
-        <ScrollView style={styles.verticalScrollLayout} horizontal={false}>
-          <View style={styles.makeRow}>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        </View>
+				<Text style={styles.subHeader}>Trending</Text>
+				<ScrollView
+					horizontal={true}
+					style={styles.horizontalScrollBox}
+					showsHorizontalScrollIndicator={false}
+				>
+					{communities.map((community, index) => (
+						<CommunityTab
+							ifJoined={false}
+							action={() => communityAction(community)}
+							community={community}
+							key={index}
+						/>
+					))}
+				</ScrollView>
 
-        <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        </View>
+				<Text style={styles.subHeader}>Joined Communities</Text>
+				{joinedCommunities.length === 0 ? (
+					<Text style={styles.emptyMessage}>
+						You have not joined any communities yet.
+					</Text>
+				) : (
+					<FlatList
+						data={joinedCommunities}
+						renderItem={({ item }) => (
+							<CommunityTab
+								ifJoined={true}
+								action={() => communityAction(item)}
+								community={item}
+							/>
+						)}
+						keyExtractor={(item) => item.id.toString()}
+						numColumns={2}
+						contentContainerStyle={styles.listContainer}
+						scrollEnabled={false} // Disable scrolling for the FlatList
+					/>
+				)}
+			</ScrollView>
 
-        <View style={{flexDirection:'row'}}>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        <JoinedCommunityTab ifJoined={true} title="This is a Community" intro='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et'></JoinedCommunityTab>
-        </View>
-        </ScrollView>
-
-
-    </View>
-  );
+			<TabBar navigation={navigation} state={{ index: 1 }} />
+		</SafeAreaView>
+	);
 };
 export default Community;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    backgroundColor: 'rgba(117, 196, 205, 0.19)',
-    alignItems: 'center'
-  },
-  Communities: {
-    width: '90%',
-    color: '#091F44',
-    fontSize: 20,
-    fontWeight: '500',
-    textAlign: 'left',
-    marginTop: '20%',
-  },
-  trending: {
-    width: '90%',
-    color: '#091F44',
-    fontSize: 16,
-    fontWeight: '500',
-    textAlign: 'left',
-    marginTop: '5%',
-  },
-  horizontalScrollBox: {
-    height: "20%",
-    width: "90%",
-  },
-  searchContainer: {
-    height: 64,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(80, 208, 199, 0.50)',
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: '#1EAFB3',
-    width: 342,
-    marginTop: '8%',
-    opacity: 0.35,
-    alignSelf: 'center'
-  },
-
-  searchIcon: {
-    marginLeft: '5%',
-  },
-  searchInput: {
-    color: '#4D4D99',
-    fontWeight: 'bold',
-    fontSize: 14,
-    paddingVertical: '3%',
-    flex: 1,
-  },
-  verticalScrollLayout:{
-    flex:1,
-    flexDirection:'column',
-    width:"90%",
-  },
-  makeRow:{flexDirection:'row', alignItems:'center',}
-})
+	container: {
+		flex: 1,
+		backgroundColor: "rgba(117, 196, 205, 0.19)",
+	},
+	header: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginVertical: 20,
+		marginLeft: 20,
+	},
+	subHeader: {
+		fontSize: 18,
+		fontWeight: "bold",
+		marginTop: 20,
+		marginLeft: 20,
+	},
+	searchContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		backgroundColor: "rgba(80, 208, 199, 0.50)",
+		borderRadius: 24,
+		borderWidth: 2,
+		borderColor: "#1EAFB3",
+		marginHorizontal: 20,
+		marginTop: 10,
+		paddingHorizontal: 10,
+	},
+	searchIcon: {
+		marginRight: 10,
+	},
+	searchInput: {
+		flex: 1,
+		paddingVertical: 10,
+	},
+	horizontalScrollBox: {
+		paddingLeft: 20,
+		marginTop: 10,
+	},
+	listContainer: {
+		alignItems: "center",
+		justifyContent: "space-around",
+		paddingBottom: 20, // Add padding to the bottom for better spacing
+		height: "100%",
+		minHeight: 200,
+	},
+	emptyMessage: {
+		textAlign: "center",
+		marginTop: 20,
+		fontSize: 16,
+		color: "#666", // This is just an example color, adjust as needed
+	},
+});

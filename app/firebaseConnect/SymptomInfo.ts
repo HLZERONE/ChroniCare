@@ -67,3 +67,26 @@ export const getAllSymptomInfoByUser = async(userId: any) =>{
     }
 }
 
+
+/*
+FUNCTION: get all symptom info related to the provided userId within the time range 
+INPUT: UserId, startDate, endDate(optional, default is today)
+RETURN: Array<Symptom>
+*/
+export const getSymptomByDateRange = async(userId: any, startDate: Date, endDate: Date = new Date()) =>{
+    const q = query(collection(FIREBASE_DB, SYMPTOM_KEY)
+    , where("userId", "==", userId)
+    , where("date", ">=", startDate)
+    , where("date", "<=", endDate)).withConverter(symptomConverter);
+    try{
+        const querySnapshot = await getDocs(q);
+        let symptoms: Array<Symptom> = [];
+        querySnapshot.forEach((doc : any) => {
+            symptoms.push(doc.data());
+        });
+        return symptoms;
+    }catch(e){
+        console.log("getSymptomByDateRange error: " + e);
+        throw e;
+    }
+}

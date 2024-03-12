@@ -15,7 +15,7 @@ export const setDiseaseInfo = async(name: any, description: String) => {
 FUNCTION: get disease info by its name
 INPUT: disease name
 RETURN: Promise<Disease>
-ATTENCTION: May throw error if disease name not exists
+ATTENTION: May throw an error if the disease name does not exist
 */
 export const getDiseaseInfo = async(name: any) =>{
     const ref = doc(FIREBASE_DB, DISEASE_KEY, name).withConverter(diseaseConverter);
@@ -23,7 +23,6 @@ export const getDiseaseInfo = async(name: any) =>{
         const snap = await getDoc(ref);
         if(snap.exists()){
             const disease = snap.data();
-            console.log(disease.toString());
             return disease;
         }else{
             throw("No such document!");

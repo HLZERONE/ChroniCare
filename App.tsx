@@ -8,6 +8,8 @@ import { FIREBASE_AUTH } from './FirebaseConfig';
 import Login from './app/screens/AuthScreen/LoginScreen';
 import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
+import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
+
 
 const Stack = createNativeStackNavigator()
 
@@ -27,7 +29,7 @@ export default function App() {
         {user ? (<Stack.Screen name="Dashboard" component={BottomTabNav} options={{ headerShown: false }}></Stack.Screen>) : (
         <><Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Signup" component={Signup} options={{ headerShown: true, headerTitle:"" }}></Stack.Screen></>)}
-
+        <Stack.Screen name="FindDoctor" component={FindDoctor} />
       </Stack.Navigator>
     </NavigationContainer>
   );

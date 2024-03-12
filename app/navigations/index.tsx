@@ -3,14 +3,19 @@ import React from "react";
 import CommunityScreen from "./CommunityNav";
 import DashboardScreen from "./DashboardNav";
 import ResourceScreen from "./ResourceNav";
-import SettingScreen from "./SettingNav";
+import SettingScreen from "./settingNav"
 import SymptomTrackerScreen from "./SymptomTrackerNav";
 
 const bottomTab = createBottomTabNavigator();
 
 function BottomTabNav() {
 	return (
-		<bottomTab.Navigator initialRouteName="dashboard">
+		<bottomTab.Navigator initialRouteName="dashboard"
+		screenOptions={{
+			headerShown: false,
+			tabBarStyle: { display: 'none' } // This hides the tab bar itself
+		}}
+		>
 			<bottomTab.Screen
 				name="Community"
 				component={CommunityScreen}

@@ -5,9 +5,9 @@ export class regularUser implements RegularUser{
     email: String;
     firstName: String;
     lastName: String;
-    address: String;
-    zip: String;
-    diseases: String[];
+    address: String = "";
+    zip: String = "";
+    diseases: String[] = [];
     constructor(email: String, firstName: String, lastName: String, address: String, zip: String, diseases: String[]){
         this.email = email;
         this.firstName = firstName;
@@ -21,6 +21,10 @@ export class regularUser implements RegularUser{
         this.diseases.push(name);
     }
     
+    get fullName(){
+        return this.firstName + ' ' + this.lastName;
+    }
+
     toString() {
         return this.email + ', ' + this.firstName + ', ' + this.lastName;
     }
@@ -34,7 +38,7 @@ export const regularUserConverter = {
             lastName : rU.lastName,
             address: rU.address,
             zip: rU.zip,
-            diseases: rU.diseases
+            diseases: rU.diseases,
         };
     },
     fromFirestore: (snapshot: any, id: any) => {
@@ -43,7 +47,7 @@ export const regularUserConverter = {
     }
 }
 
-interface User{
+export interface User{
     email : String;
     firstName: String;
     lastName : String;
