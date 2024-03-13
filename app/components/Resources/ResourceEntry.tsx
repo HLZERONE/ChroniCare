@@ -5,9 +5,10 @@ import { Text, StyleSheet, Pressable } from "react-native";
 interface ResourceEntryProps {
   title: string;
   content: string;
+  description?: string;
 }
 
-const ResourceEntry: React.FC<ResourceEntryProps> = ({ title, content }) => {
+const ResourceEntry: React.FC<ResourceEntryProps> = ({ title, content, description }) => {
   const navigation = useNavigation<any>(); // Specify the type of navigation as 'any'
 
   const onPress = () => {
@@ -21,7 +22,7 @@ const ResourceEntry: React.FC<ResourceEntryProps> = ({ title, content }) => {
   return (
     <Pressable onPress={onPress} style={styles.entry}>
       <Text style={styles.entryTitle}>{title}</Text>
-      <Text style={styles.entryDescription}>Description Unavailable</Text>
+      <Text style={styles.entryDescription}>{description || 'No description'}</Text>
     </Pressable>
   );
 };

@@ -9,6 +9,7 @@ import Login from './app/screens/AuthScreen/LoginScreen';
 import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
+import ResourceScreen from './app/navigations/ResourceNav';
 
 
 const Stack = createNativeStackNavigator()
@@ -30,6 +31,7 @@ export default function App() {
         <><Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Signup" component={Signup} options={{ headerShown: true, headerTitle:"" }}></Stack.Screen></>)}
         <Stack.Screen name="FindDoctor" component={FindDoctor} />
+        <Stack.Screen name="Resource" component={ResourceScreen} options={{ headerShown: true, headerTitle: "Resources" }}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

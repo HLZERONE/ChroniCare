@@ -7,11 +7,13 @@ const resourceStack = createNativeStackNavigator<ResourceStackNavList>();
 
 const ResourceScreen = () => {
   return (
-    <resourceStack.Navigator>
+    <resourceStack.Navigator
+    screenOptions={{
+			headerShown: false,
+		}}>
       <resourceStack.Screen
         name="ResourceScreen"
         component={Resource}
-        options={{ headerShown: false }}
       />
       <resourceStack.Screen
         name="ResourceShow"
