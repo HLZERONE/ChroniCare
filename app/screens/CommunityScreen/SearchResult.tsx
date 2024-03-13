@@ -22,10 +22,11 @@ const SearchResult = ({navigation, route}:Props)=>{
     return(
         <View style={styles.container}>
             <ScrollView>
+                
                           {
             communities.map((community: CommunityModel, index: number) => {
               return (
-                <Pressable key={index} onPress={()=>{navigation.navigate("SingleCommunityScreen", {community:community})}} style={styles.tabContainer}>
+                <Pressable key={index}  style={styles.tabContainer}>
                 <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>{community.name}</Text>
                 <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>{community.description}</Text>
     
@@ -36,6 +37,61 @@ const SearchResult = ({navigation, route}:Props)=>{
             </Pressable>              );
             })
           }
+          <Pressable key={1}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Topics Hub</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Discover the latest in hot topics and trends across the globe.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={2}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Gadget Geeks</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>A community for enthusiasts of the latest and hottest gadgets.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={3}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Cuisine Circle</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Explore hot and spicy cuisines from around the world with fellow foodies.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={4}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Fitness Trends</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Join us to discuss the hottest fitness trends and tips for a healthier lifestyle.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={5}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Music Beats</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Everything about the hottest music tracks and artists right now.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={6}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Reads Club</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Dive into the world of hot reads and discover your next favorite book.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
+
+<Pressable key={7}  style={styles.tabContainer}>
+    <Text style={styles.tabTitle} ellipsizeMode="tail" numberOfLines={1}>Hot Travel Destinations</Text>
+    <Text style={styles.tabTexts} ellipsizeMode="tail" numberOfLines={2}>Share and discover hot travel destinations and tips from fellow adventurers.</Text>
+    <View style={styles.bottomSpace}>
+        <Text style={styles.joinedNum}>{Math.floor(Math.random() * 10000)} Members</Text>
+    </View>
+</Pressable>
             </ScrollView>
         </View>
 
