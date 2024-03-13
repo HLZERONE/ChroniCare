@@ -20,7 +20,9 @@ function JoinButton({ifJoined, onPress}: joinState){
     return(
         <Pressable onPress={handlePress} 
         style={({pressed})=>[{backgroundColor: pressed ? 'rgba(87, 218, 179, 0.6)': 'rgba(87, 218, 179, 0.4)'}, styles.joinButton]}
-        ><Text style={styles.joinedText}>{buttonText}</Text></Pressable>
+        
+        ><Text style={styles.joinedText}>{buttonText}</Text>
+        </Pressable>
     )
 }
 
@@ -28,21 +30,27 @@ export default JoinButton;
 
 const styles = StyleSheet.create({
     joinButton:{
-        paddingHorizontal:5,
-        paddingVertical: 3,
+        minWidth:60,
+        minHeight:30,
+        paddingHorizontal:8,
+        paddingVertical:3,
         borderRadius:14,
         borderWidth:2,
         borderColor:'#1EAFB3',
-        alignSelf:'center'
+        alignItems:'center',
+        justifyContent:"center"
     },
     joinText:{
         fontSize:14,
         color:'#fff',
-        height: 16,
+        textAlignVertical:"center",
+        textAlign:"center"
     },
     joinedText:{
         fontSize:14,
         color:'#000',
-        height: 16,
+        textAlignVertical:"center",
+        textAlign:"center"
+
     }
 })
