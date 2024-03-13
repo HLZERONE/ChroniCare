@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Text} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResourceEntry from '../../components/Resources/ResourceEntry';
 import { useNavigation } from '@react-navigation/native';
@@ -26,6 +26,7 @@ const getContentCollectionByCategoryIds = async (categoryIds: number[]) => {
 
 const Resource = () => {
   const [sections, setSections] = React.useState<Response[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   useLayoutEffect(() => {
     getContentCollectionByCategoryIds(CATEGORY_IDS).then((data) => {
@@ -41,6 +42,7 @@ const Resource = () => {
         });
       });
       setSections(sections);
+      setLoading(false);
     });
   }, []);
 
@@ -49,16 +51,34 @@ const Resource = () => {
         flex: 1,
         backgroundColor: 'rgba(117, 196, 205, 0.19)',
       }}>
-        <ScrollView>
-          {
-            sections.map((section, index) => {
-              return (
-                <ResourceEntry key={index} title={section.title} content={section.content} description={section.description}/>
-              );
-            })
-          }
-        </ScrollView>
+        {
+          loading ? (
+            <View>
+              <Text>Loading...</Text>
+            </View>
+          ) : (
+            
+            <ScrollView>
+            {
+              sections.map((section, index) => {
+                return (
+                  <ResourceEntry key={index} title={section.title} content={section.content} description={section.description}/>
+                );
+              })
+            }
+          </ScrollView>
+          )
+        }
       </View>
   );
 };
 export default Resource;
+{/* <ScrollView>
+  {
+    sections.map((section, index) => {
+      return (
+        <ResourceEntry key={index} title={section.title} content={section.content} description={section.description}/>
+      );
+    })
+  }
+</ScrollView> */}
