@@ -17,7 +17,7 @@ const generateRandomSpecialization = () =>{
     return specializations[Math.floor(Math.random() * specializations.length)];
 }
 //RATE
-const generateRandomRate = () => Math.floor(Math.random() * 100) + 50;
+const generateRandomRate = () => Math.ceil((Math.random() * 5) * 100)/100;
 //LOCATION
 const generateRandomLocationWithinRadius = (latitude: number, longitude: number, radiusInMiles: number): Location => {
     const radiusInDegrees = radiusInMiles / 69;

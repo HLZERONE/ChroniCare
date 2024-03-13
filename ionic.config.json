@@ -1,0 +1,7 @@
+{
+  "name": "chronicare",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
