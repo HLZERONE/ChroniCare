@@ -36,14 +36,14 @@ const PasswordScreen = () => {
        
         <View style={styles.profileContainer}>
         <TextInput
-          placeholder="Peter"
+          placeholder="New Password"
           style={styles.profileInput}  
         />
         </View>
 
         <View style={styles.profileContainer}>
         <TextInput
-          placeholder="Anteater"
+          placeholder="Comfirm Password"
           style={styles.profileInput}  
         />
         </View>
