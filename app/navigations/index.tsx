@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import CommunityScreen from "./CommunityNav";
 import DashboardScreen from "./DashboardNav";
-import ResourceScreen from "./ResourceNav";
 import SettingScreen from "./SettingNav";
 import SymptomTrackerScreen from "./SymptomTrackerNav";
 
@@ -29,11 +28,6 @@ function BottomTabNav() {
 			<bottomTab.Screen
 				name="Dashboar"
 				component={DashboardScreen}
-				options={{ headerShown: false }}
-			></bottomTab.Screen>
-			<bottomTab.Screen
-				name="Resource"
-				component={ResourceScreen}
 				options={{ headerShown: false }}
 			></bottomTab.Screen>
 			<bottomTab.Screen

@@ -12,17 +12,18 @@ interface ResourceProps {
 type ResourceShowRouteProp = RouteProp<ResourceStackNavList, 'ResourceShow'>;
 
 type Props = {
-    route: ResourceShowRouteProp;
+    route: ResourceShowRouteProp,
+    navigation: any
   };
 
 const ResourceShow: React.FC<Props> = ({ route }) => {
     const { resourceTitle, content } = route.params;
-    useLayoutEffect(() => {
-        console.log("ResourceShow: " + resourceTitle);
-    }, [resourceTitle]);
 
     return (
-        <WebView source={{ html: content }}/>
+        <WebView source={{ html: `
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <body>${content}</body>
+        ` }}/>
     );
 };
 
