@@ -3,8 +3,8 @@ export class Provider {
     name: string;
     specialization: string;
     location: Location;
-    rate: any;
-    constructor(_name: string, _specialization: string, _location: Location, _rate: any){
+    rate: number;
+    constructor(_name: string, _specialization: string, _location: Location, _rate: number){
         this.name = _name;
         this.specialization = _specialization;
         this.location = _location;
