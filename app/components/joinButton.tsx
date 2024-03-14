@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text } from "react-native"
+import { Image, Pressable, StyleSheet, Text } from "react-native"
 
 type joinState = {
     ifJoined:boolean
@@ -10,6 +10,8 @@ type joinState = {
 function JoinButton({ifJoined, onPress}: joinState){
 
     const [buttonText, setButtonText] = useState(ifJoined ? 'Leave' :'Join');
+    const join = require("../../assets/join.png");
+    const leave = require("../../assets/leave.png");
 
 
     const handlePress = () => {
@@ -19,9 +21,12 @@ function JoinButton({ifJoined, onPress}: joinState){
 
     return(
         <Pressable onPress={handlePress} 
-        style={({pressed})=>[{backgroundColor: pressed ? 'rgba(87, 218, 179, 0.6)': 'rgba(87, 218, 179, 0.4)'}, styles.joinButton]}
-        
-        ><Text style={styles.joinedText}>{buttonText}</Text>
+        style={({pressed})=>[{backgroundColor: pressed ? 'rgba(87, 218, 179, 0.6)': 'rgba(87, 218, 179, 0.4)'},
+         styles.joinButton]}>
+            {(ifJoined ? (<Image style={styles.iconStyle} source={leave}></Image>)
+             : 
+             (<Image style={styles.iconStyle} source={join}></Image>))}
+            <Text style={styles.joinedText}>{buttonText}</Text>
         </Pressable>
     )
 }
@@ -32,6 +37,7 @@ const styles = StyleSheet.create({
     joinButton:{
         minWidth:60,
         minHeight:30,
+        flexDirection:"row",
         paddingHorizontal:8,
         paddingVertical:3,
         borderRadius:14,
@@ -52,5 +58,10 @@ const styles = StyleSheet.create({
         textAlignVertical:"center",
         textAlign:"center"
 
+    },
+    iconStyle:{
+        width:16,
+        height:16,
+        marginRight:5
     }
 })
