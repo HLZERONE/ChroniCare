@@ -18,6 +18,7 @@ const generateRandomSpecialization = () =>{
 }
 //RATE
 const generateRandomRate = () => Math.ceil((Math.random() * 5) * 100)/100;
+
 //LOCATION
 const generateRandomLocationWithinRadius = (latitude: number, longitude: number, radiusInMiles: number): Location => {
     const radiusInDegrees = radiusInMiles / 69;
@@ -27,6 +28,16 @@ const generateRandomLocationWithinRadius = (latitude: number, longitude: number,
     return new Location(randomLatitude, randomLongitude);
 };
 
+//ProfilePicture
+const Images = [
+    { image: require('../../assets/providerProfile.png') },
+    { image: require('../../assets/providerProfile2.png') },
+];
+const generateProfilePicture = () => {
+    const img = Images[Math.floor(Math.random() * Images.length)];
+    return img.image;
+}
+
 // Function to generate a list of random providers
 export const generateRandomProviders = (latitude: number, longitude: number, radius: number, count: number): Provider[] =>{
     const providers: Provider[] = [];
@@ -35,7 +46,8 @@ export const generateRandomProviders = (latitude: number, longitude: number, rad
         const specialization = generateRandomSpecialization();
         const location = generateRandomLocationWithinRadius(latitude, longitude, radius);
         const rate = generateRandomRate();
-        providers.push(new Provider(name, specialization, location, rate));
+        const img = generateProfilePicture();
+        providers.push(new Provider(name, specialization, location, rate, img));
     }
     return providers;
 }
