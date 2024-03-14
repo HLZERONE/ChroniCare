@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import CommunityScreen from "./CommunityNav";
 import DashboardScreen from "./DashboardNav";
-import SettingScreen from "./SettingNav";
+import SettingScreen from "./settingNav";
 import SymptomTrackerScreen from "./SymptomTrackerNav";
 
 const bottomTab = createBottomTabNavigator();
