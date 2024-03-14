@@ -1,11 +1,12 @@
 import React, {useRef, useState, useEffect} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, View, Text, Dimensions, ScrollView, Animated, Platform} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, ScrollView, Animated, Platform, Button} from 'react-native';
 import * as Place from 'expo-location';
 import { generateRandomProviders } from '../../firebaseConnect/ProviderGenerator';
 import { Provider } from '../../firebaseConnect/data/Provider';
 import { Location } from '../../firebaseConnect/data/Location';
 import {StarRating} from '../../components/StarRating'
+import { setUserPassword } from '../../firebaseConnect/ProfileInfo';
 
 
 const { width, height } = Dimensions.get("window");
@@ -92,7 +93,7 @@ const FindDoctor = () => {
     },[]);
 
     return (
-        <View style={styles.container}>  
+        <View style={styles.container}>
             {errorMsg && <Text>{errorMsg}</Text>}
             <MapView ref={_map} style={styles.map} region={userlocation}>
                 <Marker
@@ -163,8 +164,9 @@ const FindDoctor = () => {
                         <View style={styles.card} key={index}>
                             <View style={styles.textContent}>
                                 <Text numberOfLines={1} style={styles.cardtitle}>{provider.name}</Text>
-                                <Text numberOfLines={1} style={styles.cardDescription}>{provider.specialization}</Text>
                                 <StarRating ratings={Math.ceil(provider.rate)} rateNum={provider.rate} />
+                                <Text numberOfLines={1} style={styles.cardDescription}>{provider.specialization}</Text>
+                                
                             </View>
                         </View>
                 ))}
