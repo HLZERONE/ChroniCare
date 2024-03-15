@@ -3,6 +3,7 @@ import {ScrollView, View, Text} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ResourceEntry from '../../components/Resources/ResourceEntry';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HEALTHGOV_API = "https://health.gov/myhealthfinder/api/v3/topicsearch.json";
 const CATEGORY_IDS = [15, 16, 18]
@@ -28,22 +29,41 @@ const Resource = () => {
   const [sections, setSections] = React.useState<Response[]>([]);
   const [loading, setLoading] = React.useState(true);
 
-  useLayoutEffect(() => {
-    getContentCollectionByCategoryIds(CATEGORY_IDS).then((data) => {
-      const resources = data.Result.Resources.Resource;
-      const sections: Response[] = [];
-      resources.forEach((resource: any) => {
-        resource.Sections.section.forEach((section: any) => {
-          sections.push({
-            title: resource.Title + ' - ' + section.Title,
-            content: section.Content,
-            description: section.Description,
+  useEffect(() => {
+    // Function to fetch and process data
+    const fetchData = async () => {
+      try {
+        // Attempt to retrieve cached data
+        const cachedSections = await AsyncStorage.getItem('sectionsCache');
+        if (cachedSections !== null) {
+          setSections(JSON.parse(cachedSections));
+          setLoading(false);
+        } else {
+          // Fetch data if no cache is found
+          const data = await getContentCollectionByCategoryIds(CATEGORY_IDS);
+          const resources = data.Result.Resources.Resource;
+          const newSections: Response[] = [];
+          resources.forEach((resource: any) => {
+            resource.Sections.section.forEach((section: any) => {
+              newSections.push({
+                title: `${resource.Title} - ${section.Title}`,
+                content: section.Content,
+                description: section.Description,
+              });
+            });
           });
-        });
-      });
-      setSections(sections);
-      setLoading(false);
-    });
+          setSections(newSections);
+          setLoading(false);
+          // Cache the new sections for future use
+          await AsyncStorage.setItem('sectionsCache', JSON.stringify(newSections));
+        }
+      } catch (error) {
+        console.error(error);
+        setLoading(false); // Ensure loading is set to false in case of error
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
