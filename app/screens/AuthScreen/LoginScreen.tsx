@@ -34,7 +34,7 @@ const Login = ({ navigation }: RouterProps) => {
 
     // FOR TEST PURPOSES ONLY
 	useEffect(() => {
-		setEmail("test@test.com");
+		setEmail("testtest@test.com");
 		setPassword("testtest");
 	}, []);
 

@@ -15,7 +15,7 @@ const Signup = () => {
     const signUp = async () => {
         setLoading(true);
         SignUp(firstname, lastname, email, password, confirmPW).catch((error) => {
-            alert('Sign up failed: ' + error.message);
+            alert('Sign up failed: ' + error);
         }).finally(() => {
             setLoading(false);
         });
