@@ -196,7 +196,7 @@ export const createPost = async (
 		user: regularUserConverter.toFirestore(user),
 		upVotes: 0,
 		downVotes: 0,
-		userEngagement: new UserEngagement(),
+		userEngagement: (new UserEngagement()).toFirestore(),
 	});
 };
 
@@ -224,7 +224,7 @@ export const createReply = async (
 			content: content,
 			upVotes: 0,
 			downVotes: 0,
-			userEngagement: new UserEngagement(),
+			userEngagement: (new UserEngagement()).toFirestore(),
 		});
 
 		// Get the current post document
@@ -265,7 +265,7 @@ export const upvoteDownvotePost = async (communityId: string, post: Post) => {
 		// Update the user engagement
 		const userEngagement = postDoc.data().userEngagement
 			? post.userEngagement.toFirestore()
-			: new UserEngagement();
+			: (new UserEngagement()).toFirestore();
 		transaction.update(postRef, { userEngagement: userEngagement });
 	});
 };
@@ -293,7 +293,7 @@ export const upvoteDownvoteReply = async (
 		// Update the user engagement
 		const userEngagement = replyDoc.data().userEngagement
 			? reply.userEngagement.toFirestore()
-			: new UserEngagement();
+			: (new UserEngagement()).toFirestore();
 		transaction.update(replyRef, { userEngagement: userEngagement });
 	});
 };

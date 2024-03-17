@@ -68,7 +68,7 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
           }
         </View>
       </ScrollView>
-          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunityID: community.id})}}>
+          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunity: community})}}>
             <Image source={plus} style={styles.plusButton}></Image>
           </Pressable>
     </View>

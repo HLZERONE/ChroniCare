@@ -3,9 +3,10 @@ import { ScrollView, TextInput, View, Text, Pressable, StyleSheet } from "react-
 import { createPost } from "../../firebaseConnect/Forum";
 import { curUserInfo } from "../../firebaseConnect/CurrentUserInfo";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import Community from "../../firebaseConnect/data/Community";
 
 interface CreatePostPageRouteParams {
-    cummunityID: string;
+    cummunity: Community;
 }
 
 const CreatePostPage = () =>{
@@ -13,10 +14,10 @@ const CreatePostPage = () =>{
     const [content, setContent] = useState('');
     const navigation = useNavigation();
     const route = useRoute<RouteProp<{ params: CreatePostPageRouteParams }, 'params'>>();
-    const {cummunityID} = route.params;
+    const {cummunity} = route.params;
 
     const onSubmit = () => {
-        createPost(cummunityID, title, content, curUserInfo).then(() => {
+        createPost(cummunity.id, title, content, curUserInfo).then(() => {
             navigation.goBack();
         }).catch((e) => {
             console.log("Error creating post: " + e);
@@ -26,9 +27,9 @@ const CreatePostPage = () =>{
     return(
         <ScrollView style={{backgroundColor: 'rgba(117, 196, 205, 0.19)'}}>
             <View style={styles.headerView}>
-            <Text >CommunityName</Text>
+            <Text > {cummunity.name}</Text>
             <Pressable style={styles.postButton} 
-            onPress={onSubmit}>
+            onPress={onSubmit}> 
                 <Text style={styles.postText}>Post</Text>
             </Pressable>
             </View>
