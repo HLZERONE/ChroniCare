@@ -9,7 +9,7 @@ const bottomTab = createBottomTabNavigator();
 
 function BottomTabNav() {
 	return (
-		<bottomTab.Navigator initialRouteName="dashboard"
+		<bottomTab.Navigator initialRouteName="Dashboar"
 		screenOptions={{
 			headerShown: false,
 			tabBarStyle: { display: 'none' } // This hides the tab bar itself
