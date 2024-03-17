@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
 	horizontalScrollBox: {
 		paddingLeft: 20,
 		marginTop: 10,
+		minHeight: 200,
 	},
 	listContainer: {
 		alignItems: "center",
