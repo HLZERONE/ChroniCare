@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAlignCenter, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
-import EditProfile from "./EditProfileScreen";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useState } from "react";
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
@@ -88,7 +87,7 @@ const EditProfileScreen = () => {
             color: "#FFFFFF",
             textAlign: 'center',
             fontSize: 20,
-            fontWeight: 600,
+            fontWeight: '600',
           }}>
             Save
           </Text>
