@@ -1,40 +1,35 @@
+import React, { useCallback, useState } from 'react';
+import { Text, View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { Text, View, StyleSheet, Image, ScrollView, Button, Pressable } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { CommunityStackNavList } from './CommunityTypes';
 import JoinButton from '../../components/joinButton';
-import { StackNavigationProp } from '@react-navigation/stack';
 import PostTab from './PostTab';
 import { getPosts, joinCommunity, leaveCommunity } from '../../firebaseConnect/Forum';
 import { Post } from '../../firebaseConnect/data/Post';
 import { useCommunityContext } from '../../providers/CommunityProvider';
 
-//enable sending information to the postScreen
 type SingleCommunityScreenNavigationProp = StackNavigationProp<CommunityStackNavList, 'PostScreen'>;
-
-//get the information from CommunityScreen
 type SingleCommunityScreenRouteProp = RouteProp<CommunityStackNavList, 'SingleCommunityScreen'>;
-
 
 type Props = {
   navigation: SingleCommunityScreenNavigationProp;
   route: SingleCommunityScreenRouteProp;
 };
 
-
 const SingleCommunityScreen = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const img = require('../../../assets/favicon.png');
-  const plus = require('../../../assets/plus.png');
-  const community = route.params.community
   const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
+  const community = route.params.community;
   const [joined, setJoined] = useState(joinedCommunities.includes(community));
 
-  useFocusEffect(useCallback(() => {
-    getPosts(community.id).then((posts) => {
-      setPosts(posts);
-    });
-  }, [community.id]));
+  useFocusEffect(
+    useCallback(() => {
+      getPosts(community.id).then((posts) => {
+        setPosts(posts);
+      });
+    }, [community.id])
+  );
 
   const handlePress = () => {
     if (joined) {
@@ -43,80 +38,88 @@ const SingleCommunityScreen = ({ navigation, route }: Props) => {
       joinCommunity(community);
     }
     setJoined((current) => !current);
-  }
+  };
 
   return (
-    <View
-      style={styles.container}>
-
+    <View style={styles.container}>
       <ScrollView>
-        {/* first row */}
         <View style={styles.headerArea}>
-          <Image source={img} resizeMode="contain"></Image>
-          <Text style={styles.title}>{community.name}</Text>
-          <Text style={styles.memberNum}>{ community.members } members</Text>
-          <JoinButton ifJoined={joined} onPress={handlePress}></JoinButton>
+          <Image source={require('../../../assets/favicon.png')} resizeMode="contain" style={styles.logo} />
+          <View style={styles.headerContent}>
+            <View style={styles.headerText}>
+              <Text style={styles.title}>{community.name}</Text>
+              <Text style={styles.memberNum}>{community.members} members</Text>
+            </View>
+            <JoinButton ifJoined={joined} onPress={handlePress} />
+          </View>
         </View>
-        <Text style={styles.description}>This community is for anyone to join. We will share resources for patients with heart disease to use.</Text>
+        <Text style={styles.description}>
+          This community is for anyone to join. We will share resources for patients with heart disease to use.
+        </Text>
         <View>
-          {posts.map((post: Post) => {
-            return (
-              <PostTab post={post} key={post.id} communityID={community.id} 
-              action={() => navigation.navigate('PostScreen', {post: post, community: community})}></PostTab>
-            );
-          })
-          }
+          {posts.map((post: Post) => (
+            <PostTab
+              post={post}
+              key={post.id}
+              communityID={community.id}
+              action={() => navigation.navigate('PostScreen', { post: post, community: community })}
+            />
+          ))}
         </View>
       </ScrollView>
-          <Pressable onPress={()=>{navigation.navigate('CreatePostPage', {cummunity: community})}}>
-            <Image source={plus} style={styles.plusButton}></Image>
-          </Pressable>
+      <Pressable onPress={() => navigation.navigate('CreatePostPage', { cummunity: community })}>
+        <Image source={require('../../../assets/plus.png')} style={styles.plusButton} />
+      </Pressable>
     </View>
   );
 };
-export default SingleCommunityScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(117, 196, 205, 0.19)',
-    alignItems: 'center',
-    padding: '2%',
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#F5F5F5',
   },
   headerArea: {
-    paddingLeft:'2%',
     flexDirection: 'row',
-    gap: 10
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+  },
+  headerContent: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerText: {
+    flex: 1,
   },
   title: {
-    fontWeight: '600',
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
     color: '#091F44',
-    maxWidth:'40%',
-
   },
   memberNum: {
-    fontWeight: '400',
-    fontSize: 10,
-    color:'rgba(0, 0, 0, 0.5)'
-  },
-  description:{
-    margin: '2%',
-    textAlign:'left',
-    fontWeight: '400',
     fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.5)',
+  },
+  description: {
+    marginBottom: 16,
+    fontSize: 16,
     color: '#091F44',
   },
-  plusButton:{
-    width:50,
-    height:50,
+  plusButton: {
+    width: 50,
+    height: 50,
     position: 'absolute',
-    right: '-40%',
-    bottom: '20%'
+    right: 16,
+    bottom: 16,
+  },
+});
 
-  }
-
-
-})
+export default SingleCommunityScreen;

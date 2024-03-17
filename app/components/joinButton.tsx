@@ -1,67 +1,50 @@
-import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text } from "react-native"
+import React, { useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons'; 
 
-type joinState = {
-    ifJoined:boolean
-    onPress: () => void
-}
+type JoinState = {
+  ifJoined: boolean;
+  onPress: () => void;
+};
 
+const JoinButton: React.FC<JoinState> = ({ ifJoined, onPress }) => {
+  const [buttonText, setButtonText] = useState(ifJoined ? "Leave" : "Join");
 
-function JoinButton({ifJoined, onPress}: joinState){
+  const handlePress = () => {
+    onPress();
+    setButtonText((currentText) => (currentText === "Join" ? "Leave" : "Join"));
+  };
 
-    const [buttonText, setButtonText] = useState(ifJoined ? 'Leave' :'Join');
-    const join = require("../../assets/join.png");
-    const leave = require("../../assets/leave.png");
-
-
-    const handlePress = () => {
-        onPress();
-        setButtonText((currentText) => (currentText === 'Join' ? 'Leave' : 'Join'));
-    };
-
-    return(
-        <Pressable onPress={handlePress} 
-        style={({pressed})=>[{backgroundColor: pressed ? 'rgba(87, 218, 179, 0.6)': 'rgba(87, 218, 179, 0.4)'},
-         styles.joinButton]}>
-            {(ifJoined ? (<Image style={styles.iconStyle} source={leave}></Image>)
-             : 
-             (<Image style={styles.iconStyle} source={join}></Image>))}
-            <Text style={styles.joinedText}>{buttonText}</Text>
-        </Pressable>
-    )
-}
+  return (
+    <Pressable onPress={handlePress} style={styles.joinButton}>
+      <View style={styles.iconContainer}>
+        <MaterialIcons name={ifJoined ? "logout" : "login"} size={14} color="#1EAFB3" />
+      </View>
+      <Text style={styles.buttonText}>{buttonText}</Text>
+    </Pressable>
+  );
+};
 
 export default JoinButton;
 
 const styles = StyleSheet.create({
-    joinButton:{
-        minWidth:60,
-        minHeight:30,
-        flexDirection:"row",
-        paddingHorizontal:8,
-        paddingVertical:3,
-        borderRadius:14,
-        borderWidth:2,
-        borderColor:'#1EAFB3',
-        alignItems:'center',
-        justifyContent:"center"
-    },
-    joinText:{
-        fontSize:14,
-        color:'#fff',
-        textAlignVertical:"center",
-        textAlign:"center"
-    },
-    joinedText:{
-        fontSize:14,
-        color:'#000',
-        textAlignVertical:"center",
-        textAlign:"center"
-
-    },
-    iconStyle:{
-        width:16,
-        height:16,
-        marginRight:5
-    }
-})
+  joinButton: {
+    flexDirection: "row",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    backgroundColor: "#1EAFB3",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "#FFFFFF",
+    marginLeft: 4,
+  },
+  iconContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 6,
+    padding: 2,
+  },
+});
