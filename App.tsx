@@ -10,6 +10,7 @@ import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
 import ResourceScreen from './app/navigations/ResourceNav';
+import { navigationRef } from './app/navigations/NavigationService';
 
 
 const Stack = createNativeStackNavigator()
@@ -25,7 +26,7 @@ export default function App() {
   }, [])
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName='Login'>
         {user ? (<Stack.Screen name="Dashboard" component={BottomTabNav} options={{ headerShown: false }}></Stack.Screen>) : (
         <><Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>

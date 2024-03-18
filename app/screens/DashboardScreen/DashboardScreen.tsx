@@ -1,18 +1,41 @@
 import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/build/Ionicons';
-import React, { useState } from 'react';
-import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image, Pressable} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { navigate } from '../../navigations/NavigationService';
 import TabBar from '../../components/tabBar';
+import { getCommunities } from '../../firebaseConnect/Forum';
+import Community from '../../firebaseConnect/data/Community';
 
 
 
 const Dashboard = () => {
   const [searchValue, setSearchValue] = useState('');
+  const [communities, setCommunities] = useState<Community[]>([]);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getCommunities().then((communities) => {
+      setCommunities(communities);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, []);
   const handleSearchChange = (text: React.SetStateAction<string>) => {
     setSearchValue(text);
   };
+
+  const navigateToCommunity = (community: Community) => {
+    navigate(
+      'Community',
+      {
+        screen: 'SingleCommunityScreen',
+        params: { community }
+      }
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center'}} style={{flex: 1}}>
@@ -54,23 +77,14 @@ const Dashboard = () => {
         </View>
           {/* Community Descriptions */}
           <View style={styles.communityBoxContainer}>
-          {/* Community Box 1 */}
-          <View style={styles.communityBox}>
-          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
-            <Text style={styles.communityTitle}>Community 1 Title</Text>
-          </View>
-
-          {/* Community Box 2 */}
-          <View style={styles.communityBox}>
-          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
-            <Text style={styles.communityTitle}>Community 2 Title</Text>
-          </View>
-
-          {/* Community Box 3 */}
-          <View style={styles.communityBox}>
-          <Image source={require("../../../assets/chroniLogo.png")} style={styles.communityImage} />
-            <Text style={styles.communityTitle}>Community 3 Title</Text>
-          </View>
+          {
+            communities.map((community) => (
+              <Pressable style={styles.communityBox} onPress={() => navigateToCommunity(community)} key={community.id}>
+                <Image source={require('../../../assets/chroniLogo.png')} style={styles.communityImage} />
+                <Text style={styles.communityTitle}>{community.name}</Text>
+              </Pressable>
+            ))
+          }
         </View>
       </ScrollView>
       <TabBar navigation={navigation} state={3} />
