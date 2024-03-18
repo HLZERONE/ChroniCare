@@ -10,7 +10,6 @@ import Signup from './app/screens/AuthScreen/SignupScreen';
 import BottomTabNav from './app/navigations';
 import FindDoctor from './app/screens/FindDoctorScreen/FindDoctorScreen';
 import ResourceScreen from './app/navigations/ResourceNav';
-import { navigationRef } from './app/navigations/NavigationService';
 
 
 const Stack = createNativeStackNavigator()
@@ -26,11 +25,16 @@ export default function App() {
   }, [])
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
-        {user ? (<Stack.Screen name="Dashboard" component={BottomTabNav} options={{ headerShown: false }}></Stack.Screen>) : (
-        <><Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
-        <Stack.Screen name="Signup" component={Signup} options={{ headerShown: true, headerTitle:"" }}></Stack.Screen></>)}
+        { user 
+        ? (<Stack.Screen name="Dashboard" component={BottomTabNav} options={{ headerShown: false }}></Stack.Screen>) 
+        : (
+        <>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+          <Stack.Screen name="Signup" component={Signup} options={{ headerShown: true, headerTitle:"" }}/>
+        </>)}
+        
         <Stack.Screen name="FindDoctor" component={FindDoctor} />
         <Stack.Screen name="Resource" component={ResourceScreen} options={{ headerShown: true, headerTitle: "Resources" }}></Stack.Screen>
       </Stack.Navigator>

@@ -3,7 +3,6 @@ import Ionicons from '@expo/vector-icons/build/Ionicons';
 import React, { useEffect, useState } from 'react';
 import {Text, View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image, Pressable} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { navigate } from '../../navigations/NavigationService';
 import TabBar from '../../components/tabBar';
 import { getCommunities } from '../../firebaseConnect/Forum';
 import Community from '../../firebaseConnect/data/Community';
@@ -27,13 +26,12 @@ const Dashboard = () => {
   };
 
   const navigateToCommunity = (community: Community) => {
-    navigate(
-      'Community',
-      {
-        screen: 'SingleCommunityScreen',
-        params: { community }
-      }
-    );
+    (navigation as any).navigate('Community', {
+      screen: 'SingleCommunityScreen',
+      params: {
+        community: community,
+      },
+    });
   }
 
   return (
