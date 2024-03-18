@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons'; 
 
@@ -8,11 +7,9 @@ type JoinState = {
 };
 
 const JoinButton: React.FC<JoinState> = ({ ifJoined, onPress }) => {
-  const [buttonText, setButtonText] = useState(ifJoined ? "Leave" : "Join");
 
   const handlePress = () => {
     onPress();
-    setButtonText((currentText) => (currentText === "Join" ? "Leave" : "Join"));
   };
 
   return (
@@ -20,7 +17,7 @@ const JoinButton: React.FC<JoinState> = ({ ifJoined, onPress }) => {
       <View style={styles.iconContainer}>
         <MaterialIcons name={ifJoined ? "logout" : "login"} size={14} color="#1EAFB3" />
       </View>
-      <Text style={styles.buttonText}>{buttonText}</Text>
+      <Text style={styles.buttonText}>{ifJoined ? "Leave" : "Join"}</Text>
     </Pressable>
   );
 };

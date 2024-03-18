@@ -1,27 +1,23 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Community from '../firebaseConnect/data/Community';
-import { joinCommunity as joinCommunityRequest, leaveCommunity as leaveCommunityRequest} from '../firebaseConnect/Forum';
+import { getCommunities, getCurrentUserJoinedCommunities, joinCommunity as joinCommunityRequest, leaveCommunity as leaveCommunityRequest} from '../firebaseConnect/Forum';
 
 interface CommunityContextType {
   joinedCommunities: Community[]; // Array of Community objects
+  communities: Community[]; // Array of Community objects
   joinCommunity: (community: Community) => void; // Function to join a community
   leaveCommunity: (community: Community) => void; // Function to leave a community
-  updateJoinedCommunities: (communities: Community[]) => void; // Function to update the joined communities
 }
 
 const defaultContextValue: CommunityContextType = {
   joinedCommunities: [],
+  communities: [],
   joinCommunity: (community: Community) => {
     console.log('Join community:', community);
     // Default implementation (should be replaced by actual logic in CommunityProvider)
   },
   leaveCommunity: (community: Community) => {
     console.log('Leave community:', community);
-    // Default implementation (should be replaced by actual logic in CommunityProvider)
-  },
-
-  updateJoinedCommunities: (communities: Community[]) => {
-    console.log('Update joined communities:', communities);
     // Default implementation (should be replaced by actual logic in CommunityProvider)
   }
 };
@@ -34,7 +30,21 @@ interface CommunityProviderProps {
 }
 
 export const CommunityProvider: React.FC<CommunityProviderProps> = ({ children }) => {
+  const [communities, setCommunities] = useState<Community[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<Community[]>([]);
+
+  useEffect(() => {
+    getCommunities().then((communities) => {
+      setCommunities(communities);
+    }).catch((e) => {
+      console.log('getCommunities error: ' + e);
+    });
+    getCurrentUserJoinedCommunities().then((communities) => {
+      setJoinedCommunities(communities);
+    }).catch((e) => {
+      console.log('getCurrentUserJoinedCommunities error: ' + e);
+    });
+  }, []);
 
   const joinCommunity = (community: Community) => {
     joinCommunityRequest(community.id).then(() => {
@@ -52,12 +62,8 @@ export const CommunityProvider: React.FC<CommunityProviderProps> = ({ children }
     });
   };
 
-  const updateJoinedCommunities = (communities: Community[]) => {
-    setJoinedCommunities(communities);
-  }
-
   return (
-    <CommunityContext.Provider value={{ joinedCommunities, joinCommunity, leaveCommunity, updateJoinedCommunities }}>
+    <CommunityContext.Provider value={{ joinedCommunities, communities, joinCommunity, leaveCommunity }}>
       {children}
     </CommunityContext.Provider>
   );

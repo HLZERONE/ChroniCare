@@ -3,8 +3,7 @@ import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import JoinButton from "./joinButton";
 import Community from "../firebaseConnect/data/Community";
-import { joinCommunity, leaveCommunity } from "../firebaseConnect/Forum";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCommunityContext } from "../providers/CommunityProvider";
 
 var {height, width} = Dimensions.get('window');
@@ -13,13 +12,16 @@ function CommunityTab(props: {ifJoined: boolean, action: any, community: Communi
     const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
     const [joined, setJoined] = useState(joinedCommunities.includes(props.community));
 
+    useEffect(() => {
+        setJoined(joinedCommunities.includes(props.community));
+    }, [joinedCommunities]);
+
     const handlePress = () => {
         if (joined) {
             leaveCommunity(props.community);
         } else {
             joinCommunity(props.community);
         }
-        setJoined((current) => !current);
     }
 
     return(
