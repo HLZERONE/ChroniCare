@@ -26,7 +26,7 @@ const Dashboard = () => {
   };
 
   const navigateToCommunity = (community: Community) => {
-    (navigation as any).navigate('Community', {
+    (navigation as any).navigate('CommunityNav', {
       screen: 'SingleCommunityScreen',
       params: {
         community: community,
