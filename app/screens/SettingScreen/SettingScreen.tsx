@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Button, Pressable, Switch} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Button, Pressable, Switch, } from "react-native";
 import {SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
 import { curUserInfo } from '../../firebaseConnect/CurrentUserInfo';
@@ -8,13 +8,38 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import TabBar from "../../components/tabBar";
 import { useNavigation } from "@react-navigation/native";
 import EditProfile from "./EditProfileScreen";
-import EditPassword from "./EditPassword";
+
 import PrivacyScreen from "./PrivacyScreen";
 import AboutUsScreen from "./AboutUsScreen";
+import { Location } from '../../firebaseConnect/data/Location';
+import React, { useState, useEffect } from 'react';
+import * as Place from 'expo-location';
+import EditPassword from "../screens/SettingScreen/EditPassword";
+import { Platform, PermissionsAndroid } from 'react-native';
+
+
 
 
 const Setting = () => {
   const navigation = useNavigation();
+
+  const [location, setLocation] = useState<Location>(new Location(33.6405407712, -117.838914978));
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLocationEnabled, setLocationEnabled] = useState(true);
+  const [isNotificationsEnabled, setNotificationsEnabled] = useState(false);
+    
+ 
+
+const toggleLocationSwitch = () => {
+    setLocationEnabled(previousState => !previousState);
+}
+
+const toggleNotificationsSwitch = () => {
+  setNotificationsEnabled(previousState => !previousState);
+  // Additional logic for handling notifications
+};
+
+
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
     console.log('Edit Profile');
@@ -33,7 +58,7 @@ const Setting = () => {
   };
 
   const handleChangePassword = () => {
-    navigation.navigate('EditPassword');
+    navigation.navigate('EditPassword')
     console.log('Change Password');
   };
 
@@ -131,9 +156,19 @@ const Setting = () => {
                                   <FontAwesome name = 'angle-right' size={24} />
                               )}
 
-                              {type === 'toggle' && (
-                                  <Switch/>
-                              )}
+                            {type === 'toggle' && id === 'location' && (
+                              <Switch
+                                value={isLocationEnabled}
+                                onValueChange={() => setLocationEnabled(previousState => !previousState)} 
+                              />
+                            )}
+                            {type === 'toggle' && id === 'notifications' && (
+                              <Switch
+                                value={isNotificationsEnabled}
+                                onValueChange={toggleNotificationsSwitch} 
+                              />
+                            )}
+                              
                           </View>
                       </TouchableOpacity>
                   

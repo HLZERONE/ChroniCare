@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Button, Pressable, Switch, Image, TextInput} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Button, Pressable, Switch, Image, TextInput, Alert} from "react-native";
 import {SignOut } from '../../firebaseConnect/Auth';
 import ChroniBlueButton from '../../components/chroniBlueButton';
 import { curUserInfo } from '../../firebaseConnect/CurrentUserInfo';
@@ -9,13 +9,40 @@ import { useNavigation } from '@react-navigation/native';
 import EditProfile from "./EditProfileScreen";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useState } from "react";
+import { setUserPassword } from "../../firebaseConnect/ProfileInfo";
+
 
 
 
 const PasswordScreen = () => {
-  const handleSaveButton = () =>{
-    console.log('Save Password')
-  }
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigation = useNavigation();
+
+  const handleSaveButton = async () => {
+    if (newPassword === '' || confirmPassword === '') {
+      Alert.alert('Error', 'Please fill in both fields.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return;
+    }
+
+    try {
+      await setUserPassword(newPassword); // Call the function to update password
+      Alert.alert('Success', 'Password updated successfully.');
+      // After successful password change, clear user authentication state and navigate to login screen
+      await SignOut();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }]
+      });
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
   
   return(  
 
@@ -38,6 +65,8 @@ const PasswordScreen = () => {
         <TextInput
           placeholder="New Password"
           style={styles.profileInput}  
+          value={newPassword}
+          onChangeText={setNewPassword}
         />
         </View>
 
@@ -45,6 +74,8 @@ const PasswordScreen = () => {
         <TextInput
           placeholder="Comfirm Password"
           style={styles.profileInput}  
+          value={confirmPassword}
+          onChangeText={setConfirmPassword} 
         />
         </View>
       
