@@ -21,7 +21,9 @@ function JoinButton({ifJoined, onPress}: joinState){
 
     return(
         <Pressable onPress={handlePress} 
-        style={({pressed})=>[{backgroundColor: pressed ? 'rgba(87, 218, 179, 0.6)': 'rgba(87, 218, 179, 0.4)'},
+        style={({pressed})=>[{backgroundColor: ifJoined ?
+            (pressed ? 'rgba(87, 218, 179, 0.6)' : 'rgba(237, 175, 116, 0.8)') : //change this for the wanted color
+            (pressed ? 'rgba(87, 218, 179, 0.6)' : 'rgba(87, 218, 179, 0.4)'),},
          styles.joinButton]}>
             {(ifJoined ? (<Image style={styles.iconStyle} source={leave}></Image>)
              : 
