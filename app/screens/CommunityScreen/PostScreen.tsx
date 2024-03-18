@@ -32,7 +32,7 @@ const PostScreen = ({navigation, route }: Props)=>{
     const [post, setPost] = useState<Post>(route.params.post);
     const [replies, setReplies] = useState<Reply[]>([]);
     const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
-  const [joined, setJoined] = useState(joinedCommunities.includes(community));
+    const [joined, setJoined] = useState(joinedCommunities.includes(community));
 
     useFocusEffect(useCallback(() => {
       getReplies(community.id, post.id).then((replies)=>{
@@ -40,7 +40,7 @@ const PostScreen = ({navigation, route }: Props)=>{
       }).catch((e)=>{
         console.log('getReplies error: '+e);
       });
-      }, []));
+      }, [replies]));
      
     const handlePress = () => {
       if (joined) {

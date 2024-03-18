@@ -6,7 +6,7 @@ export type CommunityStackNavList = {
     CommunityScreen: undefined; // No parameters expected to be passed to Home screen
     SingleCommunityScreen: {community: Community};
     PostScreen: {community: Community, post: Post};
-    CreatePostPage: {cummunityID: string};
+    CreatePostPage: {cummunity: Community};
     CreateReplyPage: {postIDReplyTo: string};
     SearchResult: {communities: Community[]}
   };

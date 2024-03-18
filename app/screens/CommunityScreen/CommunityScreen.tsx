@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import {
 	ScrollView,
 	Text,
@@ -12,10 +12,6 @@ import CommunityTab from "../../components/communityTab";
 import { CommunityStackNavList } from "./CommunityTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CommunityModel from "../../firebaseConnect/data/Community";
-import {
-	getCommunities,
-	getCurrentUserJoinedCommunities,
-} from "../../firebaseConnect/Forum";
 import TabBar from "../../components/tabBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCommunityContext } from "../../providers/CommunityProvider";
@@ -32,8 +28,7 @@ type Props = {
 
 const Community = ({ navigation }: Props) => {
 	const [searchValue, setSearchValue] = useState("");
-	const [communities, setCommunities] = useState<CommunityModel[]>([]);
-	const { joinedCommunities, updateJoinedCommunities } = useCommunityContext();
+	const { joinedCommunities, communities } = useCommunityContext();
 
 	const handleSearchAction = () => {
 		search(searchValue).then((result) => {
@@ -41,26 +36,6 @@ const Community = ({ navigation }: Props) => {
 			console.log(result);
 		});
 	};
-	useLayoutEffect(() => {
-		// populate the communities
-		getCommunities()
-			.then((communities: CommunityModel[]) => {
-				// only show the first 2 communities for development purposes
-				setCommunities(communities.slice(0, 2));
-			})
-			.catch((e) => {
-				console.log("Error getting communities: " + e);
-			});
-		getCurrentUserJoinedCommunities()
-			.then((communities: CommunityModel[]) => {
-				updateJoinedCommunities(communities);
-			})
-			.catch((e) => {
-				console.log("Error getting joined communities: " + e);
-			});
-		return () => {};
-		// We might need to add a dependency array here, but I'm not sure what it would be
-	}, []);
 
 	const communityAction = (community: CommunityModel) => {
 		navigation.navigate("SingleCommunityScreen", {
@@ -176,14 +151,11 @@ const styles = StyleSheet.create({
 	horizontalScrollBox: {
 		paddingLeft: 20,
 		marginTop: 10,
-	},
-	listContainer: {
-		alignItems: "center",
-		justifyContent: "space-around",
-		paddingBottom: 20, // Add padding to the bottom for better spacing
-		height: "100%",
 		minHeight: 200,
 	},
+	listContainer: {
+		padding: 10, // Add padding around the list for spacing
+	  },
 	emptyMessage: {
 		textAlign: "center",
 		marginTop: 20,

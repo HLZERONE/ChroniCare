@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, View, Text, Dimensions, ScrollView, Animated, Platform} from 'react-native';
+import { StyleSheet, View, Text, Dimensions, ScrollView, Animated, Platform, Image} from 'react-native';
 import * as Place from 'expo-location';
 import { generateRandomProviders } from '../../firebaseConnect/ProviderGenerator';
 import { Provider } from '../../firebaseConnect/data/Provider';
@@ -75,7 +75,6 @@ const FindDoctor = () => {
             const regionTimeout = setTimeout(() => {
               if(mapIndex !== index ) {
                 mapIndex = index;
-                console.log(providerList[index].name);
                 const curPos = providerList[index].location;
                 _map.current?.animateToRegion(
                   curPos,
@@ -92,7 +91,7 @@ const FindDoctor = () => {
     },[]);
 
     return (
-        <View style={styles.container}>  
+        <View style={styles.container}>
             {errorMsg && <Text>{errorMsg}</Text>}
             <MapView ref={_map} style={styles.map} region={userlocation}>
                 <Marker
@@ -101,7 +100,7 @@ const FindDoctor = () => {
                 >
                     <Animated.View style={[styles.markerWrap]}>
                         <Animated.Image
-                        source={require('../../../assets/my_location(1).png')}
+                        source={require('../../../assets/my_location.png')}
                         style={styles.userMarker}
                         resizeMode="cover"
                         />
@@ -161,10 +160,16 @@ const FindDoctor = () => {
             >
                 {providerList.map((provider, index) =>(
                         <View style={styles.card} key={index}>
+                            <Image 
+                                source={provider.image}
+                                style={styles.profilePic}
+                                resizeMode="cover"
+                            />
                             <View style={styles.textContent}>
                                 <Text numberOfLines={1} style={styles.cardtitle}>{provider.name}</Text>
-                                <Text numberOfLines={1} style={styles.cardDescription}>{provider.specialization}</Text>
                                 <StarRating ratings={Math.ceil(provider.rate)} rateNum={provider.rate} />
+                                <Text numberOfLines={1} style={styles.cardDescription}>{provider.specialization}</Text>
+                                
                             </View>
                         </View>
                 ))}
@@ -183,7 +188,8 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     card: {
-        // padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
         elevation: 2,
         backgroundColor: "#FFF",
         borderTopLeftRadius: 5,
@@ -228,6 +234,13 @@ const styles = StyleSheet.create({
     userMarker: {
         width: 40,
         height: 40,
+    },
+    profilePic: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginLeft: 15,
+        marginRight: 10,
     },
 });
 

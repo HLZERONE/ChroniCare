@@ -3,8 +3,7 @@ import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import JoinButton from "./joinButton";
 import Community from "../firebaseConnect/data/Community";
-import { joinCommunity, leaveCommunity } from "../firebaseConnect/Forum";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCommunityContext } from "../providers/CommunityProvider";
 
 var {height, width} = Dimensions.get('window');
@@ -13,13 +12,16 @@ function CommunityTab(props: {ifJoined: boolean, action: any, community: Communi
     const { joinedCommunities, joinCommunity, leaveCommunity } = useCommunityContext();
     const [joined, setJoined] = useState(joinedCommunities.includes(props.community));
 
+    useEffect(() => {
+        setJoined(joinedCommunities.includes(props.community));
+    }, [joinedCommunities]);
+
     const handlePress = () => {
         if (joined) {
             leaveCommunity(props.community);
         } else {
             joinCommunity(props.community);
         }
-        setJoined((current) => !current);
     }
 
     return(
@@ -40,35 +42,42 @@ function CommunityTab(props: {ifJoined: boolean, action: any, community: Communi
 export default CommunityTab;
 
 const styles = StyleSheet.create({
-    tabContainer:{
-        backgroundColor: "#fff",
-        borderRadius:16,
-        height:"90%",
-        width: width*0.4,
-        padding:8,
-        marginHorizontal:3
-    },
-    tabTitle:{
-        color: "#091F44", 
-        justifyContent: 'flex-start', 
-        textAlign: 'left', 
-        fontWeight: '500',
+    tabContainer: {
+        flex: 1,
+        minWidth: 150, // Minimum width for each tab to prevent excessive shrinking
+        minHeight: 100, // Minimum height for each tab
+        margin: 5,
+        padding: 15,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 10,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        // Added justifyContent to space out content inside each tab
+        justifyContent: 'space-between',
+      },
+      tabTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333', // Dark grey color for the text
+        marginBottom: 5, // Margin below the title for spacing
+      },
+    
+      // Style for the description text in each tab
+      tabTexts: {
         fontSize: 14,
-        height:'30%'
-    },
-    tabTexts: {
-        color: "#091F44", 
-        fontSize: 12,
-        fontWeight: '400',
-        height:'45%',
-    },
-    bottomSpace:{
-        flexDirection:'row',
-        height:'35%',
-        justifyContent:'flex-start',
-        paddingHorizontal:3,
-        alignItems:'center'
-    },
+        color: '#666', // Medium grey color for the text
+        marginBottom: 10, // Margin below the text for spacing
+      },
+    
+      // Style for the bottom space of each tab, which includes the join button and member count
+      bottomSpace: {
+        flexDirection: 'row', // Arrange items in a row
+        alignItems: 'center', // Center items vertically in the row
+        justifyContent: 'space-between', // Space items evenly in the row
+      },
     joinedNum:{
         fontSize:10,
         color: 'rgba(0, 0, 0, 0.5)',

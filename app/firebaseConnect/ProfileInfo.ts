@@ -2,6 +2,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../FirebaseConfig";
 import { regularUser, USER_KEY, regularUserConverter} from "./data/User";
 import {currentUser, curUserInfo} from "./CurrentUserInfo";
+import { updatePassword } from "firebase/auth";
 
 /*
 FUNCTION: add new user information to cloud
@@ -21,6 +22,20 @@ INPUT: userId, regularUser Object
 export const setUserInfo = async (id: any, rU: regularUser) =>{
     const ref = doc(FIREBASE_DB, USER_KEY, id).withConverter(regularUserConverter).withConverter(regularUserConverter);
     await setDoc(ref, rU);
+}
+
+/*
+FUNCTION: update current user's password
+INPUT: new password
+*/
+export const setUserPassword = (newPassword: any) =>{
+    if(currentUser){
+        updatePassword(currentUser, newPassword).then(() => {
+            console.log("Successfully Updated Password to " + newPassword);
+          }).catch((error) => {
+            console.log("Have error on setting user password " + error);
+        });
+    }
 }
 
 /*
