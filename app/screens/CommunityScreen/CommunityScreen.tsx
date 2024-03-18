@@ -45,8 +45,7 @@ const Community = ({ navigation }: Props) => {
 		// populate the communities
 		getCommunities()
 			.then((communities: CommunityModel[]) => {
-				// only show the first 2 communities for development purposes
-				setCommunities(communities.slice(0, 2));
+				setCommunities(communities);
 			})
 			.catch((e) => {
 				console.log("Error getting communities: " + e);
@@ -179,12 +178,8 @@ const styles = StyleSheet.create({
 		minHeight: 200,
 	},
 	listContainer: {
-		alignItems: "center",
-		justifyContent: "space-around",
-		paddingBottom: 20, // Add padding to the bottom for better spacing
-		height: "100%",
-		minHeight: 200,
-	},
+		padding: 10, // Add padding around the list for spacing
+	  },
 	emptyMessage: {
 		textAlign: "center",
 		marginTop: 20,
