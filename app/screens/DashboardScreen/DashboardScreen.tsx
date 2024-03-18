@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import TabBar from '../../components/tabBar';
 import { getCommunities } from '../../firebaseConnect/Forum';
 import Community from '../../firebaseConnect/data/Community';
+import { curUserInfo } from '../../firebaseConnect/CurrentUserInfo';
 
 
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center'}} style={{flex: 1}}>
-        <Text style={styles.hello}>Hello, Username!</Text>
+        <Text style={styles.hello}>Hello, {curUserInfo.firstName}!</Text>
         <Text style={styles.question}>What would you like to do today?</Text>
         {/* Search Bar */}
         <View style={styles.searchContainer}>
