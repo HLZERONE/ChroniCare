@@ -47,6 +47,7 @@ const EditProfileScreen = () => {
         setEmail(userInfo.email);
         setAddress(userInfo.address);
         setZip(userInfo.zip);
+        setDiseases(userInfo.diseases);
         setDescription(userInfo.description);
       }
     } catch (error) {
@@ -83,7 +84,7 @@ const EditProfileScreen = () => {
         address,
         zip,
         description,
-        diseases
+        diseases,
       });
       // After saving, navigate back
       navigation.goBack();
@@ -166,7 +167,7 @@ const EditProfileScreen = () => {
           fontSize: 14,
           paddingTop: '3%'
 
-        }}>Description</Text>
+        }}>Description/Diseases</Text>
         <View style={styles.profileContainerDescription}>
           
         <TextInput
